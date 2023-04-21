@@ -4,27 +4,27 @@
         <h5>สาขาทั้งหมด</h5>
         <div class="scroll-slide bg-light" >
             <div class="d-flex p-2" >
-                <button type="button" onclick="getBranchAll(1)" class="btnBranch btn border border-light bg-pt2-purple p-4 text-nowrap m-1"><i class="fa-solid fa-border-all"></i> ทุกสาขา</button>
+                <div  onclick="getBranchAll(1)" class="btnBranchall btnBranch rounded bg-pt2-purple p-4 text-nowrap m-1"><i class="fa-solid fa-border-all"></i> ทุกสาขา</div>
             
                 @foreach(@$dataBranch as $value)
-                <div class="bg-white rounded pt-1 px-4 pb-4 m-1 btnBranch" style="min-width: 250px;  cursor:pointer;"  onclick="searchBranch('{{ $value->employeeName }}')">
+                <div class="bg-white rounded pt-1 px-4 pb-4 m-1 btnBranch activeBranch" id="cardAT{{ $value->employeeName }}" style="min-width: 250px; cursor:pointer;"  onclick="searchBranch('{{ $value->employeeName }}')">
                     <div class="row">
                         <div class="col">
-                            <img src="{{asset('dist/img/building.png')}}" class="p-1 w-75 rounded" alt="">
+                            <img src="{{asset('dist/img/company.png')}}" class="bg-light p-1 w-50 rounded" alt="">
                         </div>
                         <div class="col text-right">
-                           <span class="badge text-bg-success opacity-75">Success</span>
+                           <span class="badge text-bg-warning opacity-75">Success</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 pt-2">
                             <h5>
-                                <i class="fa-solid fa-location-dot text-secondary"></i> สาขา {{$value->nameThai}}
+                                <i class="fa-solid fa-location-dot"></i> สาขา {{$value->nameThai}}
                             </h5>
                         </div>
                         <div class="col-12">
                             <h6 class="text-secondary">
-                               ( {{$value->employeeName}} )
+                                ....หัวหน้า....
                             </h6>
                         </div>
                     </div>

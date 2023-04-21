@@ -43,11 +43,11 @@
         transition : 0.3s;
     }
 </style>
+    
+    <!-- hidden input -->
+    <input type="hidden" name="position" id="position" value="{{Auth::user()->position}}">
+    <input type="hidden" name="Branch" id="Branch" value="{{Auth::user()->Branch}}">
 
-@php
-  $test  = App\Models\tbl_customer::whereRaw('minimumPayout <= TotalPay')->where('status','!=','STS-005')->count();
-@endphp
-        {{@$test}}
   <div class="row">
     <div class="col">
       @include('data_Customer.section-card.card-Branch')

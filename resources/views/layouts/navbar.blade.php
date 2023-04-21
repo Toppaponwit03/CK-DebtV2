@@ -178,7 +178,7 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                     <button class="dropdown-item" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> อัพเดทการชำระเงิน</button>
-                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{2}}">
+                                <a class="dropdown-item" href ="{{ route('Cus.index') }}?type={{2}}">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     กำหนดสิทธิ์การใช้งาน
                                 </a>

@@ -5,6 +5,7 @@ use App\Http\Controllers\customercontroller;
 use App\Http\Controllers\CusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\headcontroller;
+use App\Http\Controllers\StaticController;
 
 
 
@@ -33,16 +34,13 @@ Route::middleware([
 ])->group(function () {
 
 
- // leader
 Route::resource('Cus',CusController::class);
-Route::post('Cus/search/data', [CusController::class, 'search'])->name('Cus.search');
-Route::get('Cus/Cusleadertbl2/data/', [CusController::class, 'searchTBL2'])->name('Cus.Search_Cusleadertbl2');
 Route::get('Cus/dashboard/data', [CusController::class, 'dashboard'])->name('Cus.dashboard');
-
-
 Route::post('Cus/search/getData', [CusController::class, 'getData'])->name('Cus.getData');
 Route::get('Cus/export/',[CusController::class, 'export'])->name('export.excel');
 Route::post('Cus/import/',[CusController::class, 'import'])->name('import.excel');
+
+Route::resource('static',StaticController::class);
  
 });
 

@@ -3,8 +3,8 @@
     <div class="card mb-4 border border-white shadow-sm">
         <div class="p-4 ">
         <h5>ตารางแสดงข้อมูลลูกหนี้</h5>
-          <div class="table-responsive pb-4 scroll-slide" style="height: 700px;">
-            <table id="myTable" class="display" style="width: 100%;">
+          <div class="table-responsive pb-4 scroll-slide" style="height: 100%;">
+            <table id="myTable" class="display text-nowrap" style="width: 100%;">
               <thead class="text-nowrap">
                 <tr>
                   <form name="formsearch" id="formsearch" action="#" method="post" enctype="multipart/form-data">
@@ -104,7 +104,7 @@
                           </th>
                           <th scope="col">ชื่อ / นามสกุล </th>
                           <th scope="col">
-                              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                              <a class="nav-link dropdown-toggle employeeDropdown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                               ทีมตามใน </a>
                               <ul class="dropdown-menu dropdown-menu-light bg-white h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                                 <li>
@@ -116,7 +116,7 @@
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
                                       <div class="form-check"style="font-size:1rem;">
-                                        <input class="form-check-input checkteamA" type="checkbox" value="{{$emplistsA->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsA->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
+                                        <input class="form-check-input checkteamA" type="checkbox" value="{{$emplistsA->employeeName}}" id = "{{$emplistsA->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsA->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                         {{$emplistsA->nameThai}} ({{$emplistsA->employeeName}}) </label>
                                       </div>
                                     </div>
@@ -136,7 +136,7 @@
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
                                       <div class="form-check"style="font-size:1rem;">
-                                        <input class="form-check-input checkteamB" type="checkbox" value="{{$emplistsB->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsB->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
+                                        <input class="form-check-input checkteamB" type="checkbox" value="{{$emplistsB->employeeName}}" id="{{$emplistsB->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsB->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                         {{$emplistsB->nameThai}} ({{$emplistsB->employeeName}}) </label>
                                       </div>
                                     </div>
@@ -156,7 +156,7 @@
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
                                       <div class="form-check"style="font-size:1rem;">
-                                        <input class="form-check-input checkteamC" type="checkbox" value="{{$emplistsC->employeeName}}"  name = "traceEmployee[]"  @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsC->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
+                                        <input class="form-check-input checkteamC" type="checkbox" value="{{$emplistsC->employeeName}}" id="{{$emplistsC->employeeName}}"  name = "traceEmployee[]"  @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsC->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                         {{$emplistsC->nameThai}} ({{$emplistsC->employeeName}}) </label>
                                       </div>
                                     </div>

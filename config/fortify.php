@@ -63,22 +63,7 @@ return [
 
     //'home' => RouteServiceProvider::HOME,
     'home' => function(){
-        //if you want to go to a specific route
-        //or if you have a bunch of redirection options
-        if (Auth::user()->position == 'headA' || Auth::user()->position == 'headB') {
-           return route('data_head.index','type=0');
-        }
-        else if(Auth::user()->position == 'admin' ){
-            if(Auth::user()->Branch == 'Jane'){
-                return route('data_leader.dashboard_leader');
-            }else {
-                return route('Cus.index','type=1');
-            }
-            
-        }
-        else{
-           return route('data_User.index','type=1');
-        }
+        return route('Cus.index','type=1');
     },
 
     /*
