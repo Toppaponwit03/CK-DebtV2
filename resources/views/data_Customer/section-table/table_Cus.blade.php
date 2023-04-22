@@ -3,7 +3,7 @@
     <div class="card mb-4 border border-white shadow-sm">
         <div class="p-4 ">
         <h5>ตารางแสดงข้อมูลลูกหนี้</h5>
-          <div class="table-responsive pb-4 scroll-slide" style="height: 100%;">
+          <div class="table-responsive pb-4 scroll-slide" style="height: 900px;">
             <table id="myTable" class="display text-nowrap" style="width: 100%;">
               <thead class="text-nowrap">
                 <tr>

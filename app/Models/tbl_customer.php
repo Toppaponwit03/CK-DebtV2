@@ -15,7 +15,8 @@ class tbl_customer extends Model
                            'realDebt','nextDebt','groupDebt','fromDebt','toDebt','arrears','lastPaymentdate','lastPayment',
                            'finePay','totalPayment','balanceDebt','minimumInstallment','minimumPayout','contractGrade','status',
                            'callDate','quantitycallDate','callDateOut','quantitycallDateOut','traceTeamOut','paymentDate','fieldDay',
-                           'powerApp','note','actionPlan','paymentDateQuantity','teamGroup','typeLoan','Recorder','Schema'];
+                           'powerApp','note','actionPlan','paymentDateQuantity','teamGroup','typeLoan','Recorder','Schema','TotalPay'];
+
     public function CustoCustag(){
         return $this->hasmany(tbl_custag::class,'ContractID','contractNumber')->orderby('date_Tag','DESC');
     }
@@ -27,6 +28,9 @@ class tbl_customer extends Model
     public function CustoStatus(){
         return $this->hasOne(tbl_statustype::class,'Status_code','status');
     }
+
+
+
 
 
 }

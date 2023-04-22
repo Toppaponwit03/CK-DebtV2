@@ -9,9 +9,12 @@ use App\Models\tbl_traceEmployee;
 class StaticController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->type == 1){
+            $users = tbl_user::get();
+            return view('data_User.view',compact('users'));
+          }
     }
 
     public function edit(Request $request,$id)

@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+@include('data_User.script')
 <div class="row">
     <div class="col">
         <div class="card p-2">

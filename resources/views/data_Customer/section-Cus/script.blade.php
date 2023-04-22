@@ -10,9 +10,10 @@
             Swal.fire({
                 icon: 'success',
                 title: 'เพิ่มการติดตามเรียบร้อย',
-                showConfirmButton: false,
+                text: 'สามารถดูข้อมูลการติดตามได้ในเมนู "รายละเอียดการติดตาม"',
+                showConfirmButton: true,
                 showCancelButton: false,
-                timer: 2000    
+                timer: 5000,    
                 })
 
         },

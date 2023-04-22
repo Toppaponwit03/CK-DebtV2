@@ -30,15 +30,22 @@
                 
                 Swal.fire({
                 icon: 'success',
-                title: 'อัพเดทข้อมูลเรียบร้อย',
-                showConfirmButton: false,
-                showCancelButton: false,
-                timer: 2000    
+                text: 'อัพเดทข้อมูลเรียบร้อย',
+                showConfirmButton: true,
+                showCancelButton: false,  
                 })
                 $("#modal-sm").modal('toggle');
-
             },
-            error : ()=>{
+            error : (err)=>{
+              console.log(err);
+              Swal.fire({
+                icon: 'error',
+                title : `ERROR ! ${err.status}`,
+                text: 'อัพเดทข้อมูลไม่สำเร็จ',
+                showConfirmButton: true,
+                showCancelButton: false, 
+                })
+                $("#modal-sm").modal('toggle');
 
             }
         })

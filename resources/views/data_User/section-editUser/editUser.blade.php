@@ -1,35 +1,39 @@
-
-<form action="" autocomplete="off">
+@include('data_User.script')
+<form autocomplete="off" id="formUser">
+    @csrf
     <h5><b>แก้ไขข้อมูลผู้ใช้งาน</b></h5>
     <hr>
 
+    <!-- hidden input -->
+    <input type="hidden" value="{{ $user->id }}" id="id" name="id">
+
     <div class="row g-2 align-items-center mb-1">
         <div class="col-3 text-end">
-            <label for="inputPassword6" class="col-form-label">ชื่อในระบบ :</label>
+            <label class="col-form-label">ชื่อในระบบ :</label>
         </div>
         <div class="col-6">
-            <input type="text" id="inputPassword6" value="{{ $user->name }}" class="form-control" aria-describedby="passwordHelpInline">
+            <input type="text"  value="{{ $user->name }}" class="form-control" >
         </div>
     </div>
     <div class="row g-2 align-items-center mb-1">
         <div class="col-3 text-end">
-            <label for="inputPassword6" class="col-form-label">ชื่อผู้ใช้งาน :</label>
+            <label class="col-form-label">ชื่อผู้ใช้งาน :</label>
         </div>
         <div class="col-6">
-            <input type="text" id="inputPassword6" value="{{ $user->email }}" class="form-control" aria-describedby="passwordHelpInline">
+            <input type="text"  value="{{ $user->email }}" class="form-control">
         </div>
     </div>
     <div class="row g-2 align-items-center mb-1">
         <div class="col-3 text-end">
-            <label for="inputPassword6" class="col-form-label">รหัสผ่าน :</label>
+            <label class="col-form-label">รหัสผ่าน :</label>
         </div>
         <div class="col-6">
-            <input type="text" id="inputPassword6" value="{{ $user->password_val }}" class="form-control" aria-describedby="passwordHelpInline">
+            <input type="text"  value="{{ $user->password_val }}" class="form-control" >
         </div>
     </div>
     <div class="row g-2 align-items-center mb-1">
         <div class="col-3 text-end">
-            <label for="inputPassword6" class="col-form-label">สาขา :</label>
+            <label class="col-form-label">สาขา :</label>
         </div>
         <div class="col-6">
             <select class="form-select" name="" id="">
@@ -55,7 +59,7 @@
 
     <div class="row">
         <div class="col text-end">
-            <button type="button" class="btn btn-primary">อัพเดท</button>
+            <button type="button" class="btn btn-primary updateUser" id="updateUser">อัพเดท</button>
             <button type="button" class="btn  btn-secondary " aria-label="Close">ปิด</button>
         </div>
     </div>

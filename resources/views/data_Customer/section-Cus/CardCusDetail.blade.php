@@ -79,7 +79,7 @@
 
         <div class="row text-right mt-2 bg-light">
         <div class="col-sm-12 text-center">
-            <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary"  style = "border-radius: 12px; ">อัพเดท</button>
+            <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary"  style = "border-radius: 12px; ">อัพเดทสถานะ</button>
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
         </div> 
         </div>

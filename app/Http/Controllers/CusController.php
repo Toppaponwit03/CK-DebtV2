@@ -73,10 +73,6 @@ class CusController extends Controller
       if($type == 1){
         return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists'));
       }
-      elseif($type == 2){
-        $users = tbl_user::get();
-        return view('data_User.section-privilege.view',compact('users'));
-      }
 
   
     }
@@ -198,24 +194,59 @@ class CusController extends Controller
         return response()->view('data_Customer.section-Cus.CardCusDetail',compact('data','statuslist'));
       }
       else if($request->type == 2){ // อัพเดทการจ่าย
+
         $subdate = substr(date('Y-m-d'), 0, 7) ;
         $datenow = date('Y-m-d');
         //
-        $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
-        (select DISTINCT PSFHP.ARMAST.CONTNO,
-        PSFHP.CHQTRAN.TMBILDT ,
-        PSFHP.ARMAST.NPROFIT as TOTALC,
-        PSFHP.CHQTRAN.PAYFOR,
-        PSFHP.CHQTRAN.DEBT_BALANCE
-        from PSFHP.ARMAST 
-        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
-        where PSFHP.CHQTRAN.TMBILDT < '${datenow}'   
-        ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
-        INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
-        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
-        where PSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
-        group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
-        ORDER BY OD.TMBILDT ASC");
+        // $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+        // (select DISTINCT PSFHP.ARMAST.CONTNO,
+        // PSFHP.CHQTRAN.TMBILDT ,
+        // PSFHP.ARMAST.NPROFIT as TOTALC,
+        // PSFHP.CHQTRAN.PAYFOR,
+        // PSFHP.CHQTRAN.DEBT_BALANCE
+        // from PSFHP.ARMAST 
+        // left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
+        // where PSFHP.CHQTRAN.TMBILDT < '${datenow}'   
+        // ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
+        // INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
+        // left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
+        // where PSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
+        // group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
+        // ORDER BY OD.TMBILDT ASC ");
+
+      $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+      (select DISTINCT PSFHP.ARMAST.CONTNO,
+      PSFHP.CHQTRAN.TMBILDT ,
+      PSFHP.ARMAST.NPROFIT as TOTALC,
+      PSFHP.CHQTRAN.PAYFOR,
+      PSFHP.CHQTRAN.DEBT_BALANCE
+      from PSFHP.ARMAST 
+      left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
+      where PSFHP.CHQTRAN.TMBILDT < '${datenow}' AND PSFHP.CHQTRAN.TMBILDT > '${subdate}-07'
+      ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
+      INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
+      left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
+      where PSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
+      group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
+      UNION
+      SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+      (select DISTINCT RSFHP.ARMAST.CONTNO,
+      RSFHP.CHQTRAN.TMBILDT ,
+      RSFHP.ARMAST.NPROFIT as TOTALC,
+      RSFHP.CHQTRAN.PAYFOR,
+      RSFHP.CHQTRAN.DEBT_BALANCE
+      from RSFHP.ARMAST 
+      left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO  
+      where RSFHP.CHQTRAN.TMBILDT < '${datenow}' AND RSFHP.CHQTRAN.TMBILDT > '${subdate}-07'  
+      ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD 
+      INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST  
+      left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO 
+      where RSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
+      group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
+
+
+
+
   
         foreach ($dataPay as $key => $value){
           tbl_customer::where('contractNumber',trim($value->CONTNO))
@@ -224,12 +255,15 @@ class CusController extends Controller
               'balanceDebt' => $value->DEBT_BALANCE
           ]);
         }
-  
-        tbl_customer::whereRaw('minimumPayout <= TotalPay and minimumPayout <= arrears')
+
+        tbl_customer::whereRaw('TotalPay >= minimumPayout')
         ->where('status','!=','STS-005')
         ->update([
             'status' => 'STS-005'
         ]);
+  
+        
+
   
         return 200;
 
@@ -304,7 +338,7 @@ class CusController extends Controller
           /*-- ตรวจสอบคอลัมน์ รวม ค่าว่าเป็น 0 หรือไม่ --*/ 
 
           $count[$i] = tbl_customer::where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
-          $pass[$i] =  tbl_customer::where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+          $pass[$i] =  tbl_customer::where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
           if($count[$i]==0 || $pass[$i]==0)  {
             $count[$i] = $count[$i];
             $pass[$i] = '-';
@@ -315,7 +349,7 @@ class CusController extends Controller
   
           /*-- ตรวจสอบคอลัมน์ Befor ค่าว่าเป็น 0 หรือไม่ --*/ 
           $countBefor[$i] = tbl_customer::where('groupDebt','=','1.Befor')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
-          $passBefor[$i] =  tbl_customer::where('groupDebt','=','1.Befor')->where('status','=','ผ่าน')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
+          $passBefor[$i] =  tbl_customer::where('groupDebt','=','1.Befor')->where('status','=','STS-005')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
           if($countBefor[$i]==0 || $passBefor[$i]==0)  {
             $countBefor[$i] =  $countBefor[$i];
             $passBefor[$i] =  '-';
@@ -325,7 +359,7 @@ class CusController extends Controller
           }
           /*-- ตรวจสอบคอลัมน์ Normal ค่าว่าเป็น 0 หรือไม่ --*/ 
           $countNomal[$i]= tbl_customer::where('groupDebt','=','2.Nomal')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
-          $passNomal[$i] = tbl_customer::where('groupDebt','=','2.Nomal')->where('status','=','ผ่าน')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
+          $passNomal[$i] = tbl_customer::where('groupDebt','=','2.Nomal')->where('status','=','STS-005')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
           if($countNomal[$i]==0 || $passNomal[$i] ==0)  {
             $countNomal[$i]=  $countNomal[$i];
             $passNomal[$i] = '-';
@@ -335,7 +369,7 @@ class CusController extends Controller
           }
           /*-- ตรวจสอบคอลัมน์ Past1 ค่าว่าเป็น 0 หรือไม่ --*/ 
           $countPast1[$i]= tbl_customer::where('groupDebt','=','3.Past 1')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
-          $passPast1[$i] = tbl_customer::where('groupDebt','=','3.Past 1')->where('status','=','ผ่าน')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
+          $passPast1[$i] = tbl_customer::where('groupDebt','=','3.Past 1')->where('status','=','STS-005')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
           if($countPast1[$i]==0 || $passPast1[$i] ==0)  {
             $countPast1[$i]=  $countPast1[$i];
             $passPast1[$i] = '-';
@@ -345,7 +379,7 @@ class CusController extends Controller
           }
           /*-- ตรวจสอบคอลัมน์ Past2 ค่าว่าเป็น 0 หรือไม่ --*/ 
           $countPast2[$i]= tbl_customer::where('groupDebt','=','4.Past 2')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
-          $passPast2[$i] = tbl_customer::where('groupDebt','=','4.Past 2')->where('status','=','ผ่าน')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
+          $passPast2[$i] = tbl_customer::where('groupDebt','=','4.Past 2')->where('status','=','STS-005')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
           if($countPast2[$i]==0 || $passPast2[$i] ==0)  {
             $countPast2[$i]=  $countPast2[$i];
             $passPast2[$i] = '-';
@@ -355,7 +389,7 @@ class CusController extends Controller
           }
           /*-- ตรวจสอบคอลัมน์ Past3 ค่าว่าเป็น 0 หรือไม่ --*/ 
           $countPast3[$i]= tbl_customer::where('groupDebt','=','5.Past 3')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
-          $passPast3[$i] = tbl_customer::where('groupDebt','=','5.Past 3')->where('status','=','ผ่าน')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
+          $passPast3[$i] = tbl_customer::where('groupDebt','=','5.Past 3')->where('status','=','STS-005')->where('traceEmployee','=',$traceEmployee[$i]->traceEmployee)->where('typeLoan','=',$typeLoan)->count();
           if($countPast3[$i]==0 || $passPast3[$i] ==0)  {
             $countPast3[$i]=  $countPast3[$i];
             $passPast3[$i] =  '-';
@@ -436,7 +470,7 @@ class CusController extends Controller
          
           /*-- ตรวจสอบคอลัมน์ เปอร์เซ็นแถว รวม ค่าว่าเป็น 0 หรือไม่ --*/ 
             $total[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count();
-            $totalpass[$i] = tbl_customer:: where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan) ->where('status','=','ผ่าน')->count();
+            $totalpass[$i] = tbl_customer:: where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan) ->where('status','=','STS-005')->count();
             
             if($total[$i]==0 || $totalpass[$i] ==0)  {
               $total[$i]=  $total[$i];
@@ -447,7 +481,7 @@ class CusController extends Controller
             }
             /*-- ตรวจสอบคอลัมน์ เปอร์เซ็นแถว Befor ค่าว่าเป็น 0 หรือไม่ --*/ 
            $totalBefor[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','1.Befor')->where('typeLoan','=',$typeLoan)->count();
-           $totalBeforpass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','1.Befor')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+           $totalBeforpass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','1.Befor')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
            if($totalBefor[$i]==0 || $totalBeforpass[$i] ==0)  {
             $totalBeforpass[$i] =   $totalBeforpass[$i];
             $totalBefor[$i] =  '-';
@@ -457,7 +491,7 @@ class CusController extends Controller
           }
             /*-- ตรวจสอบคอลัมน์ เปอร์เซ็นแถว Nomal ค่าว่าเป็น 0 หรือไม่ --*/ 
            $totalNomal[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','2.Nomal')->where('typeLoan','=',$typeLoan)->count();
-           $totalNomalPass[$i] = tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','2.Nomal')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+           $totalNomalPass[$i] = tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','2.Nomal')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
            if($totalNomal[$i]==0 || $totalNomalPass[$i] ==0)  {
             $totalNomal[$i] = $totalNomal[$i];
             $totalNomalPass[$i] = '-';
@@ -467,7 +501,7 @@ class CusController extends Controller
           }
            /*-- ตรวจสอบคอลัมน์ เปอร์เซ็นแถว Past1 ค่าว่าเป็น 0 หรือไม่ --*/ 
          $totalPast1[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1')->where('typeLoan','=',$typeLoan)->count();
-         $totalPast1Pass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1') ->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+         $totalPast1Pass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1') ->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
          if($totalPast1[$i]==0 || $totalPast1Pass[$i] ==0)  {
           $totalPast1[$i] =  $totalPast1[$i] ;
           $totalPast1Pass[$i] = '-';
@@ -477,7 +511,7 @@ class CusController extends Controller
         }   
           /*-- ตรวจสอบคอลัมน์ เปอร์เซ็นแถว Past2 ค่าว่าเป็น 0 หรือไม่ --*/ 
          $totalPast2[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2')->where('typeLoan','=',$typeLoan)->count();
-         $totalPast2Pass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2') ->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+         $totalPast2Pass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2') ->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
          if($totalPast2[$i]==0 || $totalPast2Pass[$i] ==0)  {
           $totalPast2[$i] = $totalPast2[$i];
           $totalPast2Pass[$i] = '-';
@@ -488,7 +522,7 @@ class CusController extends Controller
           
           /*-- ตรวจสอบคอลัมน์ เปอร์เซ็นแถว Past3 ค่าว่าเป็น 0 หรือไม่ --*/ 
          $totalPast3[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('typeLoan','=',$typeLoan)->count();
-         $totalPast3Pass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3') ->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+         $totalPast3Pass[$i] = tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3') ->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
          if($totalPast3[$i]==0 || $totalPast3Pass[$i] ==0)  {
           $totalPast3Pass[$i] =  '-';
           $totalPast3[$i] =  $totalPast3[$i];
@@ -504,9 +538,9 @@ class CusController extends Controller
          tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('typeLoan','=',$typeLoan)->count() ;
 
           $totalfollowCusPass[$i] = 
-         tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count() +
-         tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count() +
-         tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count() ;
+         tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count() +
+         tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count() +
+         tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count() ;
 
          if($totalfollowCus[$i]==0 || $totalfollowCusPass[$i] ==0)  {
           $totalfollowCusPass[$i] = '-';
@@ -517,9 +551,9 @@ class CusController extends Controller
         }  
          /*-- ตรวจสอบคอลัมน์ ไม่ผ่าน ค่าว่าเป็น 0 หรือไม่ --*/
          $totalfollowCusnotPass[$i] = 
-        tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1')->where('status','=','ไม่ผ่าน')->where('typeLoan','=',$typeLoan)->count() +
-        tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2')->where('status','=','ไม่ผ่าน')->where('typeLoan','=',$typeLoan)->count() +
-        tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('status','=','ไม่ผ่าน')->where('typeLoan','=',$typeLoan)->count() ;
+        tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1')->where('status','=','STS-010')->where('typeLoan','=',$typeLoan)->count() +
+        tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2')->where('status','=','STS-010')->where('typeLoan','=',$typeLoan)->count() +
+        tbl_customer:: where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('status','=','STS-010')->where('typeLoan','=',$typeLoan)->count() ;
           
         if($totalfollowCusnotPass[$i]==0)  {
           $totalfollowCusnotPass[$i] = '-';
@@ -569,23 +603,23 @@ class CusController extends Controller
         
                     //chart
                     $beforAll =     tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','1.Befor')->where('typeLoan','=',$typeLoan)->count();
-                    $befor =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','1.Befor')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $befor =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','1.Befor')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $beforNotpass = $beforAll - $befor;
                   
                     $nomalAll =     tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','2.Nomal')->where('typeLoan','=',$typeLoan)->count();
-                    $nomal =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','2.Nomal')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $nomal =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','2.Nomal')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $nomalNotpass = $nomalAll - $nomal ; 
                   
                     $past1All =     tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','3.Past 1')->where('typeLoan','=',$typeLoan)->count();
-                    $past1 =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','3.Past 1')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $past1 =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','3.Past 1')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $past1Notpass =  $past1All - $past1 ; 
                   
                     $past2All =     tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','4.Past 2')->where('typeLoan','=',$typeLoan)->count();
-                    $past2 =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','4.Past 2')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $past2 =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','4.Past 2')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $past2Notpass =  $past2All - $past2 ; 
                   
                     $past3All =     tbl_customer::where('teamGroup','=',$getnum)->where('groupDebt','=','5.Past 3')->where('typeLoan','=',$typeLoan)->count();
-                    $past3 =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','5.Past 3')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $past3 =        tbl_customer:: where('teamGroup','=',$getnum) ->where('groupDebt','=','5.Past 3')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $past3Notpass =  $past3All - $past3 ; 
                     $emplist = tbl_traceEmployee::whereIn('teamGroup',['1','2','3'])->orderBy('teamGroup', 'ASC')->get();
 
@@ -596,8 +630,8 @@ class CusController extends Controller
                     //Calculate percent
 
                      $totalCus = tbl_customer::where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมด
-                     $totalCusPass = tbl_customer::where('status','=','ผ่าน')->where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดที่ผ่าน
-                     $totalCusNotPass = tbl_customer::whereNot('status','=','ผ่าน')->where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดยกเว้นคนที่ผ่าน
+                     $totalCusPass = tbl_customer::where('status','=','STS-005')->where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดที่ผ่าน
+                     $totalCusNotPass = tbl_customer::whereNot('status','=','STS-005')->where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดยกเว้นคนที่ผ่าน
                      $totalpowerApp = tbl_customer::where('powerApp','!=','')->where('teamGroup','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); //จำนวนการลง power app
                         if($totalCus==0 || $totalpowerApp==0){
                           $percenfiled = 0;
@@ -622,7 +656,7 @@ class CusController extends Controller
       else{
         if($typeLoan == 1){
             $totalKAIPLM =  tbl_customer::where('traceEmployee','=',$getnum)->where('typeloan','=',$typeLoan)->count();
-            $totalKAIPassPLM =  tbl_customer::where('traceEmployee','=',$getnum)->where('typeloan','=',$typeLoan)->where('status','=','ผ่าน')->count();
+            $totalKAIPassPLM =  tbl_customer::where('traceEmployee','=',$getnum)->where('typeloan','=',$typeLoan)->where('status','=','STS-005')->count();
             
             if($totalKAIPassPLM == 0 || $totalKAIPLM == 0){
               $totalPercenKAIPLM =0;
@@ -636,8 +670,8 @@ class CusController extends Controller
                     //Calculate percent
 
                     $totalCus = tbl_customer::where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมด
-                    $totalCusPass = tbl_customer::where('status','=','ผ่าน')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดที่ผ่าน
-                    $totalCusNotPass = tbl_customer::whereNot('status','=','ผ่าน')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดยกเว้นคนที่ผ่าน
+                    $totalCusPass = tbl_customer::where('status','=','STS-005')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดที่ผ่าน
+                    $totalCusNotPass = tbl_customer::whereNot('status','=','STS-005')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดยกเว้นคนที่ผ่าน
                     $totalpowerApp = tbl_customer::where('powerApp','!=','')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); //จำนวนการลง power app
                        if($totalCus==0 || $totalpowerApp==0){
                          $percenfiled = 0;
@@ -656,23 +690,23 @@ class CusController extends Controller
                        }
                          //chart
                          $beforAll =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','1.Befor')->where('typeLoan','=',$typeLoan)->count();
-                         $befor =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','1.Befor')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                         $befor =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','1.Befor')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                          $beforNotpass = $beforAll - $befor;
                        
                          $nomalAll =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','2.Nomal')->where('typeLoan','=',$typeLoan)->count();
-                         $nomal =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','2.Nomal')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                         $nomal =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','2.Nomal')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                          $nomalNotpass = $nomalAll - $nomal ; 
                        
                          $past1All =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','3.Past 1')->where('typeLoan','=',$typeLoan)->count();
-                         $past1 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','3.Past 1')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                         $past1 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','3.Past 1')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                          $past1Notpass =  $past1All - $past1 ; 
                        
                          $past2All =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','4.Past 2')->where('typeLoan','=',$typeLoan)->count();
-                         $past2 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','4.Past 2')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                         $past2 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','4.Past 2')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                          $past2Notpass =  $past2All - $past2 ; 
                        
                          $past3All =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','5.Past 3')->where('typeLoan','=',$typeLoan)->count();
-                         $past3 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','5.Past 3')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                         $past3 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','5.Past 3')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                          $past3Notpass =  $past3All - $past3 ; 
       
             $emplist = tbl_traceEmployee::where('teamGroup','=','1')->orWhere('teamGroup','=','2')->orwhere('teamGroup','=','2')->orWhere('employeeName','=','KAI')->orderBy('teamGroup', 'ASC')->get();
@@ -686,7 +720,7 @@ class CusController extends Controller
         }
         else if($typeLoan == 2){
             $totalKAI50=  tbl_customer::where('traceEmployee','=',$getnum)->where('typeloan','=',$typeLoan)->count();
-            $totalKAIPass50 =  tbl_customer::where('traceEmployee','=',$getnum)->where('status','=','ผ่าน')->count();
+            $totalKAIPass50 =  tbl_customer::where('traceEmployee','=',$getnum)->where('status','=','STS-005')->count();
             $totalPercenKAI50 =  number_format((($totalKAIPass50+0.0001) / ($totalKAI50+0.0001))*100,2);
             $column = '50-30';
             
@@ -695,8 +729,8 @@ class CusController extends Controller
                     //Calculate percent
 
                     $totalCus = tbl_customer::where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมด
-                    $totalCusPass = tbl_customer::where('status','=','ผ่าน')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดที่ผ่าน
-                    $totalCusNotPass = tbl_customer::whereNot('status','=','ผ่าน')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดยกเว้นคนที่ผ่าน
+                    $totalCusPass = tbl_customer::where('status','=','STS-005')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดที่ผ่าน
+                    $totalCusNotPass = tbl_customer::whereNot('status','=','STS-005')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); // ลูกค้าทั้งหมดยกเว้นคนที่ผ่าน
                     $totalpowerApp = tbl_customer::where('powerApp','!=','')->where('traceEmployee','=',$getnum)->where('typeLoan','=',$typeLoan)->count(); //จำนวนการลง power app
                        if($totalCus==0 || $totalpowerApp==0){
                          $percenfiled = 0;
@@ -716,23 +750,23 @@ class CusController extends Controller
 
                      //chart
                     $beforAll =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','1.Befor')->where('typeLoan','=',$typeLoan)->count();
-                    $befor =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','1.Befor')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $befor =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','1.Befor')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $beforNotpass = $beforAll - $befor;
                   
                     $nomalAll =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','2.Nomal')->where('typeLoan','=',$typeLoan)->count();
-                    $nomal =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','2.Nomal')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $nomal =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','2.Nomal')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $nomalNotpass = $nomalAll - $nomal ; 
                   
                     $past1All =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','3.Past 1')->where('typeLoan','=',$typeLoan)->count();
-                    $past1 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','3.Past 1')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $past1 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','3.Past 1')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $past1Notpass =  $past1All - $past1 ; 
                   
                     $past2All =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','4.Past 2')->where('typeLoan','=',$typeLoan)->count();
-                    $past2 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','4.Past 2')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $past2 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','4.Past 2')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $past2Notpass =  $past2All - $past2 ; 
                   
                     $past3All =     tbl_customer::where('traceEmployee','=',$getnum)->where('groupDebt','=','5.Past 3')->where('typeLoan','=',$typeLoan)->count();
-                    $past3 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','5.Past 3')->where('status','=','ผ่าน')->where('typeLoan','=',$typeLoan)->count();
+                    $past3 =        tbl_customer:: where('traceEmployee','=',$getnum) ->where('groupDebt','=','5.Past 3')->where('status','=','STS-005')->where('typeLoan','=',$typeLoan)->count();
                     $past3Notpass =  $past3All - $past3 ; 
       
                   $countupdatetoday = count(tbl_customer::whereDate('updated_at','=',Carbon::today())->orderBy('updated_at', 'ASC')->get());
