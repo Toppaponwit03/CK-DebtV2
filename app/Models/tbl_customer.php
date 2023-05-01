@@ -18,7 +18,7 @@ class tbl_customer extends Model
                            'powerApp','note','actionPlan','paymentDateQuantity','teamGroup','typeLoan','Recorder','Schema','TotalPay'];
 
     public function CustoCustag(){
-        return $this->hasmany(tbl_custag::class,'ContractID','contractNumber')->orderby('date_Tag','DESC');
+        return $this->hasmany(tbl_custag::class,'ContractID','contractNumber')->orderby('id','DESC');
     }
 
     public function CustoCustag2(){

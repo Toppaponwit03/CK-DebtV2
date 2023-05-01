@@ -1,11 +1,16 @@
 <script>
    $('#btn-addTag').click(()=>{
+    $('.btn-addTag').prop('disabled',true);
+    $('.loader').addClass('spinner-border spinner-border-sm');
     $.ajax({
         url: "{{ route('Cus.store') }}",
         type:"post",
         data : $('#createCusTag').serialize(),
         success : (response)=> {
             $('#CusTagDetails').html(response);
+            $('.btn-addTag').prop('disabled',false);
+            $('.loader').removeClass('spinner-border spinner-border-sm');
+            $('#createCusTag textarea,input[type=date]').val('');
 
             Swal.fire({
                 icon: 'success',
@@ -18,6 +23,8 @@
 
         },
         error : (err)=> {
+            $('.btn-addTag').prop('disabled',false);
+            $('.loader').removeClass('spinner-border spinner-border-sm');
             Swal.fire({
                 icon: 'error',
                 title : `ERROR ${err.status}`,
@@ -47,6 +54,7 @@
                 _token :_token
             },
             success : (response)=>{
+                console.log(response)
                 $('#cardCus').html(response);   
 
                 Swal.fire({

@@ -46,7 +46,7 @@
 
     <!-- hidden input -->
     <input type="hidden" name="position" id="position" value="{{Auth::user()->position}}">
-    <input type="hidden" name="Branch" id="Branch" value="{{Auth::user()->Branch}}">
+    <input type="hidden" name="Branch" id="Branch" value="{{ @Auth::user()->UserToPrivilege->branch }}">
 
   <div class="row">
     <div class="col">

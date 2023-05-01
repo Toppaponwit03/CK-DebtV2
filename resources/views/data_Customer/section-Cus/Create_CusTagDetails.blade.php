@@ -1,4 +1,4 @@
-@include('data_Customer.section-Cus.script')
+
 <div class="alert alert-success" id="addSuccess" role="alert" style="display:none;">
   เพิ่มข้อมูลการติดตามเรียบร้อย
 </div>
@@ -39,9 +39,11 @@
             <textarea class="form-control" id="actionPlan" name = "actionPlan"  placeholder="Action Plane"  style="height: 100px;"></textarea>
             </div>
             </div>  
-            <div class="row mt-2 px-2 text-right bg-light">
+            <div class="row mt-2 px-2 text-right">
                 <div class="col-sm">
-                    <button type="button" id="btn-addTag" name="btn-addTag" class="btn btn-primary"  style = "border-radius: 12px; ">เพิ่มการติดตาม</button>
+                    <button type="button" id="btn-addTag" name="btn-addTag" class="btn btn-primary btn-addTag">
+                        <span class="loader"></span> เพิ่มการติดตาม
+                    </button>
                 </div> 
             </div>
         </div>

@@ -1,3 +1,4 @@
+@include('data_Customer.section-Cus.script')
 <div class="row p-2">
   <div class="col text-right">
     <button type="button" class="btn-close" data-bs-dismiss="modal" style="font-size: 15pt;margin-bottom: -25pt"> </button>
@@ -9,6 +10,12 @@
       <div id="cardCus">
         @include('data_Customer.section-Cus.CardCusDetail')
       </div>
+      <div class="row text-right mt-2 bg-light">
+            <div class="col-sm-12 text-center">
+                <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary"  style = "border-radius: 12px; ">อัพเดทสถานะ</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
+            </div> 
+        </div>
     </div>
   
     <div class="col p-2"> <!-- right -->

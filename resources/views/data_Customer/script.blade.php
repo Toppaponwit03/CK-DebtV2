@@ -1,18 +1,6 @@
 <script>    
   $(document).ready( function () {
-
-    let position = $('#position').val();
-    let branch = $('#Branch').val();
-
-    if(position == 'admin'){
       getBranchAll(1);
-    }
-    else{
-      searchBranch(branch);
-    }
-
-
-
   });
 </script>
 
@@ -100,10 +88,26 @@
 <script>
     getBranchAll = (type) => {
 
-      $('.employeeDropdown').prop('disabled',false).addClass('dropdown-toggle');
+     let position = $('#position').val();
+     let Branch =  $('#Branch').val();
+       Branchre = Branch.replace(/,/g,',#')
+       BranchATre = Branch.replace(/,/g,',#cardAT')
+
+     if(position == 'admin')
+     {
+      $(`#cardAT${BranchATre}`).show();
+       $('.employeeDropdown').prop('disabled',false).addClass('dropdown-toggle');
+      //  $(`input[type=checkbox]`).prop('checked',false);
+      //  $(`#${Branchre}`).prop('checked',true);
+       $(`.activeBranch`).removeClass('bg-pt-blue').addClass('bg-white');
+     }
+     else{
+      $(`#cardAT${BranchATre}`).show();
+      $('.employeeDropdown').prop('disabled',true).removeClass('dropdown-toggle');
       $(`input[type=checkbox]`).prop('checked',false);
+      $(`#${Branchre}`).prop('checked',true);
       $(`.activeBranch`).removeClass('bg-pt-blue').addClass('bg-white');
-      $(".btnBranchall").removeClass('bg-pt2-purple').addClass('bg-pt-blue');
+     }
 
       $('#myTable').DataTable({
           scrollCollapse: true,

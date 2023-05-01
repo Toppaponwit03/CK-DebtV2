@@ -108,15 +108,8 @@
             background-color : #34495e;
             color : #fff;
         }
-        .singleline {
-            white-space: nowrap;
-            overflow: hidden;
-        } 
         body {
             font-family: 'Kanit', sans-serif;
-        }
-        tr:hover {
-            background-color: #cbd8e3ff;
         }
         .title {
             padding: 1.25rem;
@@ -178,48 +171,6 @@
         }
         
 
-     table {
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-            margin: 0;
-            padding: 0;
-            /* width: 100%; */
-
-    
-            
-        }
-        table caption {
-            font-size: 1.5em;
-            margin: .5em 0 .75em;
-        }
-        table tr {
-            background-color: #fff;
-        
-            padding: .35em;
-            
-        }
-        table th,
-        table td {
-            padding: .225em;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        table thead tr,
-        table thead th {
-            padding: .425em;
-            text-align: center;
-            border: 1px solid #ccc; 
-        
-        }
-        table th {
-    
-            font-size: .85em;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            background-color: #34495e;
-            color:#ffffff;
-            
-        }
     </style>
 
 <body id="page-top">

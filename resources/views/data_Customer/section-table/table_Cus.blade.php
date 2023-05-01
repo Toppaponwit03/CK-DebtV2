@@ -1,4 +1,47 @@
+<style>
+       table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            /* width: 100%; */
 
+    
+            
+        }
+        table caption {
+            font-size: 1.5em;
+            margin: .5em 0 .75em;
+        }
+        table tr {
+            background-color: #fff;
+        
+            padding: .35em;
+            
+        }
+        table th,
+        table td {
+            padding: .225em;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        table thead tr,
+        table thead th {
+            padding: .425em;
+            text-align: center;
+            border: 1px solid #ccc; 
+        
+        }
+        table th {
+    
+            font-size: .85em;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            background-color: #34495e;
+            color:#ffffff;
+            
+        }
+</style>
 <div class="container-fluid px-4">
     <div class="card mb-4 border border-white shadow-sm">
         <div class="p-4 ">

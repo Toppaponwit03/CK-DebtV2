@@ -78,8 +78,12 @@ class CusController extends Controller
     }
     public function getData(Request $request){
 
-      if($request->type == 1){ // ดึงข้อมูลทั้งหมด
-        $customers =  tbl_customer::orderBy('dealDay', 'ASC')->get();
+      if($request->type == 1){ // ดึงข้อมูล
+
+        $BranchList = Auth::user()->UserToPrivilege->branch;
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->orderBy('dealDay', 'ASC')->get();
+
         return static::getTB($customers);
       }
       elseif($request->type == 2){
@@ -177,7 +181,7 @@ class CusController extends Controller
       if($request->type == 1){
         $statuslist = tbl_statustype::getstatus();
         $data = tbl_customer::find($id);
-        return view('data_Customer.showdata',compact('data','statuslist'));
+        return view('data_Customer.section-Cus.viewModal',compact('data','statuslist'));
       }
     }
 

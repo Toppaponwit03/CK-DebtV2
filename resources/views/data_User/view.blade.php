@@ -33,7 +33,7 @@
                         <td>{{ $user->position }}</td>
                         <td>
                             <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('static.edit',$user->id) }}?type={{1}}"><i class="fa-solid fa-user-pen"></i></button> 
-                            <button class="btn btn-white border border-warning" data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('static.edit',$user->id) }}?type={{2}}"><i class="fa-solid fa-gears"></i></button> 
+                            <a class="btn btn-white border border-warning"  href="{{ route('static.index') }}?type={{2}}&id={{$user->id}}"><i class="fa-solid fa-gears"></i></a> 
                             <button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
                         </td>
                        
