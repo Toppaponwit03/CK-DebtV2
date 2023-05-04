@@ -4,7 +4,7 @@
 
 <!-- hidden input -->
 <input type="hidden" name="idUser" id="idUser" value="{{@$dataUser->id}}">
-
+<input type="hidden" value="{{ @$dataUser->UserToPrivilege->branch }}" id = "checkBranch">
 <div class="row">
     <div class="col text-center">
         <h3>กำนหนดสิทธิ์ : {{@$dataUser->name}}</h3>
@@ -12,13 +12,14 @@
     </div>
 </div>
 <div class="row m-2">
-    <div class="card border border-white shadow-sm col-3 me-2 p-2">
+    <div class="card border border-white shadow-sm col-3 me-2 p-2 ">
+    <a href="{{ route('static.index')}}?type={{1}}" type="button" class="btn btn-secondary mb-2">กลับไปหน้าข้อมูลผู้ใช้งาน</a>
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">กำหนดกลุ่ม (Select Branchs)</button>
             <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">ฟังก์ชั่นการใช้งาน (Feature)</button>
-            <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" disabled>Disabled</button>
+            <!-- <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" disabled>Disabled</button>
             <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
-            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+            <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> -->
             </div>
     </div>
     <div class="card border border-white shadow-sm col p-2 ">
@@ -26,7 +27,6 @@
             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
                 <form action="">
                      @csrf
-              
                     <h4 class="mt-2">กำหนดกลุ่ม (Select Branchs)</h4>
                     <div class="row">
                         <div class="col border-end">
@@ -79,12 +79,7 @@
                     </div>
                     <div class="row">
                         <div class="text-end">
-                           
-                            @if(@$dataUser->UserToPrivilege->id == NULL)
-                                <button type="button" class="btn btn-success addprivilege">บันทึก</button>
-                            @else
-                                <button type="button" class="btn btn-warning updateprivilege">บันทึก</button>
-                            @endif
+                            <button type="button" class="btn btn-success updateprivilege">บันทึก</button>
                         </div>
                     </div>
                 </form>
@@ -92,11 +87,11 @@
 
 
         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
-        <form action="" id="formfeature">
+            <form action="" id="formfeature">
                      @csrf
 
                      <!-- hidden input -->
-                     <input type="text" name="type" value="2">
+                     <input type="hidden" name="type" value="2">
                      <input type="hidden" name="idUser" value="{{@$dataUser->id}}">
               
                     <h4 class="mt-2">ฟังก์ชั่นการใช้งาน (Feature)</h4>
@@ -105,21 +100,21 @@
                             <h5>รายการติดตามลูกค้า</h5>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="datafilter" id="datafilter">
+                                <input class="form-check-input" type="checkbox" value="yes" name="datafilter" id="datafilter" {{ @$dataUser->UserToPrivilege->datafilter == 'yes' ? 'checked' : '' }} >
                                 <label class="form-check-label" for="datafilter">
                                     ค้นหาข้อมูล (Data Filter)
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="editstatus" id="editstatus">
+                                <input class="form-check-input" type="checkbox" value="yes" name="editstatus" id="editstatus" {{ @$dataUser->UserToPrivilege->editstatus == 'yes' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="editstatus">
                                     แก้ไขสถานะ (Edit Status)
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="imex" id="imex">
+                                <input class="form-check-input" type="checkbox" value="yes" name="imex" id="imex" {{ @$dataUser->UserToPrivilege->imex == 'yes' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="imex">
                                     นำเข้า/ส่งออกข้อมูล (Import & Export)
                                 </label>
@@ -130,7 +125,7 @@
                             <h5>แดชบอร์ด</h5>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard">
+                                <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard" {{ @$dataUser->UserToPrivilege->dashboard == 'yes' ? 'checked' : '' }}>
                                 <label class="form-check-label" for="dashboard">
                                     ดูหน้าแดชบอร์ด (Dashboard)
                                 </label>
@@ -139,13 +134,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="text-end">
-                           
-                            @if(@$dataUser->UserToPrivilege->id == NULL)
-                                <button type="button" class="btn btn-success addfeature">บันทึก</button>
-                            @else
-                                <button type="button" class="btn btn-warning updatefeature">บันทึก</button>
-                            @endif
+                        <div class="text-end ">
+                            <button type="button" class="btn btn-success btn-submit updatefeature">บันทึก</button>
                         </div>
                     </div>
                 </form>

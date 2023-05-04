@@ -37,7 +37,7 @@ Route::middleware([
 Route::resource('Cus',CusController::class);
 Route::get('Cus/dashboard/data', [CusController::class, 'dashboard'])->name('Cus.dashboard');
 Route::post('Cus/search/getData', [CusController::class, 'getData'])->name('Cus.getData');
-Route::get('Cus/export/',[CusController::class, 'export'])->name('export.excel');
+Route::post('Cus/export/',[CusController::class, 'export'])->name('export.excel');
 Route::post('Cus/import/',[CusController::class, 'import'])->name('import.excel');
 
 Route::resource('static',StaticController::class);

@@ -16,6 +16,11 @@ use Carbon\CarbonInterval;
 use DB;
 use Datatables;
 
+use App\Imports\UsersImport;
+use App\Exports\exportDataCustomers;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
+
 
 class CusController extends Controller
 {
@@ -77,13 +82,13 @@ class CusController extends Controller
   
     }
     public function getData(Request $request){
-
+      $BranchList = Auth::user()->UserToPrivilege->branch;
       if($request->type == 1){ // ดึงข้อมูล
-
-        $BranchList = Auth::user()->UserToPrivilege->branch;
+        
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
         ->orderBy('dealDay', 'ASC')->get();
 
+    
         return static::getTB($customers);
       }
       elseif($request->type == 2){
@@ -93,16 +98,13 @@ class CusController extends Controller
         return static::getTB($customers);
       }
       elseif($request->type == 3){
-        $customers = tbl_customer::
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
 
-        when($request->input('searchstatus'), function ($query, $status) {
+        ->when($request->input('searchstatus'), function ($query, $status) {
           return $query->whereIn('status', $status);
         })
         ->when($request->input('groupDebt'), function ($query, $groupDebt) {
           return $query->whereIn('groupDebt', $groupDebt);
-        })
-        ->when($request->input('traceEmployee'), function ($query, $traceEmployee) {
-          return $query->whereIn('traceEmployee', $traceEmployee);
         })
         ->when($request->input('typeLoan'), function ($query, $typeLoan) {
           return $query->whereIn('typeLoan', $typeLoan);
@@ -789,13 +791,13 @@ class CusController extends Controller
 
     public function export() 
     {
-      Excel::download(new exportDataCustomers, 'รายงานทีมติดตามหนี้.xlsx');
-       return back();
+
+       return Excel::download(new exportDataCustomers, 'รายงานทีมติดตามหนี้.xlsx');
     }
     public function import() 
     {
         Excel::import(new UsersImport,request()->file('file'));
                
-        return back();
+        return response()->json(['success' => true]);
     }
 }

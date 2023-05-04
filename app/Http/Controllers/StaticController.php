@@ -36,37 +36,30 @@ class StaticController extends Controller
         }
     }
     public function store(Request $request){
-        if($request->type==1){
-            $data  = new tbl_privilege;
-            $data->user_id = $request->id;
-            $data->branch = $request->emp;
-            $data->save();
-        }
-        elseif($request->type==2){
-            $data  = new tbl_privilege;
-            $data->datafilter = $request->datafilter;
-            $data->editstatus = $request->editstatus;
-            $data->imex = $request->imex;
-            $data->dashboard = $request->dashboard;
-            $data->update();
-        }
+
     }
 
     public function update(Request $request, $id)
     {
+       $check = tbl_privilege::where('user_id',$request->idUser)->first() ;
+            if($check == NULL){
+                $data  = new tbl_privilege;
+            }else{
+                $data  = tbl_privilege::where('user_id',$request->idUser)->first() ;
+            }
         if($request->type==1){
-            $data  = tbl_privilege::where('user_id',$request->id)->first() ;
-            $data->user_id = $request->id;
+
+            $data->user_id = $request->idUser;
             $data->branch = $request->emp;
-            $data->update();
+            $data->save();
         }
         elseif($request->type==2){
-            $data  = tbl_privilege::where('user_id',$request->idUser)->first() ;
+            $data->user_id = @$request->idUser;
             $data->datafilter = @$request->datafilter;
             $data->editstatus = @$request->editstatus;
             $data->imex = @$request->imex;
             $data->dashboard = @$request->dashboard;
-            $data->update();
+            $data->save();
         }
     }
 
