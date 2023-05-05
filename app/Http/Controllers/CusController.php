@@ -183,6 +183,7 @@ class CusController extends Controller
       if($request->type == 1){
         $statuslist = tbl_statustype::getstatus();
         $data = tbl_customer::find($id);
+
         return view('data_Customer.section-Cus.viewModal',compact('data','statuslist'));
       }
     }
@@ -201,8 +202,9 @@ class CusController extends Controller
       }
       else if($request->type == 2){ // อัพเดทการจ่าย
 
-        $subdate = substr(date('Y-m-d'), 0, 7) ;
+        $subdate = substr(date('Y-m-d',strtotime("-1 months")), 0, 7) ;
         $datenow = date('Y-m-d');
+          
         //
         // $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         // (select DISTINCT PSFHP.ARMAST.CONTNO,
@@ -252,8 +254,6 @@ class CusController extends Controller
 
 
 
-
-  
         foreach ($dataPay as $key => $value){
           tbl_customer::where('contractNumber',trim($value->CONTNO))
           ->update([
@@ -263,14 +263,14 @@ class CusController extends Controller
         }
 
         tbl_customer::whereRaw('TotalPay >= minimumPayout')
+        ->orWhereRaw("CAST( replace(arrears,',','') as float) = 0")
+        ->orWhereRaw("CAST( replace(arrears,',','') as float) < minimumPayout  and TotalPay >= CAST( replace(arrears,',','') as float)")
         ->where('status','!=','STS-005')
         ->update([
             'status' => 'STS-005'
         ]);
-  
-        
 
-  
+
         return 200;
 
       }

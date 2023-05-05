@@ -10,12 +10,52 @@ class tbl_customer extends Model
 {
     use HasFactory;
     protected $table = 'tbl_customers';
-    protected $fillable = ['Branch','NON','contractNumber','namePrefix','firstname','lastname','phone','productName',
-                           'sellEmployee','traceEmployee','totalInstallment','firstInstallment','dealDay','installment',
-                           'realDebt','nextDebt','groupDebt','fromDebt','toDebt','arrears','lastPaymentdate','lastPayment',
-                           'finePay','totalPayment','balanceDebt','minimumInstallment','minimumPayout','contractGrade','status',
-                           'callDate','quantitycallDate','callDateOut','quantitycallDateOut','traceTeamOut','paymentDate','fieldDay',
-                           'powerApp','note','actionPlan','paymentDateQuantity','teamGroup','typeLoan','Recorder','Schema','TotalPay'];
+    protected $fillable = [
+        "Branch",
+        "contractNumber",
+        "namePrefix",
+        "firstname",
+        "lastname",
+        "phone",
+        "productName",
+        "sellEmployee",
+        "traceEmployee",
+         "totalInstallment",
+         "firstInstallment",
+         "dealDay",
+         "installment",
+         "realDebt",
+         "nextDebt",
+         "groupDebt",
+         "fromDebt",
+         "toDebt",
+         "arrears",
+         "lastPaymentdate",
+         "lastPayment",
+         "finePay",
+         "totalPayment",
+         "balanceDebt",
+         "minimumInstallment",
+         "minimumPayout",
+         "contractGrade",
+         "status",
+         "callDate",
+         "quantitycallDate",
+         "callDateOut",
+         "quantitycallDateOut",
+         "traceTeamOut",
+         "paymentDate",
+         "fieldDay",
+         "powerApp",
+         "note",
+         "actionPlan",
+         "paymentDateQuantity",
+         "teamGroup",
+         "typeLoan",
+         "Recorder",
+         "Schema",
+         "TotalPay"
+    ];
 
     public function CustoCustag(){
         return $this->hasmany(tbl_custag::class,'ContractID','contractNumber')->orderby('id','DESC');

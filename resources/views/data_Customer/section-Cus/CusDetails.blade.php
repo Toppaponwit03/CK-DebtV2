@@ -78,61 +78,9 @@
                 </div>
             </div>
             </fieldset>
-                <!-- <div class="row w-75" style=" display: none;">
-                    <div class="col">
-                        <label class="col-form-label">ID :</label>
-                        <input type="text" class="form-control" placeholder="" name="id" id="id"/>
-                    </div>
-                </div> 
-                <div class="row">
-                    <div class="col-sm">
-                    <label class="col-form-label">รุ่นสินค้า :</label>
-                    <input type="text" class="form-control" value="{{@$data->productName}}" placeholder="" name="productName" id="productName" />
-                    </div>
-                    <div class="col-sm">
-                    <label class="col-form-label">พนักงานขาย :</label>
-                    <input type="text" class="form-control" value="{{@$data->sellEmployee}}" placeholder="" name="sellEmployee" id="sellEmployee" />
-                    </div>
-                    <div class="col-sm">
-                    <label class="col-form-label">ทีมตาม(ใน) :</label>
-                    <input type="text" class="form-control" value="{{@$data->traceEmployee}}" placeholder="" name="traceemployees" id="traceemployees" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <label class="">สถานะ :</label>
-                        <select name="statuschecks" id="statuschecks" class="form-select">
-                        @foreach($statuslist as $datastatus)
-                            <option value="{{$datastatus->details}}">{{$datastatus->details}}</option>       
-                        @endforeach
-                    </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                        <label class="col-form-label">วันที่นัดชำระ :</label>
-                        <input type="date" class="form-control" value="{{@$data->contractNumber}}" placeholder="" name="paymentDate" id="paymentDate"value=""/>
-                    </div>
-                    <div class="col-sm">
-                        <label class="col-form-label">วันที่นัดลงพื้นที่ :</label>
-                        <input type="date" class="form-control" value="{{@$data->contractNumber}}" placeholder="" name="fieldDay" id="fieldDay"  value=""/>
-                    </div>
-                    <div class="col-sm">
-                        <label class="col-form-label">วันที่ลง Power App :</label>
-                        <input type="date" class="form-control" value="{{@$data->contractNumber}}" placeholder="" name="powerApp" id="powerApp" value=""/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                    <label for="validationTextarea" class="form-label">บันทึก</label>
-                    <textarea class="form-control" id="note" name = "note"  placeholder="ลงบันทึก"  value="" style="height: 300px;">{{@$data->note}}</textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm">
-                    <label for="validationTextarea" class="form-label">Action Plan</label>
-                    <textarea class="form-control" id="actionPlan" name = "actionPlan"  placeholder="Action Plane"  style="height: 150px;">{{@$data->actionPlan}}</textarea>
-                    </div>
-                </div> -->
+            <div class="row">
+                {{@$dataPay}}
+            </div>
+
     </div>
 </form>
