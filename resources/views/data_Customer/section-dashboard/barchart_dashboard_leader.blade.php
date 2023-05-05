@@ -6,8 +6,6 @@
   </div>
   </div>
 
-  
-
   <script>
   var options = {
           series: [{

@@ -2,124 +2,176 @@
     <div class="card mb-4 border border-white shadow-sm">
         <div class="p-4">
         <h5>แดชบอร์ด (Dashboard)</h5>
-              @if($head != 'ทีม C')
-              <div class="table-responsive">
-                <table class="text-nowrap" style="width:100%">
-                  <thead>
-                    <tr>
-                      <th rowspan="2" scope="col">{{$column}}</th>
-                      <th colspan="3" scope="col" class="text-center">รวม</th>
-                      <th colspan="3" scope="col" class="text-center">1.Befor</th>
-                      <th colspan="3" scope="col" class="text-center">2.Nomal</th>
-                      <th colspan="3" scope="col" class="text-center">3.Past 1</th>
-                      <th colspan="3" scope="col" class="text-center">4.Past 2</th>
-                      <th colspan="3" scope="col" class="text-center">5.Past 3</th>
-                      <th rowspan="2" class="text-center  ">จำนวนลูกค้า<br>ที่ต้องตาม</th>
-                      <th rowspan="2" scope="col" class="text-center">ผ่าน</th>
-                      <th rowspan="2" scope="col" class="text-center">ไม่ผาน</th>
-                      <th rowspan="2" scope="col" class="text-center">%</th>
-                    </tr>
-                    <tr>
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {{--  แสดงข้อมูลในตาราง --}}
-                    @for($i=0 ; $i < $num; $i++)  
-                      <tr class="text-center">
-                      @foreach($dataDashboard[$i] as $key => $link)
-                          <td data-label="{{$key}}"> {{$link}}</td>
-                      @endforeach
-                      </tr>
-                    @endfor
-                    {{--  แสดงข้อมูลรวม --}}
-                        <tr class="bg-success text-light">
-                          <td data-label="สาขา">{{$head}}</td>
-                      @foreach($result as $key => $value)
-                          <td data-label="{{$key}}"> {{$value}}</td>
-                      @endforeach
-                        </tr>
-                  </tbody>
-                </table>
-                </div>
 
-                
-                @elseif($head == 'ทีม C' && $column == 'PLM')
-                <div class="table-responsive">
-                <table class="text-nowrap" style="width:100%">
-                <thead >
-                    <tr >
-                      <th rowspan="2" scope="col">{{$column}}</th>
-                      <th rowspan="2" scope="col">ชื่อ</th>
-                      <th colspan="3" scope="col" class="text-center">รวม</th>
-                    </tr>
 
-                <tr class="text-center">
+<div class="row">
+  <div class="col">
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered text-nowrap" id="tbl_dashboard">
+      <thead>
+        <tr>
+          <th rowspan="2" scope="col">ทีม</th>
+          <th colspan="3" scope="col" class="text-center">รวม</th>
+          <th colspan="3" scope="col" class="text-center">1.Befor</th>
+          <th colspan="3" scope="col" class="text-center">2.Nomal</th>
+          <th colspan="3" scope="col" class="text-center">3.Past 1</th>
+          <th colspan="3" scope="col" class="text-center">4.Past 2</th>
+          <th colspan="3" scope="col" class="text-center">5.Past 3</th>
+          <th rowspan="2" class="text-center  ">จำนวนลูกค้า<br>ที่ต้องตาม</th>
+          <th rowspan="2" scope="col" class="text-center">ผ่าน</th>
+          <th rowspan="2" scope="col" class="text-center">ไม่ผาน</th>
+          <th rowspan="2" scope="col" class="text-center">%</th>
+        </tr>
+        <tr>
+          <th>ทั้งหมด</th>
+          <th>ผ่าน</th>
+          <th>%</th>
+          <th>ทั้งหมด</th>
+          <th>ผ่าน</th>
+          <th>%</th>
+          <th>ทั้งหมด</th>
+          <th>ผ่าน</th>
+          <th>%</th>
+          <th>ทั้งหมด</th>
+          <th>ผ่าน</th>
+          <th>%</th>
+          <th>ทั้งหมด</th>
+          <th>ผ่าน</th>
+          <th>%</th>
+          <th>ทั้งหมด</th>
+          <th>ผ่าน</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+      @php 
+          $emp = [];
+          $valemp = [];
+         
+        @endphp
 
-                      <th>ทั้งหมด</th>
-                      <th>ผ่าน</th>
-                      <th>%</th>
-                    </tr>
-                    </thead>
-                  <tbody>
+        @foreach(@$data as $value)
+        @php
 
-                  </tbody>
-                  <tr class="text-center">
-                  <td  style="height: 4rem;"> {{$column}}</td>
-                  <td style="height: 4rem;"> {{$column}}</td>
-                  <td style="height: 4rem;"> {{$totalKAIPLM }}</td>
-                  <td style="height: 4rem;"> {{$totalKAIPassPLM}}</td>
-                  <td style="height: 4rem;"> {{$totalPercenKAIPLM}}</td>
-                  </tr>
-                  </table>
-              </div>
-              <div class="table-responsive scroll-slide">
-                @elseif($head == 'ทีม C' && $column == '50-30')
-                  <table class="text-nowrap" style="width:100%">
-                    <thead>
-                      <tr class="text-center" >
-                        <th rowspan="2" scope="col">{{$column}}</th>
-                        <th rowspan="2" scope="col">ชื่อ</th>
-                        <th colspan="3" scope="col" class="text-center">รวม</th>
-                      </tr>
 
-                      <tr>
+         $total =  $value->totalBefor + $value->totalNomal + $value->totalPast1 + $value->totalPast2 + $value->totalPast3 ;
+         $totalPass = $value->PassBefor + $value->PassNomal + $value->PassPast1 + $value->PassPast2 + $value->PassPast3 ;
 
-                        <th>ทั้งหมด</th>
-                        <th>ผ่าน</th>
-                        <th>%</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+         $totalfollPass = $value->PassPast1 + $value->PassPast2 + $value->PassPast3 ;
+         $totalfoll = $value->totalPast1 + $value->totalPast2 + $value->totalPast3;
+         $totalnotPass = $totalfoll - $totalfollPass;
+         $totalper = number_format(( $totalfollPass / ($totalfoll != 0 ? $totalfoll : 1) ) * 100,2);
 
-                    </tbody>
-                    <tr class="text-center">
-                    <td style="height: 4rem;"> {{$column}}</td>
-                    <td style="height: 4rem;"> {{$head}}</td>
-                    <td style="height: 4rem;"> {{$totalKAI50 }}</td>
-                    <td style="height: 4rem;"> {{$totalKAIPass50}}</td>
-                    <td style="height: 4rem;"> {{$totalPercenKAI50}}</td>
-                    </tr>
-                  </table> 
-                @endif
-             </div>
-        </div>
+         array_push($emp,$value->traceEmployee);
+        array_push($valemp,$totalfoll);
+
+         @endphp
+            <td>{{$value->traceEmployee}}</td>
+
+            <td>{{$total}}</td>
+            <td>{{$totalPass}}</td>
+            <td>{{ number_format(( $totalPass / $total ) * 100 ,2 ) }}</td>
+
+            <td>{{$value->totalBefor}}</td>
+            <td>{{$value->PassBefor}}</td>
+            <td>{{ number_format( ( (( $value->PassBefor != 0 ) ? $value->PassBefor : 0) / (( $value->totalBefor != 0 ) ? $value->totalBefor : 1 )) * 100 ,2) }}</td>
+
+            <td>{{$value->totalNomal}}</td>
+            <td>{{$value->PassNomal}}</td>
+            <td>{{ number_format( ( (( $value->PassNomal != 0 ) ? $value->PassNomal : 0) / (( $value->totalNomal != 0 ) ? $value->totalNomal : 1 )) * 100 ,2) }}</td>
+
+            <td>{{$value->totalPast1}}</td>
+            <td>{{$value->PassPast1}}</td>
+            <td>{{ number_format( ( (( $value->PassPast1 != 0 ) ? $value->PassPast1 : 0) / (( $value->totalPast1 != 0 ) ? $value->totalPast1 : 1 )) * 100 ,2) }}</td>
+
+            <td>{{$value->totalPast2}}</td>
+            <td>{{$value->PassPast2}}</td>
+            <td>{{ number_format( ( (( $value->PassPast2 != 0 ) ? $value->PassPast2 : 0) / (( $value->totalPast2 != 0 ) ? $value->totalPast2 : 1 )) * 100 ,2) }}</td>
+
+            <td>{{$value->totalPast3}}</td>
+            <td>{{$value->PassPast3}}</td>
+            <td>{{ number_format( ( (( $value->PassPast3 != 0 ) ? $value->PassPast3 : 0) / (( $value->totalPast3 != 0 ) ? $value->totalPast3 : 1 )) * 100 ,2) }}</td>
+
+            <td>{{$totalfoll}}</td>
+            <td>{{@$totalfollPass}}</td>
+            <td>{{@$totalnotPass}}</td>
+            <td>{{@$totalper}}</td>
+          </tr>
+        @endforeach
+      </tbody>
+      <tfoot class="bg-success">
+          <tr >
+              <th style="text-center">รวม</th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+              <th style="text-center"></th>
+          </tr>
+      </tfoot>
+    </table>
     </div>
+  </div>
 </div>
+</div>
+</div>
+</div>
+
+
+<script>
+
+      $(document).ready(function () {
+         let arr = [];
+              arr = [1,2,4,5,7,8,10,11,13,14,16,17,19,20,21];
+
+    $('#tbl_dashboard').DataTable({
+        ordering: false,
+        searching: false,
+        fixedHeader: true,
+        paging: false,
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+            };
+            // Total over all pages
+            for (let x of arr){
+               
+                total = api
+                    .column(x)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+     
+    
+                // Update footer
+                $(api.column(x).footer()).html( total.toFixed(0) );
+            }
+        },
+    });
+}); 
+</script>
+
+
+
+
