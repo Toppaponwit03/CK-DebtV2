@@ -140,6 +140,11 @@ $('#btn-clear').on('click',function(){
 <script>
   //*************** Modal *************//
 $(function () {
+        $("#modal-fullscreen").on("show.bs.modal", function (e) {
+            var link = $(e.relatedTarget).data("link");
+                $("#modal-fullscreen .modal-body").load(link, function(){
+            });
+        });
         $("#modal-xl").on("show.bs.modal", function (e) {
             var link = $(e.relatedTarget).data("link");
                 $("#modal-xl .modal-body").load(link, function(){

@@ -6,19 +6,19 @@
 </div>
 
   <div class="row">
-    <div class="col-4 p-2 bg-light"> <!-- left -->
+    <div class="col-xl-3 col-sm-12  p-2 bg-light"> <!-- left -->
       <div id="cardCus">
         @include('data_Customer.section-Cus.CardCusDetail')
       </div>
       <div class="row text-right mt-2 bg-light">
             <div class="col-sm-12 text-center">
-                <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary"  style = "border-radius: 12px; ">อัพเดทสถานะ</button>
+                <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary">อัพเดทสถานะ</button>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
             </div> 
         </div>
     </div>
   
-    <div class="col p-2"> <!-- right -->
+    <div class="col-xl-9 col-sm-12 p-2"> <!-- right -->
   
         <div class="card-header p-0 border-bottom-0">
           <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">

@@ -86,63 +86,69 @@
             </div>
 
 
-        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
-            <form action="" id="formfeature">
-                     @csrf
+            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                <form action="" id="formfeature">
+                        @csrf
+                        <!-- hidden input -->
+                        <input type="hidden" name="type" value="2">
+                        <input type="hidden" name="idUser" value="{{@$dataUser->id}}">
+                
+                        <h4 class="mt-2">ฟังก์ชั่นการใช้งาน (Feature)</h4>
+                        <div class="row">
+                            <div class="col border-end">
+                                <h5>รายการติดตามลูกค้า</h5>
 
-                     <!-- hidden input -->
-                     <input type="hidden" name="type" value="2">
-                     <input type="hidden" name="idUser" value="{{@$dataUser->id}}">
-              
-                    <h4 class="mt-2">ฟังก์ชั่นการใช้งาน (Feature)</h4>
-                    <div class="row">
-                        <div class="col border-end">
-                            <h5>รายการติดตามลูกค้า</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="datafilter" id="datafilter" {{ @$dataUser->UserToPrivilege->datafilter == 'yes' ? 'checked' : '' }} >
+                                    <label class="form-check-label" for="datafilter">
+                                        ค้นหาข้อมูล (Data Filter)
+                                    </label>
+                                </div>
 
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="datafilter" id="datafilter" {{ @$dataUser->UserToPrivilege->datafilter == 'yes' ? 'checked' : '' }} >
-                                <label class="form-check-label" for="datafilter">
-                                    ค้นหาข้อมูล (Data Filter)
-                                </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="editstatus" id="editstatus" {{ @$dataUser->UserToPrivilege->editstatus == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="editstatus">
+                                        แก้ไขสถานะ (Edit Status)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="imex" id="imex" {{ @$dataUser->UserToPrivilege->imex == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="imex">
+                                        นำเข้า/ส่งออกข้อมูล (Import & Export)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="CreateCustag" id="CreateCustag" {{ @$dataUser->UserToPrivilege->CreateCustag == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="CreateCustag">
+                                        สร้างโพสต์การติดตาม (Create CusTags)
+                                    </label>
+                                </div>
+
                             </div>
+                            <div class="col border-end">
+                                <h5>แดชบอร์ด</h5>
 
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="editstatus" id="editstatus" {{ @$dataUser->UserToPrivilege->editstatus == 'yes' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="editstatus">
-                                    แก้ไขสถานะ (Edit Status)
-                                </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard" {{ @$dataUser->UserToPrivilege->dashboard == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dashboard">
+                                        ดูหน้าแดชบอร์ด (Dashboard)
+                                    </label>
+                                </div>
+
                             </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="imex" id="imex" {{ @$dataUser->UserToPrivilege->imex == 'yes' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="imex">
-                                    นำเข้า/ส่งออกข้อมูล (Import & Export)
-                                </label>
-                            </div>
-
                         </div>
-                        <div class="col border-end">
-                            <h5>แดชบอร์ด</h5>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard" {{ @$dataUser->UserToPrivilege->dashboard == 'yes' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="dashboard">
-                                    ดูหน้าแดชบอร์ด (Dashboard)
-                                </label>
+                        <div class="row">
+                            <div class="text-end ">
+                                <button type="button" class="btn btn-success btn-submit updatefeature">บันทึก</button>
                             </div>
-
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="text-end ">
-                            <button type="button" class="btn btn-success btn-submit updatefeature">บันทึก</button>
-                        </div>
-                    </div>
-                </form>
-        </div>
-        <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">...</div>
-        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">...</div>
-        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">...</div>
+                    </form>
+            </div>
+            <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">...</div>
   </div>
     </div>
 </div>

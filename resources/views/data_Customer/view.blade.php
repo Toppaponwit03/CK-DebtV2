@@ -81,6 +81,15 @@
     </div>
   </div>
 
+  <div class="modal fade" id="modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="modal-lg">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

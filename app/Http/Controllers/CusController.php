@@ -9,6 +9,7 @@ use App\Models\tbl_groupdebt;
 use App\Models\tbl_statustype;
 use App\Models\tbl_traceEmployee;
 use App\Models\tbl_custag;
+use App\Models\tbl_actionplan;
 use App\Models\tbl_non;
 use App\Models\tbl_user;
 use Carbon\Carbon;
@@ -167,6 +168,20 @@ class CusController extends Controller
 
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data'));
+      }
+      elseif($request->type == 2){  //เพิ่ม action plan
+        $data_plan = new tbl_actionplan;
+
+        $data_plan->tag_id = $request->tag_id;
+        $data_plan->date_plan = date('Y-m-d');
+        $data_plan->ContractID = $request->ContractID;
+        $data_plan->detail = $request->addaction;
+        $data_plan->userInsert = Auth::user()->id;
+        $data_plan->userInsertname = Auth::user()->name;
+        $data_plan->save();
+
+        $data = tbl_actionplan::where('tag_id', $request->tag_id)->orderBy('created_At', 'desc')->first();
+        return response()->json($data);
       }
 
     }
