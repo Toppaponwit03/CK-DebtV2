@@ -4,21 +4,29 @@
     var chartData = {!! json_encode($data) !!};
     let emp = [];
     let empval = [];
+    let data = [];
+    let cate = [];
+
     chartData.map(function(val) {
         txt = `${val.traceEmployee}`;
-        total = parseInt(val.totalBefor) + parseInt(val.totalNomal) + parseInt(val.totalPast1) + parseInt(val.totalPast3) + parseInt(val.totalPast3);
-        totalPass = parseInt(val.PassBefor) + parseInt(val.PassNomal) + parseInt(val.PassPast1) + parseInt(val.PassPast3) + parseInt(val.PassPast3);
+        total = parseInt(val.totalBefor) + parseInt(val.totalNomal) + parseInt(val.totalPast1) + parseInt(val.totalPast2) + parseInt(val.totalPast3);
+        totalPass = parseInt(val.PassBefor) + parseInt(val.PassNomal) + parseInt(val.PassPast1) + parseInt(val.PassPast2) + parseInt(val.PassPast3);
         emp.push(txt)
         empval.push(((totalPass/total)*100).toFixed(2))
-
-       
+      
     })
+    const result = emp.map((value, index) => ({ name: value, value: empval[index] })).sort((a, b) => b.value - a.value);
+
+      for(let d of result){
+        data.push(d.value);
+        cate.push(d.name);
+      }
+    
+// console.log(result);
             var options = {
           series: [{
           name: 'ผ่านแล้ว',
-          data: empval.sort(function(a, b) {
-                return b - a;
-                })
+          data: data,
         }],
           chart: {
           height: 350,
@@ -45,7 +53,7 @@
         },
         
         xaxis: {
-            categories: emp,
+            categories: cate,
           position: 'bottom',
           axisBorder: {
             show: false
@@ -85,7 +93,7 @@
         
         },
         title: {
-          text: 'เปอร์เซ็นการตามหนี้ในแต่ละสาขา ( มากไปน้อย )',
+          text: '{{(@$column == 1)?"PLM":"30-50"}} เปอร์เซ็นการตามหนี้ในแต่ละสาขา ( มากไปน้อย )',
           floating: true,
           offsetY: 0,
           align: 'center',

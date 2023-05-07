@@ -41,7 +41,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col"><label class="fw-bold">โน๊ตรายงานการติดตาม</label> </div>
+                                            <div class="col"><label class="fw-bold">บันทึกรายงานการติดตาม</label> </div>
                                             <div class="col text-end">
                                                 <i class="fa-solid fa-map-pin text-primary"></i>
                                             </div>

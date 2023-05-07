@@ -3,24 +3,26 @@
   <script>
 
     var chartData2 = {!! json_encode($data) !!};
-    let emp2 = [];
-    let empval2 = [];
+    let gd = [];
+    let gdpass = [];
+    let gdnotpass = [];
     chartData2.map(function(val) {
         txt = `${val.traceEmployee}`;
-        total = parseInt(val.totalBefor) + parseInt(val.totalNomal) + parseInt(val.totalPast1) + parseInt(val.totalPast3) + parseInt(val.totalPast3);
-        totalPass = parseInt(val.PassBefor) + parseInt(val.PassNomal) + parseInt(val.PassPast1) + parseInt(val.PassPast3) + parseInt(val.PassPast3);
-        emp2.push(txt)
-        empval2.push(((totalPass/total)*100).toFixed(2))
+
+        gd.push(txt)
+        gdpass.push( `${val.PassBefor}`,`${val.PassNomal}`,`${val.PassPast1}`,`${val.PassPast2}`,`${val.PassPast3}` )
+        gdnotpass.push( `${ parseInt (val.totalBefor - val.PassBefor) }`,`${ parseInt (val.totalNomal - val.PassNomal) }`,`${ parseInt (val.totalPast1 - val.PassPast1) }`,`${ parseInt (val.totalPast2 - val.PassPast2) }`,`${ parseInt (val.totalPast3 - val.PassPast3) }` )
 
        
     })
+    console.log(chartData2)
   var options = {
           series: [{
           name: 'ผ่าน',
-          data: empval,
+          data: gdpass,
         }, {
           name: 'ไม่ผ่าน',
-          data:  empval,
+          data:  gdnotpass,
         }],
           chart: {
           type: 'bar',
@@ -45,7 +47,7 @@
           colors: ['transparent']
         },
         xaxis: {
-           categories: emp2,
+           categories: ['Befor','Normal','Past1','Past2','Past3'],
         },
         yaxis: {
           title: {

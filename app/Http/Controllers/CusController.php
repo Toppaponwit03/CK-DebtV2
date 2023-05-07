@@ -296,8 +296,21 @@ class CusController extends Controller
     public function dashboard(Request $request)
     {
       $column = $request->get('typeloan');
+
+      if($column == NULL){
+        $column = 1;
+      }
+      else{
+        $column = $request->get('typeloan');
+      }
+
       if(Auth::user()->position == 'admin'){
         $head = $request->get('tablehead') ;
+        if($head == NULL){
+          $head  = 1;
+        }else{
+          $head = $request->get('tablehead') ;
+        }
       }
       elseif(Auth::user()->position == 'headA'){
         $head = 1 ;
@@ -353,8 +366,6 @@ class CusController extends Controller
               FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' group by traceEmployee  ;
           ");
         }
-
-
 
     return view('data_Customer.section-dashboard.view',compact('data','head','column'));
 

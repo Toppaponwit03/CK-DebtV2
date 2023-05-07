@@ -7,8 +7,8 @@
 <div class="row">
   <div class="col">
   <div class="table-responsive">
-    <table class="table table-sm table-bordered text-nowrap" id="tbl_dashboard">
-      <thead>
+    <table class="table table-sm table-bordered text-nowrap text-center" id="tbl_dashboard">
+      <thead class="text-white" style="background-color: #34495e;">
         <tr>
           <th rowspan="2" scope="col">ทีม</th>
           <th colspan="3" scope="col" class="text-center">รวม</th>
@@ -99,7 +99,7 @@
           </tr>
         @endforeach
       </tbody>
-      <tfoot class="bg-success">
+      <tfoot class="bg-success text-white">
           <tr >
               <th style="text-center">รวม</th>
               <th style="text-center"></th>
