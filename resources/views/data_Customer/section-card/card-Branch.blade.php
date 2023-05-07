@@ -7,7 +7,7 @@
                 <div  onclick="getBranchAll(1)" class="btnBranchall btnBranch rounded bg-pt2-purple p-4 text-nowrap m-1"><i class="fa-solid fa-border-all"></i> ทุกสาขา</div>
             
                 @foreach(@$dataBranch as $value)
-                <div class="bg-white rounded pt-1 px-4 pb-4 m-1 btnBranch activeBranch" id="cardAT{{ $value->employeeName }}" style="min-width: 250px; cursor:pointer; display:none;"  onclick="searchBranch('{{ $value->employeeName }}')">
+                <div class="bg-white rounded pt-1 px-4 pb-4 m-1 btnBranch activeBranch" id="cardAT{{ $value->employeeName }}" style="max-width: 250px; min-width: 250px; cursor:pointer; display:none;"  onclick="searchBranch('{{ $value->employeeName }}')">
                     <div class="row">
                         <div class="col">
                             <img src="{{asset('dist/img/company.png')}}" class="bg-light p-1 w-50 rounded" alt="">

@@ -15,7 +15,7 @@
     </div>
     <div class="col-6">
       <div class="card mb-2 pt-3 border border-white shadow-sm">
-        @include('data_Customer.section-dashboard.barchartTeam')
+        @include('data_Customer.section-dashboard.barchartGroupdebt')
       </div>
     </div>
   </div>

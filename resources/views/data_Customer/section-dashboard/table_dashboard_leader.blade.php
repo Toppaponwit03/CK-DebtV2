@@ -70,7 +70,7 @@
 
             <td>{{$total}}</td>
             <td>{{$totalPass}}</td>
-            <td>{{ number_format(( $totalPass / $total ) * 100 ,2 ) }}</td>
+            <td>{{ number_format(( $totalPass / ( ($total != 0) ? $total : 1 ) ) * 100 ,2 ) }}</td>
 
             <td>{{$value->totalBefor}}</td>
             <td>{{$value->PassBefor}}</td>

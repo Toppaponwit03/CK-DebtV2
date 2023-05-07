@@ -59,6 +59,7 @@ class StaticController extends Controller
             $data->editstatus = @$request->editstatus;
             $data->imex = @$request->imex;
             $data->dashboard = @$request->dashboard;
+            $data->createTag = @$request->CreateCustag;
             $data->save();
         }
     }

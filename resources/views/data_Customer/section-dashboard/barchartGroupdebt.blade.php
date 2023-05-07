@@ -1,19 +1,26 @@
-<div class="bg-light shadow-lg mb-4 rounded">
-  <div class="row">
-    <div class="col">
-  <div id="chart"></div>
-  </div>
-  </div>
-  </div>
+<div id="chartGroupdebt"></div>
 
   <script>
+
+    var chartData2 = {!! json_encode($data) !!};
+    let emp2 = [];
+    let empval2 = [];
+    chartData2.map(function(val) {
+        txt = `${val.traceEmployee}`;
+        total = parseInt(val.totalBefor) + parseInt(val.totalNomal) + parseInt(val.totalPast1) + parseInt(val.totalPast3) + parseInt(val.totalPast3);
+        totalPass = parseInt(val.PassBefor) + parseInt(val.PassNomal) + parseInt(val.PassPast1) + parseInt(val.PassPast3) + parseInt(val.PassPast3);
+        emp2.push(txt)
+        empval2.push(((totalPass/total)*100).toFixed(2))
+
+       
+    })
   var options = {
           series: [{
           name: 'ผ่าน',
-          data: [{{$befor}},{{$nomal}},{{$past1}},{{$past2}},{{$past3}}]
+          data: empval,
         }, {
           name: 'ไม่ผ่าน',
-          data: [{{$beforNotpass}},{{$nomalNotpass}},{{$past1Notpass}},{{$past2Notpass}},{{$past3Notpass}}]
+          data:  empval,
         }],
           chart: {
           type: 'bar',
@@ -38,7 +45,7 @@
           colors: ['transparent']
         },
         xaxis: {
-          categories: ['BEFOR','NOMAL','PAST1','PAST2','PAST3'],
+           categories: emp2,
         },
         yaxis: {
           title: {
@@ -58,7 +65,7 @@
         },
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        var chart = new ApexCharts(document.querySelector("#chartGroupdebt"), options);
         chart.render();
 
 </script>
