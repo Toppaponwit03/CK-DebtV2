@@ -21,7 +21,7 @@
     <div class="">
         <h5>ประวัติการติดตาม</h5>
         <hr>
-        <div class="scroller px-2" style="min-height : 700px;">
+        <div class="scroller px-2" style="min-height : 520px;">
             @foreach (@$data->CustoCustag as $key => $value)
             <div class="accordion" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">

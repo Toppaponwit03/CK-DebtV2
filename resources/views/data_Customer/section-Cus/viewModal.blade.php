@@ -28,6 +28,9 @@
               <a class="nav-link active" id="list-page1_1-list-tab" data-bs-toggle="pill" href="#list-page1_1-list" role="tab" aria-controls="list-page1_1-list" aria-selected="false">ข้อมูลลูกหนี้</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" id="list-page1_4-list-tab" data-bs-toggle="pill" href="#list-page1_4-list" role="tab" aria-controls="list-page1_4-list" aria-selected="false">ตารางรับชำระ</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" id="list-page1_2-list-tab"data-bs-toggle="pill" href="#list-page1_2-list" role="tab" aria-controls="list-page1_2-list" aria-selected="false">รายละเอียดการติดตาม</a>
             </li>
             @if(@Auth::user()->UserToPrivilege->createTag == 'yes')
@@ -43,6 +46,12 @@
             <div class="tab-pane fade active show" id="list-page1_1-list" role="tabpanel" aria-labelledby="list-page1_2-list-tab">
               <div class="mt-4" id="CusDetails">
                   @include('data_Customer.section-Cus.CusDetails')
+              </div>
+            </div>
+
+            <div class="tab-pane fade show" id="list-page1_4-list" role="tabpanel" aria-labelledby="list-page1_4-list-tab">
+              <div class="mt-4" id="CusDetails">
+                  @include('data_Customer.section-Cus.CusPayment')
               </div>
             </div>
 

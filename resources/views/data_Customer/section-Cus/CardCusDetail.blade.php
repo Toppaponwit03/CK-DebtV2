@@ -77,7 +77,7 @@
             <label for="inputPassword6" class="col-form-label">สถานะ :</label>
         </div>
         <div class="co-xl col-sm-12">
-            <select name="statuschecks" id="statuschecks" class="form-select" {{ (@Auth::user()->UserToPrivilege->editstatus != 'yes') ? 'disabled' : '' }}>
+            <select name="statuschecks" id="statuschecks" class="form-select" {{ ( (@Auth::user()->UserToPrivilege->editstatus != 'yes') || ($data->flag == 'yes')) ? 'disabled' : '' }}>
                 @foreach($statuslist as $datastatus)
                     <option value="{{$datastatus->Status_code}}" {{$datastatus->Status_code == @$data->status ? 'selected' : ''}}>{{$datastatus->details}}</option>       
                 @endforeach

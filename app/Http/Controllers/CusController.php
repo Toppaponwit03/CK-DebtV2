@@ -196,10 +196,44 @@ class CusController extends Controller
     public function edit(Request $request,$id)
     {
       if($request->type == 1){
+
+        $subdate = date('Y-m-d',strtotime("-2 months")) ;
+        $datenow = date('Y-m-d');
         $statuslist = tbl_statustype::getstatus();
         $data = tbl_customer::find($id);
+        $contract = $data->contractNumber;
 
-        return view('data_Customer.section-Cus.viewModal',compact('data','statuslist'));
+        $datapay = DB::connection('ibmi2')->select("
+          SELECT 
+          RSFHP.CHQTRAN.LOCATRECV,
+          RSFHP.CHQTRAN.TMBILDT,
+          RSFHP.CHQTRAN.TMBILL,
+          RSFHP.CHQTRAN.PAYFOR,
+          RSFHP.CHQTRAN.PAYTYP,
+          RSFHP.CHQTRAN.PAYAMT,
+          RSFHP.CHQTRAN.PAYINT,
+          RSFHP.CHQTRAN.DSCINT,
+          RSFHP.CHQTRAN.NETPAY
+          FROM RSFHP.ARMAST 
+          LEFT JOIN RSFHP.CHQTRAN  ON RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO
+          WHERE RSFHP.ARMAST.CONTNO = '${contract}'  
+          UNION
+          SELECT 
+          PSFHP.CHQTRAN.LOCATRECV,
+          PSFHP.CHQTRAN.TMBILDT,
+          PSFHP.CHQTRAN.TMBILL,
+          PSFHP.CHQTRAN.PAYFOR,
+          PSFHP.CHQTRAN.PAYTYP,
+          PSFHP.CHQTRAN.PAYAMT,
+          PSFHP.CHQTRAN.PAYINT,
+          PSFHP.CHQTRAN.DSCINT,
+          PSFHP.CHQTRAN.NETPAY
+          FROM PSFHP.ARMAST 
+          LEFT JOIN PSFHP.CHQTRAN  ON PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
+          WHERE PSFHP.ARMAST.CONTNO = '${contract}' ORDER BY TMBILDT DESC
+        ");
+
+        return view('data_Customer.section-Cus.viewModal',compact('data','statuslist','datapay'));
       }
     }
 
@@ -245,11 +279,11 @@ class CusController extends Controller
       PSFHP.CHQTRAN.DEBT_BALANCE
       from PSFHP.ARMAST 
       left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
-      where PSFHP.CHQTRAN.TMBILDT < '${datenow}' AND PSFHP.CHQTRAN.TMBILDT > '${subdate}-07'
+      where PSFHP.CHQTRAN.TMBILDT < '${datenow}' AND PSFHP.CHQTRAN.TMBILDT >= '2023-05-07'
       ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
       INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
       left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
-      where PSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
+      where PSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
       group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
       UNION
       SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
@@ -260,11 +294,11 @@ class CusController extends Controller
       RSFHP.CHQTRAN.DEBT_BALANCE
       from RSFHP.ARMAST 
       left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO  
-      where RSFHP.CHQTRAN.TMBILDT < '${datenow}' AND RSFHP.CHQTRAN.TMBILDT > '${subdate}-07'  
+      where RSFHP.CHQTRAN.TMBILDT < '${datenow}' AND RSFHP.CHQTRAN.TMBILDT >= '2023-05-07'  
       ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD 
       INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST  
       left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO 
-      where RSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
+      where RSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
       group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
 
 
@@ -273,7 +307,8 @@ class CusController extends Controller
           tbl_customer::where('contractNumber',trim($value->CONTNO))
           ->update([
               'TotalPay' => $value->TOTALP,
-              'balanceDebt' => $value->DEBT_BALANCE
+              'balanceDebt' => $value->DEBT_BALANCE,
+              'lastPaymentdate' => $value->TMBILDT,
           ]);
         }
 
@@ -282,7 +317,8 @@ class CusController extends Controller
         ->orWhereRaw("CAST( replace(arrears,',','') as float) < minimumPayout  and TotalPay >= CAST( replace(arrears,',','') as float)")
         ->where('status','!=','STS-005')
         ->update([
-            'status' => 'STS-005'
+          'status' => 'STS-005',
+          'flag' => 'yes'
         ]);
 
 
@@ -304,7 +340,7 @@ class CusController extends Controller
         $column = $request->get('typeloan');
       }
 
-      if(Auth::user()->position == 'admin'){
+      if(Auth::user()->position == 'admin' || Auth::user()->position == 'audit' ){
         $head = $request->get('tablehead') ;
         if($head == NULL){
           $head  = 1;

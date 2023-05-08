@@ -68,19 +68,21 @@
             </div>
     
             </div>
+             <!--
             <br>
             <h5>รายการชำระ</h5>
             <hr>
+
             <div class="row">
                 <div class="col-sm">
                     <label class="col-form-label">ยอดจ่ายเดือนนี้ :</label>
                     <input type="text" class="form-control" value="{{@$data->TotalPay}}" placeholder="" name="TotalPay" id="TotalPay" value=""/>
                 </div>
-            </div>
+            </div> -->
+
             </fieldset>
-            <div class="row">
-                {{@$dataPay}}
-            </div>
+
+
 
     </div>
 </form>

@@ -7,7 +7,7 @@
                     <div class="container mb-2">
                         <form method="get" action="{{ route('Cus.dashboard') }}">                       
                         <div class="row g-2">
-                            @if (Auth::user()->position == 'admin')
+                            @if (Auth::user()->position == 'admin' || Auth::user()->position == 'audit' )
                             <div class="col-md-4 col-lg-5 col-sm-12">
                                 <select class="form-select" aria-label="Default select example" id="tablehead" name="tablehead" >
                                     <option value="" selected>เลือกตาราง</option>
