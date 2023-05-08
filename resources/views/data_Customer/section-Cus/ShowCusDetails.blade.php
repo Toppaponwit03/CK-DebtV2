@@ -4,7 +4,7 @@
         <hr>
         <div class="d-flex" style="overflow-y:auto;">
             @foreach (@$data->CustoCustag as $key => $value)
-            <button type="button" class="btn btn-primary m-1">{{$value->created_At}}</button>
+            <button type="button" class="btn btn-primary m-2">{{$value->created_At}}</button>
             @endforeach
         </div>
         <div class="scroller px-2">
