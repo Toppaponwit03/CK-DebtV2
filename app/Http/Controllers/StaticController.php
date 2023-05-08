@@ -58,7 +58,11 @@ class StaticController extends Controller
             $data->datafilter = @$request->datafilter;
             $data->editstatus = @$request->editstatus;
             $data->imex = @$request->imex;
+            $data->dataCus = @$request->dataCus;
             $data->dashboard = @$request->dashboard;
+            $data->teamA = @$request->teamA;
+            $data->teamB = @$request->teamB;
+            $data->teamC = @$request->teamC;
             $data->createTag = @$request->CreateCustag;
             $data->save();
         }

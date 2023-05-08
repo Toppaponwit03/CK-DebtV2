@@ -7,7 +7,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
+                    <!-- <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -16,6 +16,19 @@
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
+                            </div>
+                        </div>
+                    </form> -->
+
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="row">
+                            <div class="col-2">
+                                <img class="img-profile rounded-circle"
+                                src="{{ asset('dist/img/leasingLogo1.jpg') }}"style="max-width: 100%;">
+                            </div>
+                            <div class="col-10 m-auto">
+                                <h6>ชูเกียรติลิสซิ่ง (CHOOKIAT LEASING)</h6>
                             </div>
                         </div>
                     </form>

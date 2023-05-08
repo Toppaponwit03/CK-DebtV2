@@ -76,9 +76,14 @@ class CusController extends Controller
       $teamClists = tbl_traceEmployee::where('teamGroup','=','3')->get();
       $type = $request->get('type');
 
-      if($type == 1){
-        return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists'));
-      }
+      $countPass = DB::select("SELECT 
+      traceEmployee,
+      sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
+      sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass
+      FROM `tbl_customers` GROUP BY traceEmployee");
+
+       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','countPass'));
+      
 
   
     }
@@ -100,7 +105,9 @@ class CusController extends Controller
       }
       elseif($request->type == 3){
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
-
+        ->when($request->input('traceEmployee'), function ($query, $traceEmployee) {
+          return $query->whereIn('traceEmployee',$traceEmployee);
+        })
         ->when($request->input('searchstatus'), function ($query, $status) {
           return $query->whereIn('status', $status);
         })
@@ -113,7 +120,7 @@ class CusController extends Controller
         ->when($request->input('Branch'), function ($query, $Branch) {
           return $query->whereIn('Branch', $Branch);
         })
-
+        
         ->orderBy('dealDay', 'ASC')->get();  
           return static::getTB($customers);
 

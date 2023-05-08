@@ -39,7 +39,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
+                        @if(@Auth::user()->UserToPrivilege->dataCus == 'yes')
                         <a class="collapse-item" href="{{route('Cus.index')}}?type={{1}}"><i class="fa-solid fa-phone-volume"></i> รายการติดตามลูกค้า</a>
+                        @endif
                         @if(@Auth::user()->UserToPrivilege->dashboard == 'yes')
                         <a class="collapse-item" href="{{ route('Cus.dashboard') }}"><i class="fa-solid fa-gauge-high"></i> แดชบอร์ด</a>
                         @endif

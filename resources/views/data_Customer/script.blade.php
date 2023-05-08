@@ -93,7 +93,7 @@
        Branchre = Branch.replace(/,/g,',#')
        BranchATre = Branch.replace(/,/g,',#cardAT')
 
-     if(position == 'admin')
+     if(position != 'user')
      {
       $(`#cardAT${BranchATre}`).show();
        $('.employeeDropdown').prop('disabled',false).addClass('dropdown-toggle');

@@ -1,25 +1,27 @@
 
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
-        <h5>สาขาทั้งหมด</h5>
+        <h5>สาขาทั้งหมด (All Branch)</h5>
         <div class="scroll-slide bg-light" >
             <div class="d-flex p-2" >
-                <div  onclick="getBranchAll(1)" class="btnBranchall btnBranch rounded bg-pt2-purple p-4 text-nowrap m-1"><i class="fa-solid fa-border-all"></i> ทุกสาขา</div>
+                <div  onclick="getBranchAll(1)" class="btnBranchall btnBranch rounded bg-pt2-purple p-4 text-nowrap m-1" style="cursor:pointer;">
+                    <i class="fa-solid fa-border-all"></i> ทุกสาขา
+                </div>
             
                 @foreach(@$dataBranch as $value)
-                <div class="bg-white rounded pt-1 px-4 pb-4 m-1 btnBranch activeBranch" id="cardAT{{ $value->employeeName }}" style="max-width: 250px; min-width: 250px; cursor:pointer; display:none;"  onclick="searchBranch('{{ $value->employeeName }}')">
+                <div class="bg-white rounded pt-2 px-4 pb-2 m-1 btnBranch activeBranch" id="cardAT{{ $value->employeeName }}" style="max-width: 250px; min-width: 250px; cursor:pointer; display:none;"  onclick="searchBranch('{{ $value->employeeName }}')">
                     <div class="row">
                         <div class="col">
-                            <img src="{{asset('dist/img/company.png')}}" class="bg-light p-1 w-50 rounded" alt="">
+                            <img src="{{asset('dist/img/branch.png')}}" class="bg-light p-1 w-50 rounded" alt="">
                         </div>
                         <div class="col text-right">
-                           <span class="badge text-bg-warning opacity-75">Success</span>
+                           <span class="badge text-bg-warning opacity-75">{{$value->employeeName}}</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 pt-2">
                             <h5>
-                                <i class="fa-solid fa-location-dot"></i> สาขา {{$value->nameThai}}
+                                 สาขา {{$value->nameThai}}
                             </h5>
                         </div>
                         <!-- <div class="col-12">
@@ -28,18 +30,35 @@
                             </h6>
                         </div> -->
                     </div>
-                    <!-- <div class="row pt-4">
+                    @foreach($countPass as $count)
+                    @if($count->traceEmployee == $value->employeeName)
+                    @php 
+                        $countper = ( $count->totalPass / ($count->totalEmp != 0 ? $count->totalEmp : 1 )) * 100;
+
+                        if($countper == 100){
+                            $color = 'bg-success';
+                        }
+                        elseif($countper > 50){
+                            $color = 'bg-warning';
+                        }
+                        else{
+                            $color = 'bg-danger';
+                        }
+                    @endphp
+                    <div class="row pt-2">
                         <div class="col-12">
                             <div class="progress" style="height: 10px;">
-                                <div class="progress-bar bg-danger" role="progressbar" aria-label="Danger example" style="width: 25%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countper,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">ผ่าน</div>
-                        <div class="col">ไม่ผ่าน</div>
-                    </div> -->
+                    <div class="row mt-1">
+                        <div class="col">{{number_format($countper,2)}} %</div>
+                    </div>
+                    @endif
+                    @endforeach
                 </div>
+                
                 @endforeach
             </div>
         </div>

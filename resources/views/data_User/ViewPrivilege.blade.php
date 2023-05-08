@@ -106,6 +106,27 @@
                                 </div>
 
                                 <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="teamA" id="teamA" {{ @$dataUser->UserToPrivilege->teamA == 'yes' ? 'checked' : '' }} >
+                                    <label class="form-check-label" for="teamA">
+                                        ค้นหาข้อมูลของทีม A (Search Team A)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="teamB" id="teamB" {{ @$dataUser->UserToPrivilege->teamB == 'yes' ? 'checked' : '' }} >
+                                    <label class="form-check-label" for="teamB">
+                                        ค้นหาข้อมูลของทีม B (Search Team B)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="teamC" id="teamC" {{ @$dataUser->UserToPrivilege->teamC == 'yes' ? 'checked' : '' }} >
+                                    <label class="form-check-label" for="teamC">
+                                        ค้นหาข้อมูลของทีม C (Search Team C)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="yes" name="editstatus" id="editstatus" {{ @$dataUser->UserToPrivilege->editstatus == 'yes' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="editstatus">
                                         แก้ไขสถานะ (Edit Status)
@@ -120,7 +141,7 @@
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="yes" name="CreateCustag" id="CreateCustag" {{ @$dataUser->UserToPrivilege->CreateCustag == 'yes' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" value="yes" name="CreateCustag" id="CreateCustag" {{ @$dataUser->UserToPrivilege->createTag == 'yes' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="CreateCustag">
                                         สร้างโพสต์การติดตาม (Create CusTags)
                                     </label>
@@ -128,7 +149,14 @@
 
                             </div>
                             <div class="col border-end">
-                                <h5>แดชบอร์ด</h5>
+                                <h5>เมนูใช้งาน (Tab & Menu)</h5>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="dataCus" id="dataCus" {{ @$dataUser->UserToPrivilege->dataCus == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dataCus">
+                                        ดูหน้ารายการติดตามมลูกค้า (Data Customers)
+                                    </label>
+                                </div>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard" {{ @$dataUser->UserToPrivilege->dashboard == 'yes' ? 'checked' : '' }}>

@@ -152,6 +152,7 @@
                               <ul class="dropdown-menu dropdown-menu-light bg-white h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                                 <li>
                                   <div class="container" >
+                                  @if(@Auth::user()->UserToPrivilege->teamA == 'yes')
                                     <div class="text-center bg-heavy-rain">
                                       <label><span class="fs-6">-- ทีม A ทั้งหมด --</span></label><br>
                                     </div>
@@ -172,6 +173,8 @@
                                       </div>
                                     </div>  
                                     <hr>
+                                  @endif
+                                  @if(@Auth::user()->UserToPrivilege->teamB == 'yes')
                                     <div class="text-center bg-heavy-rain">
                                       <label><span class="fs-6">-- ทีม B ทั้งหมด --</span></label><br>
                                     </div>
@@ -192,6 +195,8 @@
                                       </div>
                                     </div>        
                                     <hr>
+                                  @endif
+                                  @if(@Auth::user()->UserToPrivilege->teamC == 'yes')
                                     <div class="text-center bg-heavy-rain">
                                       <label><span class="fs-6">-- ทีม C ทั้งหมด --</span></label><br>
                                     </div>
@@ -205,11 +210,14 @@
                                     </div>
                                     @endforeach                    
                                     <hr>
+                                  @endif
+                                  @if(@Auth::user()->UserToPrivilege->teamA == 'yes' || @Auth::user()->UserToPrivilege->teamB == 'yes' || @Auth::user()->UserToPrivilege->teamC == 'yes')
                                     <div class="row">
                                       <div class="col text-center">
                                         <button class="btn btn-warning btn-clear" type="button" onclick="cleartraceEmployee()">ล้างการค้นหา</button>
                                       </div>
                                     </div>
+                                  @endif
                                   </div>
                                 </li>
                               </ul>
