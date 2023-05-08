@@ -11,8 +11,10 @@
         @include('data_Customer.section-Cus.CardCusDetail')
       </div>
       <div class="row text-right mt-2 bg-light">
-            <div class="col-sm-12 text-center">
+        <div class="col-sm-12 text-center">
+              @if(@Auth::user()->UserToPrivilege->editstatus == 'yes')
                 <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary">อัพเดทสถานะ</button>
+              @endif
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
             </div> 
         </div>
@@ -28,9 +30,12 @@
             <li class="nav-item">
               <a class="nav-link" id="list-page1_2-list-tab"data-bs-toggle="pill" href="#list-page1_2-list" role="tab" aria-controls="list-page1_2-list" aria-selected="false">รายละเอียดการติดตาม</a>
             </li>
+            @if(@Auth::user()->UserToPrivilege->createTag == 'yes')
             <li class="nav-item">
               <a class="nav-link" id="list-page1_3-list-tab" data-bs-toggle="pill" href="#list-page1_3-list" role="tab" aria-controls="list-page1_3-list" aria-selected="false">บันทึกการติดตามใหม่</a>
             </li>
+            @endif
+
           </ul>
         </div>
   

@@ -1,19 +1,28 @@
-<div class="bg-light shadow-lg mb-4 rounded">
-  <div class="row">
-    <div class="col">
-  <div id="chart"></div>
-  </div>
-  </div>
-  </div>
+<div id="chartGroupdebt"></div>
 
   <script>
+
+    var chartData2 = {!! json_encode($data) !!};
+    let gd = [];
+    let gdpass = [];
+    let gdnotpass = [];
+    chartData2.map(function(val) {
+        txt = `${val.traceEmployee}`;
+
+        gd.push(txt)
+        gdpass.push( `${val.PassBefor}`,`${val.PassNomal}`,`${val.PassPast1}`,`${val.PassPast2}`,`${val.PassPast3}` )
+        gdnotpass.push( `${ parseInt (val.totalBefor - val.PassBefor) }`,`${ parseInt (val.totalNomal - val.PassNomal) }`,`${ parseInt (val.totalPast1 - val.PassPast1) }`,`${ parseInt (val.totalPast2 - val.PassPast2) }`,`${ parseInt (val.totalPast3 - val.PassPast3) }` )
+
+       
+    })
+    console.log(chartData2)
   var options = {
           series: [{
           name: 'ผ่าน',
-          data: [{{$befor}},{{$nomal}},{{$past1}},{{$past2}},{{$past3}}]
+          data: gdpass,
         }, {
           name: 'ไม่ผ่าน',
-          data: [{{$beforNotpass}},{{$nomalNotpass}},{{$past1Notpass}},{{$past2Notpass}},{{$past3Notpass}}]
+          data:  gdnotpass,
         }],
           chart: {
           type: 'bar',
@@ -38,7 +47,7 @@
           colors: ['transparent']
         },
         xaxis: {
-          categories: ['BEFOR','NOMAL','PAST1','PAST2','PAST3'],
+           categories: ['Befor','Normal','Past1','Past2','Past3'],
         },
         yaxis: {
           title: {
@@ -58,7 +67,7 @@
         },
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        var chart = new ApexCharts(document.querySelector("#chartGroupdebt"), options);
         chart.render();
 
 </script>

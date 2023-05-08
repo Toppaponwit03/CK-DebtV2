@@ -14,7 +14,55 @@ class exportDataCustomers implements FromCollection,WithHeadings
 
     public function collection()
     { 
-        $data = tbl_customer::all();
+        $data = tbl_customer::select(
+            [
+                "id",
+                "Branch",
+                "contractNumber",
+                "namePrefix",
+                "firstname",
+                "lastname",
+                "phone",
+                "productName",
+                "sellEmployee",
+                "traceEmployee",
+                "totalInstallment",
+                 "firstInstallment",
+                 "dealDay",
+                 "installment",
+                 "realDebt",
+                 "nextDebt",
+                 "groupDebt",
+                 "fromDebt",
+                 "toDebt",
+                 "arrears",
+                 "lastPaymentdate",
+                 "lastPayment",
+                 "finePay",
+                 "totalPayment",
+                 "balanceDebt",
+                 "minimumInstallment",
+                 "minimumPayout",
+                 "contractGrade",
+                 "status",
+                 "callDate",
+                 "quantitycallDate",
+                 "callDateOut",
+                 "quantitycallDateOut",
+                 "traceTeamOut",
+                 "paymentDate",
+                 "fieldDay",
+                 "powerApp",
+                 "note",
+                 "actionPlan",
+                 "paymentDateQuantity",
+                 "teamGroup",
+                 "typeLoan",
+                 "Recorder",
+                 "Schema",
+                 "TotalPay"
+             ]
+        )->get();
         return $data;
  
     }
