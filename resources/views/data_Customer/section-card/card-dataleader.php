@@ -7,6 +7,9 @@
                 <div  onclick="getBranchAll(4)" class="btnBranch btn border border-light bg-pt2-blue px-4 text-nowrap m-1 rounded-pill"><i class="fa-solid fa-border-all"></i> PAST 2 , PAST 3 (PLM)</div>
                 <div  onclick="getBranchAll(5)" class="btnBranch btn border border-light bg-pt2-blue px-4 text-nowrap m-1 rounded-pill"><i class="fa-solid fa-border-all"></i> ส่งรายงานหัวหน้า ,ส่งรายงาน GM (PLM)</div>
                 <div  onclick="getBranchAll(6)" class="btnBranch btn border border-light bg-pt2-blue px-4 text-nowrap m-1 rounded-pill"><i class="fa-solid fa-border-all"></i> ส่งรายงานหัวหน้า ,ส่งรายงาน GM (30-50)</div>
+                <div  onclick="getBranchAll(7)" class="btnBranch btn border border-light bg-pt-orange px-4 text-nowrap m-1 rounded-pill"><i class="fa-solid fa-border-all"></i> นัดชำระวันนี้</div>
+                <div  onclick="getBranchAll(8)" class="btnBranch btn border border-light bg-pt-orange px-4 text-nowrap m-1 rounded-pill"><i class="fa-solid fa-border-all"></i> ดีลวันนี้</div>
+                <div  onclick="getBranchAll(9)" class="btnBranch btn border border-light bg-pt-orange px-4 text-nowrap m-1 rounded-pill"><i class="fa-solid fa-border-all"></i> ดีลเมื่อวาน</div>
             </div>
         </div>
     </div>

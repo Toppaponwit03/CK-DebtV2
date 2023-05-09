@@ -54,7 +54,11 @@
       $('#myTable').DataTable({
             processing: true,
             serverSide: true,
-            ordering: false,
+            ordering: true,
+            columnDefs: [{
+              orderable: false,
+              targets: "no-sort"
+            }],
             ajax: {
               "url" : '{{ route("Cus.getData") }}',
               "type" : "POST",
@@ -88,7 +92,7 @@
 <script>
     getBranchAll = (type) => {
 
-
+      $('.displaySearch').empty();
      let position = $('#position').val();
      let Branch =  $('#Branch').val();
        Branchre = Branch.replace(/,/g,',#')
@@ -118,9 +122,11 @@
           scrollCollapse: true,
           processing: true,
           serverSide: true,
-          ordering: false,
-          fixedColumns: true,
-          // pageLength: 3151,
+          ordering: true,
+            columnDefs: [{
+              orderable: false,
+              targets: "no-sort"
+            }],
           ajax: {
             "url" : '{{ route("Cus.getData") }}',
             "type" : "POST",
@@ -162,6 +168,10 @@
             return $(this).val();
         }).get();
 
+        var searchstatusName = $('input[name="searchstatus[]"]:checked').map(function(){
+            return $(this).attr('id');
+        }).get();
+
         var groupDebt = $('input[name="groupDebt[]"]:checked').map(function(){
             return $(this).val();
         }).get();
@@ -174,16 +184,34 @@
             return $(this).val();
         }).get();
 
+        var typeLoanName = $('input[name="typeLoan[]"]:checked').map(function(){
+            return $(this).attr('id');
+        }).get();
+
         var Branch = $('input[name="Branch[]"]:checked').map(function(){
             return $(this).val();
         }).get();
 
+        $('.displaySearch').empty();
+        $('.displaySearch').append(`
+        <h5>ตัวกรอง</h5>
+        สถานะ :<span class="badge text-bg-primary m-1">${searchstatusName}</span><br>
+        กลุ่ม :<span class="badge text-bg-primary m-1">${groupDebt}</span><br>
+        สาขา :<span class="badge text-bg-primary m-1">${traceEmployee}</span><br>
+        ประเภทสัญญา :<span class="badge text-bg-primary m-1">${typeLoanName}</span><br>
+        NON :<span class="badge text-bg-primary m-1">${Branch}</span><br>
+        <button class="btn btn-warning btn-clear btn-sm rounded-pill mt-2" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
+        <hr>
+        `);
+
         $('#myTable').DataTable({
           processing: true,
           serverSide: true,
-          ordering: false,
-          fixedColumns: true,
-          // pageLength: 3151,
+          ordering: true,
+            columnDefs: [{
+              orderable: false,
+              targets: "no-sort"
+            }],
           ajax: {
             "url" : '{{ route("Cus.getData") }}',
             "type" : "POST",

@@ -62,7 +62,7 @@ class tbl_customer extends Model
     }
 
     public function CustoCustag2(){
-        return $this->hasOne(tbl_custag::class,'ContractID','contractNumber')->orderby('date_Tag','DESC');
+        return $this->hasOne(tbl_custag::class,'ContractID','contractNumber')->latest();
     }
 
     public function CustoStatus(){

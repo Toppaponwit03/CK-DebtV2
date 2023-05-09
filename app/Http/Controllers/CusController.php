@@ -44,7 +44,7 @@ class CusController extends Controller
                   return thaidate::simpleDateFormat($data->dealDay);
                 })
                 ->addColumn('paymentDateTH', function ($data) {
-                  return thaidate::simpleDateFormat(@$data->CustoCustag2->payment_date);
+                  return thaidate::simpleDateFormat(@$data->paymentDate);
                 })
                 ->addColumn('fieldDayTH', function ($data) {
                   return thaidate::simpleDateFormat($data->fieldDay);
@@ -147,6 +147,27 @@ class CusController extends Controller
 
         return static::getTB($customers);
       }
+      elseif($request->type == 7){ // วันชำระวันนี้
+        $customers = tbl_customer::where('status','=','STS-001')
+        ->whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('paymentDate','=',Carbon::today()->format('Y-m-d'))
+        ->orderBy('dealDay', 'ASC')->get();
+        return static::getTB($customers);
+      }
+      elseif($request->type == 8){ // ดีลวันนี้
+        $customers = tbl_customer::where('status','!=','STS-005')
+        ->whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('dealDay','=',Carbon::today()->format('Y-m-d'))
+        ->orderBy('dealDay', 'ASC')->get();
+        return static::getTB($customers);
+      }
+      elseif($request->type == 9){ // ดีลเมื่อวาน
+        $customers = tbl_customer::where('status','!=','STS-005')
+        ->whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('dealDay','=',Carbon::yesterday()->format('Y-m-d'))
+        ->orderBy('dealDay', 'ASC')->get();
+        return static::getTB($customers);
+      }
 
     }
     public function create(Request $request)
@@ -166,12 +187,19 @@ class CusController extends Controller
         $data_Tag->ContractID = $request->contractNumber;
         $data_Tag->date_Tag = date('Y-m-d');
         $data_Tag->detail = $request->note;
-        $data_Tag->actionPlan = $request->actionPlan;
         $data_Tag->payment_date = $request->payment_date;
         $data_Tag->visitArea_date = $request->visitArea_date;
         $data_Tag->PowerApp_date = $request->PowerApp_date;
         $data_Tag->userInsert = Auth::user()->id;
         $data_Tag->save();
+
+
+        $data_cus = tbl_customer::where('contractNumber',$request->contractNumber)->first();
+        $data_cus->paymentDate = $request->payment_date;
+        $data_cus->fieldDay = $request->visitArea_date;
+        $data_cus->powerApp = $request->PowerApp_date;
+        $data_cus->update();
+
 
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data'));
@@ -278,35 +306,35 @@ class CusController extends Controller
         // group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
         // ORDER BY OD.TMBILDT ASC ");
 
-      $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
-      (select DISTINCT PSFHP.ARMAST.CONTNO,
-      PSFHP.CHQTRAN.TMBILDT ,
-      PSFHP.ARMAST.NPROFIT as TOTALC,
-      PSFHP.CHQTRAN.PAYFOR,
-      PSFHP.CHQTRAN.DEBT_BALANCE
-      from PSFHP.ARMAST 
-      left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
-      where PSFHP.CHQTRAN.TMBILDT < '${datenow}' AND PSFHP.CHQTRAN.TMBILDT >= '2023-05-07'
-      ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
-      INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
-      left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
-      where PSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
-      group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
-      UNION
-      SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
-      (select DISTINCT RSFHP.ARMAST.CONTNO,
-      RSFHP.CHQTRAN.TMBILDT ,
-      RSFHP.ARMAST.NPROFIT as TOTALC,
-      RSFHP.CHQTRAN.PAYFOR,
-      RSFHP.CHQTRAN.DEBT_BALANCE
-      from RSFHP.ARMAST 
-      left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO  
-      where RSFHP.CHQTRAN.TMBILDT < '${datenow}' AND RSFHP.CHQTRAN.TMBILDT >= '2023-05-07'  
-      ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD 
-      INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST  
-      left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO 
-      where RSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
-      group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
+        $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+        (select DISTINCT PSFHP.ARMAST.CONTNO,
+        PSFHP.CHQTRAN.TMBILDT ,
+        PSFHP.ARMAST.NPROFIT as TOTALC,
+        PSFHP.CHQTRAN.PAYFOR,
+        PSFHP.CHQTRAN.DEBT_BALANCE
+        from PSFHP.ARMAST 
+        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
+        where PSFHP.CHQTRAN.TMBILDT < '${datenow}' AND PSFHP.CHQTRAN.TMBILDT >= '2023-05-07'
+        ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
+        INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
+        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
+        where PSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
+        group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
+        UNION
+        SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+        (select DISTINCT RSFHP.ARMAST.CONTNO,
+        RSFHP.CHQTRAN.TMBILDT ,
+        RSFHP.ARMAST.NPROFIT as TOTALC,
+        RSFHP.CHQTRAN.PAYFOR,
+        RSFHP.CHQTRAN.DEBT_BALANCE
+        from RSFHP.ARMAST 
+        left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO  
+        where RSFHP.CHQTRAN.TMBILDT < '${datenow}' AND RSFHP.CHQTRAN.TMBILDT >= '2023-05-07'  
+        ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD 
+        INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST  
+        left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO 
+        where RSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
+        group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
 
 
 
@@ -330,6 +358,28 @@ class CusController extends Controller
 
 
         return 200;
+
+      }
+      else if($request->type == 3){  //อัพเดทการติดตาม
+        $data_Tag = tbl_custag::where('id',$request->tag_id)->first();
+        $name = $request->note[$request->tag_id];
+        $data_Tag->ContractID = $request->contractNumber;
+        $data_Tag->date_Tag = date('Y-m-d');
+        $data_Tag->detail = $name;
+        $data_Tag->payment_date = $request->payment_date;
+        $data_Tag->visitArea_date = $request->visitArea_date;
+        $data_Tag->PowerApp_date = $request->PowerApp_date;
+        $data_Tag->userInsert = Auth::user()->id;
+        $data_Tag->update();
+
+        $data_cus = tbl_customer::where('contractNumber',$request->contractNumber)->first();
+        $data_cus->paymentDate = $request->payment_date;
+        $data_cus->fieldDay = $request->visitArea_date;
+        $data_cus->powerApp = $request->PowerApp_date;
+        $data_cus->update();
+
+        $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
+        return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data'));
 
       }
 

@@ -45,6 +45,13 @@
 <div class="container-fluid px-4">
     <div class="card mb-4 border border-white shadow-sm">
         <div class="p-4 ">
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <div class="displaySearch"></div>
+              </div>
+            </div>
+          </div>
         <h5>ตารางแสดงข้อมูลลูกหนี้</h5>
           <div class="table-responsive pb-4 scroll-slide" style="height: 650px;">
             <table id="myTable" class="display text-nowrap" style="width: 100%;">
@@ -52,44 +59,48 @@
                 <tr>
                   <form name="formsearch" id="formsearch" action="#" method="post" enctype="multipart/form-data">
                     @csrf
-                          <th>#</th>
-                          <th>Action</th>
-                          <th scope="col">
+                          <th class="no-sort">#</th>
+                          <th class="no-sort">Action</th>
+                          <th class="no-sort" scope="col">
                               <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-auto-close="outside" >
                               สถานะ </a>  
-                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
+                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                                 <li >
-                                  <div class="container">
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- สถานะ --</span></label><br>
-                                    </div>
+                                  <div class="">
+                                   <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>สถานะ <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                     @foreach(@$statuslist as $datastatus)
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
                                       <div class="form-check"style="font-size:1rem;">
-                                        <input class="form-check-input" type="checkbox" value="{{$datastatus->Status_code}}"  name="searchstatus[]">
+                                        <input class="form-check-input" type="checkbox" value="{{$datastatus->Status_code}}" id="{{$datastatus->details}}"  name="searchstatus[]">
                                         {{$datastatus->details}} </label>
                                       </div>
                                     </div>
                                     @endforeach
-                                    <hr>
+                              
                                     <div class="row">
-                                      <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="getBranchAll(1);">ล้างการค้นหา</button>
+                                      <div class="d-grid">
+                                        <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                       </div>
                                     </div>           
                                   </div>
                                 </li>
                               </ul>
                           </th>             
-                          <th scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                          <th class="no-sort" scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                               NON </a>
-                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
+                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                                 <li>
-                                  <div class="container" >
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- NON --</span></label><br>
-                                    </div>
+                                  <div class="" >
+                                  <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>NON <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                         @foreach(@$non as $valnon)
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
@@ -100,28 +111,30 @@
                                     </div>
                                         @endforeach
                                         <hr>
-                                      <div class="row">
-                                        <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button"  onclick="getBranchAll(1);">ล้างการค้นหา</button>
-                                        </div>
-                                      </div>
+                                        <div class="row">
+                                          <div class="d-grid">
+                                            <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
+                                          </div>
+                                        </div> 
                                   </div>
                                 </li>
                               </ul>
                           </th>
-                          <th scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                          <th class="no-sort" scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                             เลขที่สัญญา </a>
-                            <ul class="dropdown-menu dropdown-menu-light  bg-white  h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
+                            <ul class="dropdown-menu dropdown-menu-light  bg-white  h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                               <li>
-                                <div class="container" >
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- เลขที่สัญญา --</span></label><br>
-                                    </div>
+                                <div class="" >
+                                  <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ประเภทสัญญา <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                     <div class="form-check m-2">
                                       <div class="row onhover">
                                         <label class="form-check-label"> 
                                         <div class="col">     
-                                          <input class="form-check-input" type="radio" value="1"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 1) ? 'checked' : '' }} @endfor>
+                                          <input class="form-check-input" type="radio" value="1" id="PLM"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 1) ? 'checked' : '' }} @endfor>
                                           สัญญา PLM
                                           </label>
                                         </div>
@@ -129,7 +142,7 @@
                                       <div class="row onhover">
                                         <label class="form-check-label"> 
                                         <div class="col">     
-                                          <input class="form-check-input" type="radio" value="2"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 2) ? 'checked' : '' }} @endfor>
+                                          <input class="form-check-input" type="radio" value="2" id="30-50"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 2) ? 'checked' : '' }} @endfor>
                                           30-50
                                           </label>
                                         </div>
@@ -137,25 +150,27 @@
                                     </div>
                                     <hr>
                                     <div class="row">
-                                      <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button"  onclick="getBranchAll(1);">ล้างการค้นหา</button>
+                                      <div class="d-grid">
+                                        <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                       </div>
-                                    </div>
+                                    </div> 
                                 </div>
                               </li>
                             </ul>
                           </th>
-                          <th scope="col">ชื่อ / นามสกุล </th>
-                          <th scope="col">
+                          <th class="no-sort" scope="col">ชื่อ / นามสกุล </th>
+                          <th class="no-sort" scope="col">
                               <a class="nav-link dropdown-toggle employeeDropdown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                               ทีมตามใน </a>
-                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
+                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                                 <li>
-                                  <div class="container" >
+                                  <div class="" >
                                   @if(@Auth::user()->UserToPrivilege->teamA == 'yes')
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- ทีม A ทั้งหมด --</span></label><br>
-                                    </div>
+                                    <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม A ทั้งหมด <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                     @foreach(@$teamAlists as $emplistsA)
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
@@ -168,16 +183,18 @@
                                     <div class="row onhover bg-warning">
                                       <label class="form-check-label"> 
                                       <div class="form-check"style="font-size:1rem;">
-                                        <input class="form-check-input teamA" type="checkbox" value="1" >
+                                        <input class="form-check-input teamA" type="checkbox" value=""  name = "traceEmployee[]" >
                                         <b>ทีม A ทั้งหมด</b></label>
                                       </div>
                                     </div>  
                                     <hr>
                                   @endif
                                   @if(@Auth::user()->UserToPrivilege->teamB == 'yes')
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- ทีม B ทั้งหมด --</span></label><br>
-                                    </div>
+                                  <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม B ทั้งหมด <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                     @foreach(@$teamBlists as $emplistsB)
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
@@ -190,16 +207,18 @@
                                     <div class="row onhover bg-warning">
                                       <label class="form-check-label"> 
                                       <div class="form-check"style="font-size:1rem;">
-                                        <input class="form-check-input teamB" type="checkbox" value="2">
+                                        <input class="form-check-input teamB" type="checkbox" value="" name = "traceEmployee[]">
                                         <b>ทีม B ทั้งหมด</b></label>
                                       </div>
                                     </div>        
                                     <hr>
                                   @endif
                                   @if(@Auth::user()->UserToPrivilege->teamC == 'yes')
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- ทีม C ทั้งหมด --</span></label><br>
-                                    </div>
+                                    <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม C ทั้งหมด <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                     @foreach(@$teamClists as $emplistsC)
                                     <div class="row onhover">
                                       <label class="form-check-label"> 
@@ -214,7 +233,7 @@
                                   @if(@Auth::user()->UserToPrivilege->teamA == 'yes' || @Auth::user()->UserToPrivilege->teamB == 'yes' || @Auth::user()->UserToPrivilege->teamC == 'yes')
                                     <div class="row">
                                       <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="getBranchAll(1);">ล้างการค้นหา</button>
+                                        <button class="btn btn-warning btn-clear rounded-pill" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                       </div>
                                     </div>
                                   @endif
@@ -222,16 +241,18 @@
                                 </li>
                               </ul>
                           </th>
-                          <th scope="col">วันดีลงวด</th>
-                          <th scope="col">
+                          <th class="no-sort" scope="col">วันดีลงวด</th>
+                          <th class="no-sort"scope="col">
                               <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-auto-close="outside">
                               กลุ่มค้างงวด </a>
-                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
+                              <ul class="dropdown-menu dropdown-menu-light bg-white h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                                 <li>
-                                  <div class="container" >
-                                    <div class="text-center bg-heavy-rain">
-                                      <label><span class="fs-6">-- กลุ่มค้างงวด --</span></label><br>
-                                    </div>
+                                  <div class="" >
+                                  <div class="row">
+                                      <div class="d-grid">
+                                        <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>กลุ่มค้างงวด <i class="fa-solid fa-filter"></i></button>
+                                      </div>
+                                    </div> 
                                     @foreach(@$groupDebt as $datadebt)
                                     <div class="row onhover">
                                     <label class="form-check-label"> 
@@ -243,17 +264,17 @@
                                     @endforeach
                                     <hr>
                                     <div class="row">
-                                      <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button"  onclick="getBranchAll(1);">ล้างการค้นหา</button>
+                                      <div class="d-grid">
+                                        <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                       </div>
-                                    </div>
+                                    </div> 
                                   </div>
                                 </li>
                               </ul>
                           </th>
-                          <th scope="col">ยอดจ่ายขั้นต่ำ</th>
-                          <th scope="col">วันที่ชำระล่าสุด</th>
-                          <th>วันที่นัดชำระ</th>
+                          <th class="no-sort" scope="col">ยอดจ่ายขั้นต่ำ</th>
+                          <th class="no-sort" scope="col">วันที่ชำระล่าสุด</th>
+                          <th >วันที่นัดชำระ</th>
                           <th>วันที่นัดลงพื้นที่</th>
                           <th>วันที่ลง Power App</th>
                         @if(@$type == 8)

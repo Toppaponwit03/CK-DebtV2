@@ -33,39 +33,98 @@
                     <div id="CuasTag-{{$value->id}}" class="accordion-collapse collapse {{$key == 0 ? 'show' : ''}}" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordian-header px-4 m-1">
                         <div class="row bg-light p-2 g-2">
+
                             <div class="col-xl-1 col-2 mb-1">
                                 <img class="bg-light p-1 rounded-circle border border-3" src="{{ asset('dist/img/teamwork.png') }}" alt="Responsive image" style="max-width: 100%;">
                             </div>
-                            <div class="col-xl col-10">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col"><label class="fw-bold">บันทึกรายงานการติดตาม</label> </div>
-                                            <div class="col text-end">
-                                                <i class="fa-solid fa-map-pin text-primary"></i>
-                                            </div>
-                                        </div>
 
-                                        {{$value->detail}}
+                           
+                                <div class="col-xl-12 col-10">
+                                <span class="displaypost-{{$value->id}}">
+                                    <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col"><label class="fw-bold">บันทึกรายงานการติดตาม</label> </div>
+                                                    <div class="col text-end">
+                                                        <i class="fa-solid fa-map-pin text-primary"></i>
+                                                    </div>
+                                                </div>
+        
+                                                {{$value->detail}}
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="row" style="">
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b class="">วันนัดชำระ</b> <p>{{ ($value->payment_date != NULL) ? $value->payment_date : '-'}}</p>
+                                                    </div>
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b>วันลงพื้นที่</b><p>{{ ($value->visitArea_date != NULL) ? $value->visitArea_date : '-' }}</p> 
+                                                    </div>
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b>PowerApp</b><p>{{ ($value->PowerApp_date != NULL) ? $value->PowerApp_date : '-' }}</p> 
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <div class="row" style="">
-                                            <div class="col-xl col-sm-12 text-center">
-                                                <b class="">วันนัดชำระ</b> <p>{{ ($value->payment_date != NULL) ? $value->payment_date : '-'}}</p>
-                                            </div>
-                                            <div class="col-xl col-sm-12 text-center">
-                                                <b>วันลงพื้นที่</b><p>{{ ($value->visitArea_date != NULL) ? $value->visitArea_date : '-' }}</p> 
-                                            </div>
-                                            <div class="col-xl col-sm-12 text-center">
-                                                <b>PowerApp</b><p>{{ ($value->PowerApp_date != NULL) ? $value->PowerApp_date : '-' }}</p> 
-                                            </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <small class="text-muted">{{$value->created_At}}</small>    
+                                        </div>
+                                        <div class="col text-end px-3" >
+                                            <small class="text-muted p-3"><a class=" text-muted " style="text-decoration: none; cursor:pointer;" onclick="clickEdit('{{$value->id}}');">แก้ไข</a></small> 
                                         </div>
                                     </div>
+                                </span>
                                 </div>
-                                <div class="col">
-                                    <small class="text-muted">{{$value->created_At}}</small> 
-                                </div>
+
+
+                            <!-- edit post -->
+                            <div class="col-xl-12 col-10">
+                                    <span class="editpost-{{$value->id}}" style="display:none;">
+                                    <div class="card">
+                                        <form id="updateCusTag-{{$value->id}}">
+                                            <div class="card-body">
+                                                <input type="hidden" name="tag_id" value="{{$value->id}}">
+                                                <input type="hidden" name="contractNumber" value="{{$value->ContractID}}">
+                                                <input type="hidden" name="_token" value="{{ @csrf_token() }}">
+                                                <input type="hidden" name="type" value="3">
+                                                <div class="row">
+                                                    <div class="col"><label class="fw-bold">กำลังแก้ไขรายงานการติดตาม</label> </div>
+                                                    <div class="col text-end">
+                                                        <i class="fa-solid fa-map-pin text-primary"></i>
+                                                    </div>
+                                                </div>
+        
+                                                <textarea class="form-control me-1 addaction rounded rounded-4" name="note[{{$value->id}}]" id="note-{{$value->id}}">{{$value->detail}}</textarea>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="row" style="">
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b class="">วันนัดชำระ</b> <input type="date" class="form-control" value="{{$value->payment_date}}" placeholder="" name="payment_date" id="payment_date"value=""/>
+                                                    </div>
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b>วันลงพื้นที่</b><input type="date" class="form-control" value="{{$value->visitArea_date}}" placeholder="" name="visitArea_date" id="visitArea_date"  value=""/>
+                                                    </div>
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b>PowerApp</b><input type="date" class="form-control" value="{{$value->PowerApp_date}}" placeholder="" name="PowerApp_date" id="PowerApp_date" value=""/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="row">
+                                                <div class="col">
+                                                    <small class="text-muted">{{$value->created_At}}</small>    
+                                                </div>
+                                                <div class="col text-end px-3">
+                                                    <small class="text-muted"><a class="BtnSavePost text-muted " style="text-decoration: none; cursor:pointer;" onclick="updateTag('{{$value->id}}');">บันทึก</a></small> 
+                                                    <small class="text-muted p-3"><a class="text-muted " style="text-decoration: none; cursor:pointer;" onclick="clickEdit('{{$value->id}}');">ยกเลิกแก้ไข</a></small> 
+                                                </div>
+                                            </div>
+                                    </span>
                             </div>
+                            <!--end edit post -->
+
                         </div>
                     </div>
                     <div class="px-2 scroller-chat">
@@ -108,10 +167,22 @@
                     </div>
                         <div class="accordion-footer mt-1 px-2">
                             <div class="row">
+                                <div class="col-12">
+                                    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+                                    <lord-icon
+                                        src="https://cdn.lordicon.com/flvisirw.json"
+                                        trigger="loop"
+                                        colors="primary:#646e78,secondary:#4bb3fd,tertiary:#ebe6ef"
+                                        style="width:50px;height:50px">
+                                    </lord-icon>
+                                      <span class="">เพิ่มบันทึกรายงานการติดตามหรือแผนงานการติดตามระหว่างเดือน</span>  
+                                    </div>
                                 
+                                 <br>
                                 <div class="input-group mb-3">
                                     <textarea class="form-control me-1 addaction rounded rounded-4" name="addaction" id="addaction-{{$value->id}}"></textarea>
                                     <span class="input-group-text bg-white border border-white" id="inputGroup-sizing-default"><button type="button" class="btn btn-primary rounded-circle" onclick=" addPlan('{{$value->id}}','{{$value->ContractID}}')"><i class="fa-regular fa-paper-plane"></i></button></span>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -124,6 +195,7 @@
     </div>
 
     <script>
+
         addPlan = (tag_id,ContractID) =>{
             let addaction = $(`#addaction-${tag_id}`).val();
             $.ajax({
@@ -173,4 +245,41 @@
         
         }
     </script>
+
+    <script>
+
+        clickEdit = (tag_id) => {
+
+
+            $(`.editpost-${tag_id}`).toggle();
+            $(`.displaypost-${tag_id}`).toggle();
+
+    }
+    </script>
+
+<script>
+    updateTag = (tag_id) =>{
+
+         $.ajax({
+             url: "{{ route('Cus.update',0) }}",
+             type:"put",
+             data : $(`#updateCusTag-${tag_id}`).serialize(),
+             success : (response)=> {
+                $('#CusTagDetails').html(response);   
+             },
+             error : (err)=> {
+                 Swal.fire({
+                     icon: 'error',
+                     title : `ERROR ${err.status}`,
+                     title: 'แก้ไขไม่สำเร็จ !',
+                     showConfirmButton: false,
+                     showCancelButton: false,
+                     timer: 2000    
+                     })
+             }
+         
+         })
+        
+    }
+</script>
 
