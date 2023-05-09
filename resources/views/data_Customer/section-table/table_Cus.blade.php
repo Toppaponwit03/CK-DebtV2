@@ -75,7 +75,7 @@
                                     <hr>
                                     <div class="row">
                                       <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="clearsearchstatus()">ล้างการค้นหา</button>
+                                        <button class="btn btn-warning btn-clear" type="button" onclick="getBranchAll(1);">ล้างการค้นหา</button>
                                       </div>
                                     </div>           
                                   </div>
@@ -102,7 +102,7 @@
                                         <hr>
                                       <div class="row">
                                         <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="clearnonlist()">ล้างการค้นหา</button>
+                                        <button class="btn btn-warning btn-clear" type="button"  onclick="getBranchAll(1);">ล้างการค้นหา</button>
                                         </div>
                                       </div>
                                   </div>
@@ -138,7 +138,7 @@
                                     <hr>
                                     <div class="row">
                                       <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="clearsearchtype()">ล้างการค้นหา</button>
+                                        <button class="btn btn-warning btn-clear" type="button"  onclick="getBranchAll(1);">ล้างการค้นหา</button>
                                       </div>
                                     </div>
                                 </div>
@@ -214,7 +214,7 @@
                                   @if(@Auth::user()->UserToPrivilege->teamA == 'yes' || @Auth::user()->UserToPrivilege->teamB == 'yes' || @Auth::user()->UserToPrivilege->teamC == 'yes')
                                     <div class="row">
                                       <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="cleartraceEmployee()">ล้างการค้นหา</button>
+                                        <button class="btn btn-warning btn-clear" type="button" onclick="getBranchAll(1);">ล้างการค้นหา</button>
                                       </div>
                                     </div>
                                   @endif
@@ -244,7 +244,7 @@
                                     <hr>
                                     <div class="row">
                                       <div class="col text-center">
-                                        <button class="btn btn-warning btn-clear" type="button" onclick="cleargroupDebt()">ล้างการค้นหา</button>
+                                        <button class="btn btn-warning btn-clear" type="button"  onclick="getBranchAll(1);">ล้างการค้นหา</button>
                                       </div>
                                     </div>
                                   </div>

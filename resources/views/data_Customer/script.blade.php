@@ -88,10 +88,14 @@
 <script>
     getBranchAll = (type) => {
 
+
      let position = $('#position').val();
      let Branch =  $('#Branch').val();
        Branchre = Branch.replace(/,/g,',#')
        BranchATre = Branch.replace(/,/g,',#cardAT')
+
+       $('#myTable input[type="checkbox"]').prop("checked", false);
+       $('#myTable input[type="radio"]').prop("checked", false);
 
      if(position != 'user')
      {
@@ -102,6 +106,7 @@
        $(`.activeBranch`).removeClass('bg-pt-blue').addClass('bg-white');
      }
      else{
+
       $(`#cardAT${BranchATre}`).show();
       $('.employeeDropdown').prop('disabled',true).removeClass('dropdown-toggle');
       $(`input[type=checkbox]`).prop('checked',false);

@@ -44,7 +44,7 @@ class CusController extends Controller
                   return thaidate::simpleDateFormat($data->dealDay);
                 })
                 ->addColumn('paymentDateTH', function ($data) {
-                  return thaidate::simpleDateFormat($data->paymentDate);
+                  return thaidate::simpleDateFormat(@$data->CustoCustag2->payment_date);
                 })
                 ->addColumn('fieldDayTH', function ($data) {
                   return thaidate::simpleDateFormat($data->fieldDay);
