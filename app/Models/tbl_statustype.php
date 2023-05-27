@@ -13,6 +13,6 @@ class tbl_statustype extends Model
     protected $fillable = ['id','statusName','Status_code','details'];
 
     public static function getstatus(){
-        return tbl_statustype::get();
+        return tbl_statustype::where('status','active')->get();
     }
 }

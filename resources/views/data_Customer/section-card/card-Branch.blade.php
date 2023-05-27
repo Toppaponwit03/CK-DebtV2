@@ -39,10 +39,10 @@
                             $color = 'bg-success';
                         }
                         elseif($countper > 50){
-                            $color = 'bg-warning';
+                            $color = 'bg-warning progress-bar-striped progress-bar-animated';
                         }
                         else{
-                            $color = 'bg-danger';
+                            $color = 'bg-danger progress-bar-striped progress-bar-animated';
                         }
                     @endphp
                     <div class="row pt-2">

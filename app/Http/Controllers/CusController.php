@@ -355,10 +355,7 @@ class CusController extends Controller
           'status' => 'STS-005',
           'flag' => 'yes'
         ]);
-
-
         return 200;
-
       }
       else if($request->type == 3){  //อัพเดทการติดตาม
         $data_Tag = tbl_custag::where('id',$request->tag_id)->first();

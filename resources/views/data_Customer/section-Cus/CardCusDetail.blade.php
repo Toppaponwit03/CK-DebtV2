@@ -1,5 +1,5 @@
 
-    <div class="row">   
+<div class="row">   
         <div class="col-xl col-sm-12 text-center">
           <h4>ข้อมูลลูกหนี้</h4>
           @php
@@ -79,7 +79,7 @@
         <div class="co-xl col-sm-12">
             <select name="statuschecks" id="statuschecks" class="form-select" {{ ( (@Auth::user()->UserToPrivilege->editstatus != 'yes') || ($data->flag == 'yes')) ? 'disabled' : '' }}>
                 @foreach($statuslist as $datastatus)
-                    <option value="{{$datastatus->Status_code}}" {{$datastatus->Status_code == @$data->status ? 'selected' : ''}}>{{$datastatus->details}}</option>       
+                    <option class="{{$datastatus->Status_code}}" value="{{$datastatus->Status_code}}" {{$datastatus->Status_code == @$data->status ? 'selected' : ''}}  >{{$datastatus->details}}</option>  
                 @endforeach
             </select>
         </div>
@@ -96,4 +96,7 @@
 
     <script>
         $('#formCard input[type=text]').attr('disabled',true);
+
+        $('.STS-005').hide();
+     
     </script>

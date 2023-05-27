@@ -6,7 +6,7 @@ use App\Http\Controllers\CusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\headcontroller;
 use App\Http\Controllers\StaticController;
-
+use App\Http\Controllers\ComController;
 
 
 /*
@@ -41,6 +41,11 @@ Route::post('Cus/export/',[CusController::class, 'export'])->name('export.excel'
 Route::post('Cus/import/',[CusController::class, 'import'])->name('import.excel');
 
 Route::resource('static',StaticController::class);
+
+
+// ระบบคำนวนค่าคอม
+
+Route::resource('Com',ComController::class);
  
 });
 

@@ -94,20 +94,18 @@ return [
         ],
         'ck' => [
             'driver' => 'sqlsrv',
-            'url' => env('192.168.89.2'),
-            'host' => env('DB_HOST', '192.168.89.2'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'laravel_leasingGroupV2'),
-            'username' => env('DB_USERNAME', 'sa'),
-            'password' => env('DB_PASSWORD', 'CH#p9@hp#02'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_SECOND', '192.168.89.2'),
+            'port' => env('DB_PORT_SECOND', '1433'),
+            'database' => env('DB_DATABASE_SECOND', 'laravel_leasingGroupV2'),
+            'username' => env('DB_USERNAME_SECOND', 'sa'),
+            'password' => env('DB_PASSWORD_SECOND', 'CH#p9@hp#02'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
-            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+
            
-        
         'ibmi2' => [
             'driver'               => 'db2_ibmi_odbc',
             'driverName'           => '{IBM DB2 ODBC DRIVER}',
