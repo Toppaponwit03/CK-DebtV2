@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+
+
 <style>
     .scroller::-webkit-scrollbar
     {
@@ -192,7 +194,7 @@
                     <h6 class=""><b>กำลังโหลดข้อมูล โปรดรอซักครู่... </b></h6>
             </div>
         </div>
-         `).fadeOut();
+         `);
         $.ajax({
             url : '{{ route("Com.show",0) }}',
             type : 'get',
@@ -201,6 +203,7 @@
                 _token : '{{ @csrf_token() }}',
             },
             success : (res) => {
+                $('#CardContent').hide();
                 $('#CardContent').empty();
                     let sum = 0 ;
                     let percent  ;
