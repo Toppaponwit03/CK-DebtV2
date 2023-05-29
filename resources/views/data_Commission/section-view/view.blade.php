@@ -259,7 +259,7 @@
                                                     <br>
                                                 -->
                                                 <span class="badge ${color}">
-                                                   ${ percent.toFixed(2) } %
+                                                   ${ percent.toFixed(0) } %
                                                 </span>
                                             </div>
                                             <div class="col-2 text-end">

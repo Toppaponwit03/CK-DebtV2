@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\tbl_traceEmployee;
 use App\Models\tbl_target;
+
+use App\Models\tbl_staticCom;
 use App\Models\CK_Model\tbl_contract;
 use Illuminate\Http\Request;
 
@@ -12,8 +14,8 @@ class ComController extends Controller
 
     public function __construct() // วันดีล
     {
-        $this->SDueDate = '2023-05-07';
-        $this->LDueDate = '2023-06-07';
+        $this->SDueDate = '2023-04-01';
+        $this->LDueDate = '2023-04-30';
     }
     public function index(Request $request)
     {
@@ -80,14 +82,32 @@ class ComController extends Controller
             }])
             ->with(['EmptoCon' => function($query) { 
                 $query->with(['ConToCal' => function($query) { 
-                    $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car');
+                    $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
                 }])
                 ->whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
                 ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con');
             }])
             ->get();
+
+            $contract = tbl_contract::whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
+            ->where('UserZone',20)
+            ->with(['ConToCal' => function($query) { 
+                $query->select('DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
+            }])
+            ->select('Date_monetary','BranchSent_Con','DataTag_id')
+            ->get();
     
-            return response()->json([$dataBranch]);
+            return response()->json([$dataBranch,$contract]);
+        }
+        elseif($request->type == 3){
+           $data =  tbl_staticCom::where('TypeLoans',@$request->CodeLoan_Con)
+            ->whereRaw('? between StotalInterest and TtotalInterest', [@$request->totalInt])
+            ->whereRaw('? between Spercents and Tpercents', [@$request->percent])
+            ->where('Pa',@$request->checkPA)
+            ->select('Commission')
+            ->get();
+
+            return response()->json([$data]);
         }
     }
 
@@ -101,7 +121,7 @@ class ComController extends Controller
     public function update(Request $request, $id)
     {
         if($request->type == 1){
-            $data = tbl_target::find($request->EmpId);
+            $data = tbl_target::where('EmpId',$request->EmpId)->first();
             $data->Target = $request->Targets;
             $data->update();
             return 200;
