@@ -94,20 +94,26 @@ class ComController extends Controller
             ->with(['ConToCal' => function($query) { 
                 $query->select('DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
             }])
-            ->select('Date_monetary','BranchSent_Con','DataTag_id')
+            ->select('Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','Date_Checkers')
             ->get();
     
             return response()->json([$dataBranch,$contract]);
         }
         elseif($request->type == 3){
-           $data =  tbl_staticCom::where('TypeLoans',@$request->CodeLoan_Con)
-            ->whereRaw('? between StotalInterest and TtotalInterest', [@$request->totalInt])
-            ->whereRaw('? between Spercents and Tpercents', [@$request->percent])
-            ->where('Pa',@$request->checkPA)
-            ->select('Commission')
-            ->get();
+            if($request->CodeLoan_Con == 04 || $request->CodeLoan_Con == 03){
+                $totalInt = 0;
+            }else{
 
-            return response()->json([$data]);
+                $totalInt = @$request->totalInt;
+            }
+           $data =  tbl_staticCom::where('TypeLoans',@$request->CodeLoan_Con)
+            ->whereRaw('? between StotalInterest and TtotalInterest', [@$totalInt])
+            ->whereRaw('? between SPercents and TPercents', [@$request->percent])
+            ->where('Pa',@$request->checkPA)
+            ->select('Commission','TypeLoans')
+            ->first();
+
+            return response()->json([$data,'Branch' => $request->employeeName]);
         }
     }
 
@@ -122,8 +128,17 @@ class ComController extends Controller
     {
         if($request->type == 1){
             $data = tbl_target::where('EmpId',$request->EmpId)->first();
-            $data->Target = $request->Targets;
-            $data->update();
+            if($data != null){
+                $data->Target = @$request->Targets;
+                $data->update();
+            }
+            else{
+                $data = new tbl_target;
+                $data->EmpId = $request->EmpId;
+                $data->EmpName = $request->EmpName;
+                $data->Target = $request->Targets;
+                $data->save();
+            }
             return 200;
         }
     }
