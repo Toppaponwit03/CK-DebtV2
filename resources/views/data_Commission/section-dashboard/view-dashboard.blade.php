@@ -91,8 +91,9 @@
                 _token : '{{ @csrf_token() }}',
             },
             success : (res) => {
+                // console.log(res);
                 $('#accontent').hide().empty();
-                console.log(res)
+                // console.log(res)
                 let html = '';
                 let content = '';
                 let htmlBill = '';
@@ -157,7 +158,7 @@
                         }
                     }
                     html = `
-                
+                  
                         <h2 class="accordion-header" id="headingbranch-${data.employeeName}">
                         <div class="card border border-white p-1 mb-1 fs-6 rounded-4" type="button" data-bs-toggle="collapse" data-bs-target=".branch-${data.employeeName},.branchs-${data.employeeName}" aria-expanded="true" aria-controls="branch-${data.employeeName}" >
                             <div class="row text-center">
@@ -273,11 +274,11 @@
                             </div>
                             <div class="row mb-2 border-bottom">
                                 <div class="col text-start">หัก 40 %</div>
-                                <div class="col-4 text-end">400</div>
+                                <div class="col-4 text-end"><span class="totalcomSubper-${data.employeeName}"></span></div>
                             </div>
                             <div class="row mb-2 border-danger border-bottom">
                                 <div class="col text-start"><h5><b>ได้รับค่าคอม ฯ</b></h5></div>
-                                <div class="col-4 text-end">1,200</div>
+                                <div class="col-4 text-end"><span class="totalcomRecieve-${data.employeeName}"></span></div>
                             </div>
                             <div class="row mt-4">
                                 <div class="col d-grid">
@@ -292,12 +293,13 @@
                     $('#accontent').append(html).fadeIn();
                     for (let [index,con] of data.empto_con.entries()){
                         if(data.IdCK == con.BranchSent_Con){
-                            checkPA = con.con_to_cal.Include_PA == 'Yes' ? con.con_to_cal.Include_PA : 'No';
+                            // checkPA = con.con_to_cal.Include_PA == 'Yes' ? con.con_to_cal.Include_PA : 'No';
+                            checkPA = con.con_to_cal.Buy_PA == 'Yes' ? con.con_to_cal.Buy_PA : 'No';
                             totalInt += ( con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate );
                             content = `
                             <div class="row p-1 text-center border-bottom">
                                 <div class="col-1">
-                                    ${index+1}
+                                    ${index+1} ${con.UserSent_Con}
                                 </div>
                                 <div class="col">
                                    <a href = "https://ckapproval.com/MasterDataContract/0/edit?type=11&search=${con.Contract_Con}" target="blank">${con.Contract_Con}</a> 
@@ -324,7 +326,7 @@
                             `;
                             $(`#contentCon-${con.BranchSent_Con}`).append(content);
 
-                             CalCom(data.employeeName,con.CodeLoan_Con,percent.toFixed(0),checkPA,totalInt,con.Contract_Con)
+                             CalCom(data.employeeName,con.CodeLoan_Con,percent.toFixed(0),checkPA,(con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate),con.Contract_Con)
                         }
                        
                         
@@ -353,7 +355,7 @@
                 }
             },
             error : (err) => {
-                console.log(err)
+                // console.log(err)
             }
         })
     })
@@ -374,12 +376,13 @@
                 totalInt : totalInt,
                 _token : '{{@csrf_token()}}'
             },
-            success : (res) => {
+            success :  (res) => {
                 processResponse(res,res.Branch);
                 $('#rateCom-'+Contract_Con).append(res[0].Commission)
             },
             error : (err) => {
-
+                CalCom(employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con) 
+                console.log(employeeName);
             }
 
             
@@ -392,25 +395,27 @@
     processResponse = (data,employeeName) => {
         if (data[0] != null) {
             arr.push({name:employeeName ,value:data[0].Commission})
-        }
 
+        }
         const propertyName = employeeName;
         const result = sumByPropertyName(arr, propertyName);
+            $(`.totalcomSubper-${employeeName}`).empty();
             $(`.totalcom-${employeeName}`).empty();
+            $(`.totalcomRecieve-${employeeName}`).empty();
             $(`.totalcom-${employeeName}`).append(result);
-
-
+            $(`.totalcomSubper-${employeeName}`).append((result * 0.40).toFixed(0));
+            $(`.totalcomRecieve-${employeeName}`).append(( result - (result * 0.40) ).toFixed(0));
     }
 
     function sumByPropertyName(arr, propertyName) {
-  let sum = 0;
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].name === propertyName) {
-      sum += parseInt(arr[i].value);
+        let sum = 0;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].name === propertyName) {
+            sum += parseInt(arr[i].value);
+            }
+        }
+        return sum;
     }
-  }
-  return sum;
-}
 
 
 </script>

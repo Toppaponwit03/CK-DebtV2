@@ -37,5 +37,9 @@ class tbl_contract extends Model
     {
         return $this->hasOne(tbl_typeLoan::class,'CodeLoan_Con','Loan_Code');
     }
+    public function ConToEmp()
+    {
+        return $this->belongsTo(tbl_traceEmployee::class,'IdCK','BranchSent_Con');
+    }
 
 }

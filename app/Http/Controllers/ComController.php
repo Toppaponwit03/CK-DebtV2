@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\tbl_traceEmployee;
 use App\Models\tbl_target;
-
-use App\Models\tbl_staticCom;
+use App\Models\tbl_staticcommission;
 use App\Models\CK_Model\tbl_contract;
 use Illuminate\Http\Request;
+use DB;
+
 
 class ComController extends Controller
 {
@@ -85,7 +86,8 @@ class ComController extends Controller
                     $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
                 }])
                 ->whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
-                ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con');
+                ->orderBy('UserSent_Con','ASC')
+                ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con');
             }])
             ->get();
 
@@ -94,9 +96,10 @@ class ComController extends Controller
             ->with(['ConToCal' => function($query) { 
                 $query->select('DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
             }])
-            ->select('Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','Date_Checkers')
+            ->select('Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','Date_Checkers','UserSent_Con')
+            ->orderBy('UserSent_Con','ASC')
             ->get();
-    
+
             return response()->json([$dataBranch,$contract]);
         }
         elseif($request->type == 3){
@@ -106,13 +109,21 @@ class ComController extends Controller
 
                 $totalInt = @$request->totalInt;
             }
-           $data =  tbl_staticCom::where('TypeLoans',@$request->CodeLoan_Con)
-            ->whereRaw('? between StotalInterest and TtotalInterest', [@$totalInt])
-            ->whereRaw('? between SPercents and TPercents', [@$request->percent])
-            ->where('Pa',@$request->checkPA)
-            ->select('Commission','TypeLoans')
-            ->first();
 
+            if(@$request->checkPA =='Yes'){
+                $pa = 'YPA';
+            }else{
+                $pa = 'NPA';
+            }
+
+       
+           $data =  tbl_staticcommission::where('TypeLoans',$request->CodeLoan_Con)
+            ->whereRaw('? between StotalInterest and TtotalInterest', $totalInt)
+            ->selectRaw('case when '.$request->percent.' < 80 then '.$pa.'70  
+            when '.$request->percent.' < 100 then '.$pa.'80  
+            when '.$request->percent.' < 120 then '.$pa.'100  
+            else  '.$pa.'120 end as Commission, TypeLoans')
+             ->first();
             return response()->json([$data,'Branch' => $request->employeeName]);
         }
     }
