@@ -53,17 +53,17 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tabCommissions"
                     aria-expanded="true" aria-controls="tabCommissions">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fa-brands fa-bitcoin"></i>
                     <span>ระบบคำนวนค่าคอมมิชชั่น</span>
                 </a>
                 <div id="tabCommissions" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
                         @if(@Auth::user()->UserToPrivilege->dataCus == 'yes')
-                        <a class="collapse-item" href="{{route('Com.index')}}?type={{1}}"><i class="fa-solid fa-phone-volume"></i> กำหนดเป้าให้สาขา</a>
+                        <a class="collapse-item" href="{{route('Com.index')}}?type={{1}}"><i class="fa-solid fa-chart-column"></i> กำหนดเป้าให้สาขา</a>
                         @endif
                         @if(@Auth::user()->UserToPrivilege->dashboard == 'yes')
-                        <a class="collapse-item" href="{{route('Com.index')}}?type={{2}}"><i class="fa-solid fa-gauge-high"></i> ค่าคอมมิชชั่นสาขา</a>
+                        <a class="collapse-item" href="{{route('Com.index')}}?type={{2}}"><i class="fa-solid fa-hand-holding-dollar"></i> ค่าคอมมิชชั่นสาขา</a>
                         @endif
                     </div>
                 </div>
