@@ -32,7 +32,28 @@ class ComController extends Controller
             return view('data_Commission.section-view.view',compact('dataBranch'));
         }
         elseif($request->type == 2){
-            return view('data_Commission.section-dashboard.view-dashboard');
+            $contract = tbl_contract::whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
+            ->where('UserZone',20)
+            ->with(['ConToCal' => function($query) { 
+                $query->select('DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car');
+            }])
+            ->select('Date_monetary','BranchSent_Con','DataTag_id')
+            ->get();
+
+            $dataBranch = tbl_traceEmployee::where('IdCK','!=','')
+            ->with(['EmptoTarget' => function($query) { 
+                $query;
+            }])
+            ->with(['EmptoCon' => function($query) { 
+                $query->with(['ConToCal' => function($query) { 
+                    $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
+                }])
+                ->whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
+                ->orderBy('UserSent_Con','ASC')
+                ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con');
+            }])
+            ->get();
+            return view('data_Commission.section-dashboard.view-dashboard',compact('contract','dataBranch'));
         }
     }
 

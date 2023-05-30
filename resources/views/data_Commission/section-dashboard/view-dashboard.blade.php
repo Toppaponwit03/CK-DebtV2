@@ -55,17 +55,62 @@
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
         <div class="row">
-            <div class="col-8">
-                <div class="bg-light p-4 scroller">
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div id="accontent"></div>
+            <div class="col-3">
+                <div class="bg-light scroller">
+                    <div class=" mb-3" id="pills-tab" role="tablist">
+                        <div id="htmlaccHeader"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="bg-light p-4 scroller">
-                    <div id="contentBill"></div>
-                </div>
+            <div class="col-9">
+                <div class="bg-light">
+                    <div class="tab-content" id="">  
+                        
+                       
+                            <div class="row">
+                                <div class="col">
+                                <div class="tab-content">
+                                    @foreach(@$dataBranch as $value)
+                                    <div class="tab-pane fade" id="TabBranch-{{$value->employeeName}}" aria-labelledby="TabBranch-{{$value->employeeName}}-tab" tabindex="0">
+                                        <table class="table" class="TBCom" id="TBCom">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>เลขสัญญา</th>
+                                                    <th>สัญญา</th>
+                                                    <th>ยอดจัด</th>
+                                                    <th>ค่าดำเนินการ</th>
+                                                    <th>ประกัน(PA)</th>
+                                                    <th>ดอกเบี้ยรวม</th>
+                                                    <th>ค่าคอม ฯ</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody >
+                                            @foreach(@$contract as $val)
+                                                @if($val->BranchSent_Con == $value->IdCK)
+                                                <tr>
+                                                    <td>{{ $val->loop }}</td>
+                                                    <th>{{ $val->Contract_Con }}</th>
+                                                    <th>{{ $val->Contract_Con }}</th>
+                                                    <th>{{ $val->Contract_Con }}</th>
+                                                    <th>{{ $val->Contract_Con }}</th>
+                                                    <th>{{ $val->Contract_Con }}(PA)</th>
+                                                    <th>{{ $val->Contract_Con }}</th>
+                                                    <th>ค่าคอม ฯ</th>
+                                                </tr>
+                                                @endif
+                                                @endforeach
+                                            </tbody>              
+                                        </table>
+                                    </div>
+                                    @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    
+                </div>    
             </div>
         </div>
     </div>
@@ -75,7 +120,8 @@
 <script>
 
     $(function(){
-        $('#accontent').append(`
+        $('.TBCom').DataTable();
+        $('#htmlaccHeader').append(`
         <div class="row">
             <div class="col m-auto text-center">
                 <img src="{{ asset('dist/img/duckload.gif') }}" alt="" style="max-width : 25%;">
@@ -92,9 +138,10 @@
             },
             success : (res) => {
                 // console.log(res);
-                $('#accontent').hide().empty();
+                $('#htmlaccHeader').hide().empty();
                 // console.log(res)
-                let html = '';
+                let htmlaccHeader = '';
+                let htmlaccContent = '';
                 let content = '';
                 let htmlBill = '';
                 let sum = 0 ;
@@ -157,175 +204,124 @@
                             color = 'bg-pt-red';
                         }
                     }
-                    html = `
+                    htmlaccHeader = `
                   
-                        <h2 class="accordion-header" id="headingbranch-${data.employeeName}">
-                        <div class="card border border-white p-1 mb-1 fs-6 rounded-4" type="button" data-bs-toggle="collapse" data-bs-target=".branch-${data.employeeName},.branchs-${data.employeeName}" aria-expanded="true" aria-controls="branch-${data.employeeName}" >
-                            <div class="row text-center">
-                                <div class="col-2 m-auto">
-                                    <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 40%;">
-                                </div>
-                                <div class="col-3 m-auto text-start">${index+1}. ${data.nameThai} ( ${data.employeeName} )</div>
-                                <div class="col m-auto">${sum.toLocaleString()}</div>
-                                <div class="col m-auto">
-                                    <div class="progress">
-                                        <div class="progress-bar ${color} " role="progressbar" aria-label="Example with label" style="width: ${percent.toFixed(0)}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">${percent.toFixed(0)} %</div>
-                                    </div>
-                                </div>
-                                <div class="col-2 m-auto">
-                                    <span class="badge  bg-pt-blue">Case</span>
+                            <div class="card bg-white border border-white rounded-4 p-2 m-2" id="branch-${data.employeeName}-tab" data-bs-toggle="pill" data-bs-target="#TabBranch-${data.employeeName},#TabBillPay-${data.employeeName}" role="tab" aria-controls="pills-home" aria-selected="true">
+                                <div class="row">
+                                    <div class="col-9 text-start">${index+1}. ${data.nameThai} ( ${data.employeeName} )</div>
+                                    <div class="col-3 text-end">${percent.toFixed(0)} %</div>
                                 </div>
                             </div>
-                        </div>
-                        </h2>
-                        <div id="branch-${data.employeeName}" class="accordion-collapse collapse branch-${data.employeeName}" >
-                            <div class="accordion-body">
-                                <div class="row p-1 bg-warning text-center">
-                                        <div class="col-1">
-                                            #
-                                        </div>
-                                        <div class="col">
-                                            เลขสัญญา
-                                        </div>
-                                        <div class="col">
-                                            สัญญา
-                                        </div>
-                                        <div class="col">
-                                            ยอดจัด
-                                        </div>
-                                        <div class="col">
-                                            ค่าดำเนินการ
-                                        </div>
-                                        <div class="col">
-                                            ประกัน(PA)
-                                        </div>
-                                        <div class="col">
-                                            ดอกเบี้ยรวม
-                                        </div>
-                                        <div class="col">
-                                            เรท
-                                        </div>
-                                    </div>
-                                <div id="contentCon-${data.IdCK}"></div>
-                            </div>
-                        </div>      
+
+                      
                     `;
-                    htmlBill = `
-
-                        <div class="mb-4 p-4 accordion-collapse collapse branchs-${data.employeeName}">
-                            <div class="row">
-                                <div class="col text-center"><h5><b>บิลค่าคอม ฯ </b></h5> <sup>( ${data.employeeName} )</sup> </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col text-start"><h5>รายการ ( ${totalNonPA + totalPA} ) </h5></div>
-                                <div class="col-2 text-end border-end"><small class="fw-semibold">มี PA</small> </div>
-                                <div class="col-2 text-end"><small class="fw-semibold">ไม่ PA</small> </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col text-start">เช่าซื้อรถยนต์</div>
-                                <div class="col-2 text-end border-end"> ${ countLoans01PA}</div>
-                                <div class="col-2 text-end">${ countLoans01nonPA }</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col text-start">เงินกู้รถยนต์</div>
-                                <div class="col-2 text-end border-end"> ${ countLoans02PA }</div>
-                                <div class="col-2 text-end">${ countLoans02nonPA } </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col text-start">เงินกู้รถมอเตอร์ไซค์</div>
-                                <div class="col-2 text-end border-end"> ${ countLoans03PA }</div>
-                                <div class="col-2 text-end">${ countLoans03nonPA }</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col text-start">เงินกู้ที่ดิน</div>
-                                <div class="col-2 text-end border-end"> ${ countLoans04PA}</div>
-                                <div class="col-2 text-end">${ countLoans04nonPA  }</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col text-start">เงินกู้รถบันทุก</div>
-                                <div class="col-2 text-end border-end"> ${ countLoans06PA }</div>
-                                <div class="col-2 text-end">${ countLoans06nonPA }</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col text-start">เงินกู้ไมโครรถยนต์</div>
-                                <div class="col-2 text-end border-end"> ${ countLoans11nonPA }</div>
-                                <div class="col-2 text-end">${ countLoans11nonPA   }</div>
-                            </div>
-
-                            <div class="row mb-3 pb-1 border-bottom">
-                                <div class="col text-start"><h5><b>รวม</b></h5></div>
-                                <div class="col-2 text-end border-end">${ totalPA }</div>
-                                <div class="col-2 text-end">${totalNonPA}</div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col text-start"><h5>คำนวนผลตอบแทน</h5></div>
-                                <div class="col-4 text-end"><small class="fw-semibold">จำนวน</small></div>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col text-start">ลงพื้นที่ (เคส)</div>
-                                <div class="col-4 text-end">${area}</div>
-                            </div>
-
-                            <div class="row mb-2">
-                                <div class="col text-start">ค่าคอม ฯ</div>
-                                <div class="col-4 text-end"> <span class="totalcom-${data.employeeName}"></span> </div>
-                            </div>
-                            <div class="row mb-2 border-bottom">
-                                <div class="col text-start">หัก 40 %</div>
-                                <div class="col-4 text-end"><span class="totalcomSubper-${data.employeeName}"></span></div>
-                            </div>
-                            <div class="row mb-2 border-danger border-bottom">
-                                <div class="col text-start"><h5><b>ได้รับค่าคอม ฯ</b></h5></div>
-                                <div class="col-4 text-end"><span class="totalcomRecieve-${data.employeeName}"></span></div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col d-grid">
-                                    <button type="button" class="btn btn-primary rounded-pill">คัดลอกบิล</button>
+                    htmlaccContent = `
+                    <div class="tab-pane fade" id="TabBranch-${data.employeeName}" aria-labelledby="TabBranch-${data.employeeName}-tab" tabindex="0">
+                        <div class="row">
+                            <div class="col-12 scroller">
+                                <div class="row">
+                                    <div class="col m-auto">${sum.toLocaleString()}</div>
+                                    <div class="col m-auto">
+                                        <div class="progress">
+                                            <div class="progress-bar ${color} " role="progressbar" aria-label="Example with label" style="width: ${percent.toFixed(0)}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">${percent.toFixed(0)} %</div>
+                                        </div>
+                                    </div>
+                                    <div class="col">....</div>
                                 </div>
-                            </div>
+
+                            </div>  
                         
+                        <div class="col-12">
+                            <div>
+                                <div class="row">
+                                    <div class="col text-center"><h5><b>บิลค่าคอม ฯ </b></h5> <sup>( ${data.employeeName} )</sup> </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col text-start"><h5>รายการ ( ${totalNonPA + totalPA} ) </h5></div>
+                                    <div class="col-2 text-end border-end"><small class="fw-semibold">มี PA</small> </div>
+                                    <div class="col-2 text-end"><small class="fw-semibold">ไม่ PA</small> </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col text-start">เช่าซื้อรถยนต์</div>
+                                    <div class="col-2 text-end border-end"> ${ countLoans01PA}</div>
+                                    <div class="col-2 text-end">${ countLoans01nonPA }</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col text-start">เงินกู้รถยนต์</div>
+                                    <div class="col-2 text-end border-end"> ${ countLoans02PA }</div>
+                                    <div class="col-2 text-end">${ countLoans02nonPA } </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col text-start">เงินกู้รถมอเตอร์ไซค์</div>
+                                    <div class="col-2 text-end border-end"> ${ countLoans03PA }</div>
+                                    <div class="col-2 text-end">${ countLoans03nonPA }</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col text-start">เงินกู้ที่ดิน</div>
+                                    <div class="col-2 text-end border-end"> ${ countLoans04PA}</div>
+                                    <div class="col-2 text-end">${ countLoans04nonPA  }</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col text-start">เงินกู้รถบันทุก</div>
+                                    <div class="col-2 text-end border-end"> ${ countLoans06PA }</div>
+                                    <div class="col-2 text-end">${ countLoans06nonPA }</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col text-start">เงินกู้ไมโครรถยนต์</div>
+                                    <div class="col-2 text-end border-end"> ${ countLoans11nonPA }</div>
+                                    <div class="col-2 text-end">${ countLoans11nonPA   }</div>
+                                </div>
+        
+                                <div class="row mb-3 pb-1 border-bottom">
+                                    <div class="col text-start"><h5><b>รวม</b></h5></div>
+                                    <div class="col-2 text-end border-end">${ totalPA }</div>
+                                    <div class="col-2 text-end">${totalNonPA}</div>
+                                </div>
+        
+                                <div class="row mb-3">
+                                    <div class="col text-start"><h5>คำนวนผลตอบแทน</h5></div>
+                                    <div class="col-4 text-end"><small class="fw-semibold">จำนวน</small></div>
+                                </div>
+        
+                                <div class="row mb-2">
+                                    <div class="col text-start">ลงพื้นที่ (เคส)</div>
+                                    <div class="col-4 text-end">${area}</div>
+                                </div>
+        
+                                <div class="row mb-2">
+                                    <div class="col text-start">ค่าคอม ฯ</div>
+                                    <div class="col-4 text-end"> <span class="totalcom-${data.employeeName}"></span> </div>
+                                </div>
+                                <div class="row mb-2 border-bottom">
+                                    <div class="col text-start">หัก 40 %</div>
+                                    <div class="col-4 text-end"><span class="totalcomSubper-${data.employeeName}"></span></div>
+                                </div>
+                                <div class="row mb-2 border-danger border-bottom">
+                                    <div class="col text-start"><h5><b>ได้รับค่าคอม ฯ</b></h5></div>
+                                    <div class="col-4 text-end"><span class="totalcomRecieve-${data.employeeName}"></span></div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col d-grid">
+                                        <button type="button" class="btn btn-primary rounded-pill">คัดลอกบิล</button>
+                                    </div>
+                                </div>
+                            
+                            </div>
                         </div>
+                        </div>
+                    </div>
+
 
                     `;
                     $('#contentBill').append(htmlBill)
-                    $('#accontent').append(html).fadeIn();
+                    $('#htmlaccHeader').append(htmlaccHeader).fadeIn();
+                    $('#htmlaccContent').append(htmlaccContent);
+                    
                     for (let [index,con] of data.empto_con.entries()){
                         if(data.IdCK == con.BranchSent_Con){
                             // checkPA = con.con_to_cal.Include_PA == 'Yes' ? con.con_to_cal.Include_PA : 'No';
                             checkPA = con.con_to_cal.Buy_PA == 'Yes' ? con.con_to_cal.Buy_PA : 'No';
                             totalInt += ( con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate );
-                            content = `
-                            <div class="row p-1 text-center border-bottom">
-                                <div class="col-1">
-                                    ${index+1} ${con.UserSent_Con}
-                                </div>
-                                <div class="col">
-                                   <a href = "https://ckapproval.com/MasterDataContract/0/edit?type=11&search=${con.Contract_Con}" target="blank">${con.Contract_Con}</a> 
-                                </div>
-                                <div class="col">
-                                    ${con.CodeLoan_Con}
-                                </div>
-                                <div class="col">
-                                    ${con.con_to_cal.Cash_Car}
-                                </div>
-                                <div class="col">
-                                    ${con.con_to_cal.Process_Car}
-                                </div>
-                                <div class="col">
-                                    ${(con.con_to_cal.Include_PA == 'Yes') ? con.con_to_cal.Insurance_PA : '0'}
-                                </div>
-                                <div class="col">
-                                    ${con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate}
-                                </div>
-                                <div class="col">
-                                    <span id="rateCom-${con.Contract_Con}"></span>
-                                </div>
-                            </div>
-                            `;
-                            $(`#contentCon-${con.BranchSent_Con}`).append(content);
-
                              CalCom(data.employeeName,con.CodeLoan_Con,percent.toFixed(0),checkPA,(con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate),con.Contract_Con)
                         }
                        
