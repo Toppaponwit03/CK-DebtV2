@@ -56,37 +56,39 @@
             transition : 0.3s;
         }
 
+        .fontSize {
+            font-size:13px;
+        }
+
 
 </style>
 
-<!-- <div class="row">
-    <div class="col-2">
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-            @foreach(@$dataBranch as $value)
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-{{$value->IdCK}}" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home {{$value->IdCK}}</button>
-                </li>
-            @endforeach
-        </ul>
+<!-- <div class="row mb-2">
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <h6>สัญญา เช่าซื้อรถยนต์ <small class="textHeader">(Contracts Center)</small></h6>
     </div>
+    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-end">
+            <form method="get" action="{{route('Com.show',0)}}">
+                @csrf
+                <input type="hidden" name="type" value="2">
+                <input type="hidden" name="loanCode" value="01">
+                <div class="input-group form-inline">
+                <span class="input-group-append">
+                    <input type="date" name="dateStart" id="dateStart" value="" class="form-control   mx-1" placeholder="จากวันที">
+                    <input type="date" name="dateEnd" id="dateEnd" value="" class="form-control   mx-1" placeholder="ถึงวันที่">
 
-    <div class="col">
-        <div class="tab-content" id="pills-tabContent">
-            @foreach(@$dataBranch as $value)
-            <div class="tab-pane fade  " id="pills-{{$value->IdCK}}" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                @foreach($value->EmptoCon as $val)
-               
-            
-            </div>
-                @endforeach
-            @endforeach
-        </div>
-
+                    <button type="submit" class="btn btn-primary rounded-circle mx-1">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </button>
+                    
+                    <ul class="dropdown-menu" role="menu">
+                    <li><a class="dropdown-item textSize-13"data-link="">1. ดาวโหลดรายงานค่าคอมมิชชั่น</a></li>
+                    </ul>
+                </span>
+                </div>
+            </form>
     </div>
 </div> -->
-
-
-
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
         <div class="row">
@@ -99,34 +101,6 @@
                 </div>
             </div>
             <div class="col-xl-9 col-sm-12 ">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <!-- <h6>สัญญา เช่าซื้อรถยนต์ <small class="textHeader">(Contracts Center)</small></h6> -->
-                </div>
-                <div class="col-sm-6">
-                    <div class="float-right form-inline btn-page">
-                    <form method="get" action="{{route('Com.show',0)}}">
-                        @csrf
-                        <input type="hidden" name="type" value="2">
-                        <input type="hidden" name="loanCode" value="01">
-                        <div class="input-group form-inline">
-                        <span class="input-group-append">
-                            <input type="date" name="dateStart" id="dateStart" value="" class="form-control   mx-1" placeholder="จากวันที">
-                            <input type="date" name="dateEnd" id="dateEnd" value="" class="form-control   mx-1" placeholder="ถึงวันที่">
-
-                            <button type="submit" class="btn btn-primary rounded-circle mx-1">
-                                <i class="fas fa-search" aria-hidden="true"></i>
-                            </button>
-                            
-                            <ul class="dropdown-menu" role="menu">
-                            <li><a class="dropdown-item textSize-13"data-link="">1. ดาวโหลดรายงานค่าคอมมิชชั่น</a></li>
-                            </ul>
-                        </span>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-            </div>
                 <div class="p-2 scroller">
                     <div class="tab-content" id="contentTab">
                     </div>
@@ -229,7 +203,7 @@
                     }
                     htmlHeadTab = `
                   
-                        <div class="card cardTabBranch hover-up border border-white p-2 mb-1 mx-2 fs-6 rounded-4" id="TabBranch-${data.employeeName}" onclick="getActive('TabBranch-${data.employeeName}')" data-bs-toggle="pill" data-bs-target="#branch-${data.employeeName}" style="cursor : pointer;">
+                        <div class="card fontSize cardTabBranch hover-up border border-white p-2 mb-1 mx-2 rounded-4" id="TabBranch-${data.employeeName}" onclick="getActive('TabBranch-${data.employeeName}')" data-bs-toggle="pill" data-bs-target="#branch-${data.employeeName}" style="cursor : pointer; ">
                             <div class="row">
                             
                                 <div class="col-9 text-start m-auto">  <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 10%;"> ${index+1}. ${data.nameThai} <small class="text-primary"> ( ${data.employeeName} )</small></div>
@@ -246,7 +220,7 @@
                     <div id="branch-${data.employeeName}" class="tab-pane fade p-3"  role="tabpanel" aria-labelledby="TabBranch-${data.employeeName}" tabindex="0">
                         <div class="row mb-2">
 
-                            <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center border-end">
+                            <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center">
                                 <div class="card border border-tranparent p-2" style="background:rgb(159,222,122); background: linear-gradient(180deg, rgba(159,222,122,1) 0%, rgba(255,243,173,1) 100%);">               
                                     <h6>เป้า</h6>
                                     <h5> ${ (data.empto_target.Target).toLocaleString() } </h5> 
@@ -260,7 +234,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center">
+                            <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center  border-end">
                                 <div class="card border border-tranparent p-2" style="background:rgb(255,145,54); background: linear-gradient(180deg, rgba(255,145,54,1) 0%, rgba(255,238,139,1) 100%);">
                                     <h6>ได้รับค่าคอม</h6>
                                 <h5><span class="totalcomRecieveALL-${data.employeeName}">0</span> </h5> 
@@ -274,35 +248,37 @@
                                 </div>
                             </div>
                             
-                        </div>   
-                            <div class="row p-1 bg-light text-center fw-semibold">
-                                    <div class="col-xl-1 col-sm-12">
-                                        #
-                                    </div>
-                                    <div class="col-xl-2 col-sm-12">
-                                        เลขสัญญา
-                                    </div>
-                                    <div class="col-xl-1 col-sm-12">
-                                        สัญญา
-                                    </div>
-                                    <div class="col-xl col-sm-12">
-                                        ยอดจัด
-                                    </div>
-                                    <div class="col-xl col-sm-12">
-                                        ค่าดำเนินการ
-                                    </div>
-                                    <div class="col-xl col-sm-12">
-                                        ประกัน(PA)
-                                    </div>
-                                    <div class="col-xl col-sm-12">
-                                        ดอกเบี้ยรวม
-                                    </div>
-                                    <div class="col-xl col-sm-12">
-                                        ผลตอบแทน
-                                    </div>
+                        </div> 
+                        <span class="d-none d-md-none d-lg-block"> 
+                            <div class="row p-1 bg-light text-center fontSize fw-semibold text-wrap">
+                                <div class="col-xl-1 col-lg-1 col-sm-12">
+                                    #
                                 </div>
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                                    เลขสัญญา
+                                </div>
+                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-12">
+                                    สัญญา
+                                </div>
+                                <div class="col-xl col-lg col-md col-sm-12">
+                                    ยอดจัด
+                                </div>
+                                <div class="col-xl col-lg col-md col-sm-12">
+                                    ค่าดำเนินการ
+                                </div>
+                                <div class="col-xl col-lg col-md col-sm-12">
+                                    ประกัน(PA)
+                                </div>
+                                <div class="col-xl col-lg col-md col-sm-12">
+                                    ดอกเบี้ยรวม
+                                </div>
+                                <div class="col-xl col-lg col-md col-sm-12">
+                                    <i class="fa-solid fa-sack-dollar text-warning"></i> ผลตอบแทน 
+                                </div>
+                            </div>
+                        </span> 
 
-                                <div id="contentCon-${data.IdCK}"></div>
+                        <div id="contentCon-${data.IdCK}"></div>
                             
                         <div class="modal fade" id="Modal-${data.employeeName}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -450,34 +426,73 @@
                             checkPA = con.con_to_cal.Buy_PA == 'Yes' ? con.con_to_cal.Buy_PA : 'No';
                             totalInt += ( con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate );
                             content = `
-                            <div class="row p-1 text-center border-bottom">
-                                <div class="col-xl-1 col-sm-12">
-                                    ${index+1}
+                            <div class="row p-1 text-center fontSize border-bottom">
+                                <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12">
+                                  <span class="d-sm-block d-md-block d-lg-none"><b>ลำดับที่</b></span>  ${index+1}
                                 </div>
-                                <div class="col-xl-2 text-center">
+                                <div class="col-xl-2 col-lg-2 text-center">
                                    <a class="btn btn-primary rounded-pill btn-sm" href = "https://ckapproval.com/MasterDataContract/0/edit?type=11&search=${con.Contract_Con}" target="blank"><small>${con.Contract_Con}</small>  </a> 
                                 </div>
-                                <div class="col-xl-1 col-sm-12 text-center">
-                                  <div class="col text-start d-sm-block d-md-none">ประเภทสัญญา : </div>  ${con.CodeLoan_Con}
+                                <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12 text-center">
+                                    <span class="d-none d-md-none d-lg-block">  ${con.CodeLoan_Con}</span>
+
+                                    <span class="d-sm-block d-md-block d-lg-none">
+                                        <div class="row">
+                                            <div class="col text-start ">ประเภทสัญญา : </div>
+                                            <div class="col text-end ">  ${con.CodeLoan_Con} </div>
+                                        </div>
+                                    </span>
+
                                 </div>
-                                <div class="col-xl col-sm-12 text-center">
-                                    <span class="d-sm-none d-md-block"> ${con.con_to_cal.Cash_Car}</span>
-                                    <div class="row d-sm-block d-md-none">
-                                        <div class="col text-start ">ยอดจัด : </div>
-                                        <div class="col text-end "> ${con.con_to_cal.Cash_Car} </div>
+                                <div class="col-xl col-lg col-md-12 col-sm-12 text-center">
+                                    <span class="d-none d-md-none d-lg-block"> ${con.con_to_cal.Cash_Car}</span>
+                                    <span class="d-sm-block d-md-block d-lg-none">
+                                        <div class="row">
+                                            <div class="col text-start ">ยอดจัด : </div>
+                                            <div class="col text-end "> ${con.con_to_cal.Cash_Car} </div>
+                                        </div>
+                                    </span>
+
+                                </div>
+                                <div class="col-xl col-lg col-md-12 col-sm-12 text-center">
+                                    <span class="d-none d-md-none d-lg-block"> ${con.con_to_cal.Process_Car}</span>
+                                    <span class="d-sm-block d-md-block d-lg-none">
+                                        <div class="row">
+                                            <div class="col text-start ">ค่าดำเนินการ : </div>
+                                            <div class="col text-end ">${con.con_to_cal.Process_Car} </div>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="col-xl col-lg col-md-12 col-sm-12 text-center">
+
+                                    <span class="d-none d-md-none d-lg-block"> ${(con.con_to_cal.Include_PA == 'Yes') ? con.con_to_cal.Insurance_PA : '0'}</span>
+                                    
+                                    <span class="d-sm-block d-md-block d-lg-none">
+                                    <div class="row">
+                                        <div class="col text-start ">ประกัน PA : </div>
+                                        <div class="col text-end ">${(con.con_to_cal.Include_PA == 'Yes') ? con.con_to_cal.Insurance_PA : '0'} </div>
                                     </div>
+                                    </span>
+
+
                                 </div>
-                                <div class="col-xl col-sm-12 text-center">
-                                    <div class="col text-start d-sm-block d-md-none">ค่าดำเนินการ : </div> ${con.con_to_cal.Process_Car}
+                                <div class="col-xl col-lg col-md-12 col-sm-12 text-center">
+                                    <span class="d-none d-md-none d-lg-block "> ${(con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate)}</span>
+                                    <span class="d-sm-block d-md-block d-lg-none">
+                                        <div class="row">
+                                            <div class="col text-start ">ดอกเบี้ยรวม : </div>
+                                            <div class="col text-end ">${(con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate)} </div>
+                                        </div>
+                                    </span>
                                 </div>
-                                <div class="col-xl col-sm-12 text-center">
-                                    <div class="col text-start d-sm-block d-md-none">ประกัน PA : </div> ${(con.con_to_cal.Include_PA == 'Yes') ? con.con_to_cal.Insurance_PA : '0'}
-                                </div>
-                                <div class="col-xl col-sm-12 text-center">
-                                    <div class="col text-start d-sm-block d-md-none">ดอกเบี้ยรวม : </div>  ${con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate}
-                                </div>
-                                <div class="col-xl col-sm-12 text-center">
-                                    <div class="text-success" id="rateCom-${con.Contract_Con}"></div>
+                                <div class="col-xl col-lg col-md-12 col-sm-12 text-center">
+                                    <span class="d-sm-block d-md-block d-lg-none">
+                                        <div class="row">
+                                            <div class="col text-start fw-semibold ">ผลตอบแทน : </div>
+                                            <div class="col text-success fw-semibold text-end rateCom-${con.Contract_Con}"></div>
+                                        </div>
+                                    </span>
+                                    <div class="d-none d-md-none d-lg-block fw-semibold text-success rateCom-${con.Contract_Con}"></div>
                                 </div>
                             </div>
                             `;
@@ -527,7 +542,7 @@
 
     }
     CalCom = (employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con,areaCKM,areaCKL) => {
-        $('#rateCom-'+Contract_Con).append(`
+        $('.rateCom-'+Contract_Con).append(`
             <div class="spinner-border text-secondary spinner-border-sm" role="status"></div>
         `)
         $(`.totalcomRecieveALL-${employeeName}`).html(`
@@ -547,15 +562,13 @@
             },
             success : async (res) => {
                 processResponse(res,res.Branch,areaCKM,areaCKL,CodeLoan_Con);
-                $('#rateCom-'+Contract_Con).empty()
-                $('#rateCom-'+Contract_Con).append(res[0].Commission)
-                console.log(employeeName+' is successfully');
+                $('.rateCom-'+Contract_Con).empty()
+                $('.rateCom-'+Contract_Con).append(res[0].Commission)
             },
             error : (err) => {
                 $(`.totalcomRecieve-${employeeName}`).empty();
-                $('#rateCom-'+Contract_Con).empty()
+                $('.rateCom-'+Contract_Con).empty()
                 CalCom(employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con,areaCKM,areaCKL) 
-                console.log(employeeName+' is error');
             }
 
             

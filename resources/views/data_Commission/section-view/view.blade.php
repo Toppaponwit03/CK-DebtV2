@@ -56,7 +56,7 @@
     <div class="p-4">
         <div class="row">
              <!-- left content -->
-            <div class="col-8">
+            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
                 <div class="card bg-warning border border-none rounded-4 p-3">
                     <div class="row" style ="max-height : 200px;">
                         <div class="col-6">
@@ -85,15 +85,15 @@
                     </div>
                 </div>
 
-            <div class="bg-light p-4 scroller">
-                <div class="nav-pills" id="pills-tab" role="tablist">
-                    <div id="CardContent"></div>
+                <div class="bg-light p-4 scroller">
+                    <div class="nav-pills" id="pills-tab" role="tablist">
+                        <div id="CardContent"></div>
+                    </div>
                 </div>
             </div>
-        </div>
 
             <!-- right content -->
-            <div class="col-4">     
+            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">     
                 <div class="tab-content" id="pills-tabContent">
                     @foreach($dataBranch as $value)
                         <div class="tab-pane fade" id="tabBranch-{{$value->employeeName}}" role="tabpanel" aria-labelledby="pills-tabBranch-{{$value->employeeName}}" tabindex="0">
@@ -263,6 +263,7 @@
                                             <div class="col-2 text-end">
                                                 <button class="btn btn-warning btn-sm rounded-pill updateTarget-${data.employeeName } updateTarget" onclick="editTarget('target-${ data.employeeName }','inputTarget-${ data.employeeName }','updateTarget-${ data.employeeName }','saveTarget-${data.employeeName }')">แก้ไขเป้า</button>
                                                 <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.empID }')" style="display:none;">บันทึก</button>
+                                                <button class="btn btn-danger btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget"onclick="editTarget()" style="display:none;">X</button>
                                             </div>
                                         </div>
                                     </div>
