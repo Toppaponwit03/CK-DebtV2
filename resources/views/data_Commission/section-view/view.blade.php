@@ -106,7 +106,7 @@
                                         </div>
                                     </div>
                                     <div class="col m-auto">
-                                    <p class="">ยอดขัดรวม</p> 
+                                    <p class="">ยอดจัดดรวม</p> 
                                     </div>
                                     <div class="col m-auto text-end">
                                     <h4 class="totalCash-{{$value->employeeName}}"></h4> 
@@ -208,7 +208,6 @@
                     let sum = 0 ;
                     let percent  ;
                 for(let [index,data] of res[0].entries()){
-                    console.log(data)
                     for(let [index,datacon] of res[1].entries()){
                         if (data.IdCK == datacon.BranchSent_Con){
         
@@ -224,7 +223,6 @@
         
                         
                         }
-                        console.log(datacon)
                     }
                     $(`.totalCash-${data.employeeName}`).append( sum.toLocaleString() );
                     percent =  (parseInt(sum) / parseInt((data.empto_target != null) ? data.empto_target.Target : 0) ) * 100  ;

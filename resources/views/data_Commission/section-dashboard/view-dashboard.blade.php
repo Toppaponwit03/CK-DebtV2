@@ -48,9 +48,44 @@
             box-shadow: 0px 5px 5px #ddd;
             transition : 0.3s;
         }
+        .activeTab {
+            scale : 1.08;
+            background-color: #ddd;
+            box-shadow: 0px 5px 5px #ddd;
+            color : #000;
+            transition : 0.3s;
+        }
 
 
 </style>
+
+<!-- <div class="row">
+    <div class="col-2">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            @foreach(@$dataBranch as $value)
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-{{$value->IdCK}}" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home {{$value->IdCK}}</button>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
+    <div class="col">
+        <div class="tab-content" id="pills-tabContent">
+            @foreach(@$dataBranch as $value)
+            <div class="tab-pane fade  " id="pills-{{$value->IdCK}}" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                @foreach($value->EmptoCon as $val)
+               
+            
+            </div>
+                @endforeach
+            @endforeach
+        </div>
+
+    </div>
+</div> -->
+
+
 
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
@@ -64,6 +99,34 @@
                 </div>
             </div>
             <div class="col-xl-9 col-sm-12 ">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <!-- <h6>สัญญา เช่าซื้อรถยนต์ <small class="textHeader">(Contracts Center)</small></h6> -->
+                </div>
+                <div class="col-sm-6">
+                    <div class="float-right form-inline btn-page">
+                    <form method="get" action="{{route('Com.show',0)}}">
+                        @csrf
+                        <input type="hidden" name="type" value="2">
+                        <input type="hidden" name="loanCode" value="01">
+                        <div class="input-group form-inline">
+                        <span class="input-group-append">
+                            <input type="date" name="dateStart" id="dateStart" value="" class="form-control   mx-1" placeholder="จากวันที">
+                            <input type="date" name="dateEnd" id="dateEnd" value="" class="form-control   mx-1" placeholder="ถึงวันที่">
+
+                            <button type="submit" class="btn btn-primary rounded-circle mx-1">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                            </button>
+                            
+                            <ul class="dropdown-menu" role="menu">
+                            <li><a class="dropdown-item textSize-13"data-link="">1. ดาวโหลดรายงานค่าคอมมิชชั่น</a></li>
+                            </ul>
+                        </span>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
                 <div class="p-2 scroller">
                     <div class="tab-content" id="contentTab">
                     </div>
@@ -72,6 +135,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -118,7 +182,8 @@
                 let countLoans11nonPA = 0 ;
                 let totalPA = 0 ;
                 let totalNonPA = 0 ;
-                let area = 0;
+                let areaCKM = 0;
+                let areaCKL = 0;
                 for ( let[index,data] of res[0].entries() ){
                     for(let [index,datacon] of res[1].entries()){
                         if (data.IdCK == datacon.BranchSent_Con){
@@ -132,7 +197,8 @@
                              sum += parseFloat(Cash_Car) + parseFloat(Process_Car) + parseFloat(pa) ;
                              checkPA2 = Include_PA ;
                              checkBuyPa = Buy_PA ;
-                             area += (datacon.Date_Checkers != null ) ? 1 : 0 ;
+                             areaCKM += (datacon.Date_Checkers != null && datacon.CodeLoan_Con == 01 ) ? 1 : 0 ;
+                             areaCKL += (datacon.Date_Checkers != null && datacon.CodeLoan_Con != 01 ) ? 1 : 0 ;
                             if(Include_PA == 'Yes' && Buy_PA == 'Yes'){
                              countLoans01PA += (datacon.CodeLoan_Con != null && datacon.CodeLoan_Con == 01 ) ? 1 : 0 ;
                              countLoans02PA += (datacon.CodeLoan_Con != null && datacon.CodeLoan_Con == 02 ) ? 1 : 0 ;
@@ -163,10 +229,11 @@
                     }
                     htmlHeadTab = `
                   
-                        <div class="card border border-white p-2 mb-1 fs-6 rounded-4" id="TabBranch-${data.employeeName}" data-bs-toggle="pill" data-bs-target="#branch-${data.employeeName}" style="cursor : pointer;">
+                        <div class="card cardTabBranch hover-up border border-white p-2 mb-1 mx-2 fs-6 rounded-4" id="TabBranch-${data.employeeName}" onclick="getActive('TabBranch-${data.employeeName}')" data-bs-toggle="pill" data-bs-target="#branch-${data.employeeName}" style="cursor : pointer;">
                             <div class="row">
-                                <div class="col-9 text-start">${index+1}. ${data.nameThai} <span class="text-primary"> ( ${data.employeeName} )</span></div>
-                                <div class="col-3 text-end"> <span class="badge rounded-pill ${colorBadge}"> ${percent.toFixed(0)} % </span></div>
+                            
+                                <div class="col-9 text-start m-auto">  <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 10%;"> ${index+1}. ${data.nameThai} <small class="text-primary"> ( ${data.employeeName} )</small></div>
+                                <div class="col-3 text-end  m-auto"> <span class="badge rounded-pill ${colorBadge}"> ${percent.toFixed(0)} % </span></div>
                             </div>
                         </div>
                       
@@ -176,13 +243,13 @@
 
 
 
-                    <div id="branch-${data.employeeName}" class="tab-pane fade "  role="tabpanel" aria-labelledby="TabBranch-${data.employeeName}" tabindex="0">
+                    <div id="branch-${data.employeeName}" class="tab-pane fade p-3"  role="tabpanel" aria-labelledby="TabBranch-${data.employeeName}" tabindex="0">
                         <div class="row mb-2">
 
                             <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center border-end">
-                                <div class="card border border-tranparent p-2" style="background:rgb(159,222,122); background: linear-gradient(180deg, rgba(159,222,122,1) 0%, rgba(255,243,173,1) 100%);">
+                                <div class="card border border-tranparent p-2" style="background:rgb(159,222,122); background: linear-gradient(180deg, rgba(159,222,122,1) 0%, rgba(255,243,173,1) 100%);">               
                                     <h6>เป้า</h6>
-                                <h5> ${(data.empto_target.Target).toLocaleString()} </h5> 
+                                    <h5> ${ (data.empto_target.Target).toLocaleString() } </h5> 
                                 </div>
                             </div>
 
@@ -196,17 +263,19 @@
                             <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center">
                                 <div class="card border border-tranparent p-2" style="background:rgb(255,145,54); background: linear-gradient(180deg, rgba(255,145,54,1) 0%, rgba(255,238,139,1) 100%);">
                                     <h6>ได้รับค่าคอม</h6>
-                                <h5><span class="totalcomRecieve-${data.employeeName}"></span> </h5> 
+                                <h5><span class="totalcomRecieveALL-${data.employeeName}">0</span> </h5> 
                                 </div>
                             </div>
 
                             <div class="col-xl-3 col-sm-12 m-auto mb-2 text-center">
-                                <h5>${data.nameThai} (${data.employeeName})</h5>
-                                <button type="button" class="btn btn-primary btn-sm rounded-pill px-2" data-bs-toggle="modal" data-bs-target="#Modal-${data.employeeName}"><i class="fa-solid fa-file-invoice"></i> ดูใบเสร็จ</button>
+                                <div class="">
+                                    <h5>${data.nameThai} (${data.employeeName})</h5>
+                                    <button type="button" class="btn btn-primary btn-sm rounded-pill px-2" data-bs-toggle="modal" data-bs-target="#Modal-${data.employeeName}"><i class="fa-solid fa-file-invoice"></i> ดูใบเสร็จ</button>
+                                </div>
                             </div>
                             
                         </div>   
-                            <div class="row p-1 bg-warning text-center">
+                            <div class="row p-1 bg-light text-center fw-semibold">
                                     <div class="col-xl-1 col-sm-12">
                                         #
                                     </div>
@@ -229,7 +298,7 @@
                                         ดอกเบี้ยรวม
                                     </div>
                                     <div class="col-xl col-sm-12">
-                                        เรท
+                                        ผลตอบแทน
                                     </div>
                                 </div>
 
@@ -239,12 +308,12 @@
                             <div class="modal-dialog">
                                 <div class="modal-content p-4">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">บิลค่าคอม ฯ </h5>
+                                        <h6>{{ @date('d-m-Y') }}</h6>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body p-4">
                                         <div class="row">
-                                            <div class="col text-center"><h5><b>บิลค่าคอม ฯ </b></h5> <sup>( ${data.employeeName} )</sup> </div>
+                                            <div class="col text-center"><h5><b>บิลค่าคอม ฯ </b></h5> <sup>${data.nameThai} ( ${data.employeeName} )</sup> </div>
                                         </div>
                                             <div class="row mb-3">
                                                 <div class="col text-start"><h5>รายการ ( ${totalNonPA + totalPA} ) </h5></div>
@@ -282,34 +351,85 @@
                                                 <div class="col-2 text-end">${ countLoans11nonPA   }</div>
                                             </div>
 
-                                            <div class="row mb-3 pb-1 border-bottom">
+                                            <div class="row mb-3 pb-1 border-danger border-bottom">
                                                 <div class="col text-start"><h5><b>รวม</b></h5></div>
-                                                <div class="col-2 text-end border-end">${ totalPA }</div>
-                                                <div class="col-2 text-end">${totalNonPA}</div>
+                                                <div class="col-2 text-end border-end fw-semibold">${ totalPA }</div>
+                                                <div class="col-2 text-end fw-semibold">${totalNonPA}</div>
                                             </div>
 
-                                            <div class="row mb-3">
-                                                <div class="col text-start"><h5>คำนวนผลตอบแทน</h5></div>
-                                                <div class="col-4 text-end"><small class="fw-semibold">จำนวน</small></div>
+                                            <div title="CKM">
+
+                                                <div class="row mb-3">
+                                                    <div class="col text-start"><h5>คำนวนผลตอบแทน ( CKM )</h5></div>
+                                                    <div class="col-4 text-end"><small class="fw-semibold">จำนวน</small></div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col text-start">ค่าคอม ฯ</div>
+                                                    <div class="col-4 text-end"> <span class="totalcomCKM-${data.employeeName}">0</span> </div>
+                                                </div>
+                                                <div class="row mb-2 border-bottom">
+                                                    <div class="col text-start">หัก 40 %</div>
+                                                    <div class="col-4 text-end"><span class="totalcomSubperCKM-${data.employeeName}">0</span></div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col text-start">ลงพื้นที่ (เคส)</div>
+                                                    <div class="col-4 text-end">${areaCKM}</div>
+                                                </div>
+
+                                                <div class="row mb-2 border-bottom">
+                                                    <div class="col text-start">ได้รับค่าลงพื้นที่</div>
+                                                    <div class="col-4 text-end"><span class="totalarreaCKM-${data.employeeName}">0</span></div>
+                                                </div>
+
+                                                <div class="row mb-2 border-danger border-bottom">
+                                                    <div class="col text-start"><h6><b>คงเหลือ</b></h6></div>
+                                                    <div class="col-4 text-end"><span class="fw-semibold totalcomRecieveCKM-${data.employeeName} fs-6">0</span></div>
+                                                </div>
+
                                             </div>
 
-                                            <div class="row mb-2">
-                                                <div class="col text-start">ลงพื้นที่ (เคส)</div>
-                                                <div class="col-4 text-end">${area}</div>
+                                            <div title="CKL">
+
+                                                <div class="row mb-3">
+                                                    <div class="col text-start"><h5>คำนวนผลตอบแทน ( CKL )</h5></div>
+                                                    <div class="col-4 text-end"><small class="fw-semibold">จำนวน</small></div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col text-start">ค่าคอม ฯ</div>
+                                                    <div class="col-4 text-end"> <span class="totalcomCKL-${data.employeeName}">0</span> </div>
+                                                </div>
+                                                <div class="row mb-2 border-bottom">
+                                                    <div class="col text-start">หัก 40 %</div>
+                                                    <div class="col-4 text-end"><span class="totalcomSubperCKL-${data.employeeName}">0</span></div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col text-start">ลงพื้นที่ (เคส)</div>
+                                                    <div class="col-4 text-end">${areaCKL}</div>
+                                                </div>
+
+                                                <div class="row mb-2 border-bottom">
+                                                    <div class="col text-start">ได้รับค่าลงพื้นที่</div>
+                                                    <div class="col-4 text-end"><span class="totalarreaCKL-${data.employeeName}">0</span></div>
+                                                </div>
+
+                                                <div class="row mb-2 border-danger border-bottom">
+                                                    <div class="col text-start"><h6><b>คงเหลือ</b></h6></div>
+                                                    <div class="col-4 text-end"><span class="fw-semibold totalcomRecieveCKL-${data.employeeName} fs-6">0</span></div>
+                                                </div>
+
+
+
+                                                <div class="row mb-2 border-danger border-bottom">
+                                                    <div class="col text-start"><h5><b>ได้รับค่าคอม ฯ</b></h5></div>
+                                                    <div class="col-4 text-end"><span class="totalcomRecieveALL-${data.employeeName} fs-4">0</span></div>
+                                                </div>
+
                                             </div>
 
-                                            <div class="row mb-2">
-                                                <div class="col text-start">ค่าคอม ฯ</div>
-                                                <div class="col-4 text-end"> <span class="totalcom-${data.employeeName}"></span> </div>
-                                            </div>
-                                            <div class="row mb-2 border-bottom">
-                                                <div class="col text-start">หัก 40 %</div>
-                                                <div class="col-4 text-end"><span class="totalcomSubper-${data.employeeName}"></span></div>
-                                            </div>
-                                            <div class="row mb-2 border-danger border-bottom">
-                                                <div class="col text-start"><h5><b>ได้รับค่าคอม ฯ</b></h5></div>
-                                                <div class="col-4 text-end"><span class="totalcomRecieve-${data.employeeName} fs-3"></span></div>
-                                            </div>
                                             <div class="row mt-4">
                                                 <div class="col d-grid">
                                                     <button type="button" class="btn btn-primary rounded-pill">คัดลอกบิล</button>
@@ -332,7 +452,7 @@
                             content = `
                             <div class="row p-1 text-center border-bottom">
                                 <div class="col-xl-1 col-sm-12">
-                                    ${index+1} ${con.UserSent_Con}
+                                    ${index+1}
                                 </div>
                                 <div class="col-xl-2 text-center">
                                    <a class="btn btn-primary rounded-pill btn-sm" href = "https://ckapproval.com/MasterDataContract/0/edit?type=11&search=${con.Contract_Con}" target="blank"><small>${con.Contract_Con}</small>  </a> 
@@ -341,7 +461,11 @@
                                   <div class="col text-start d-sm-block d-md-none">ประเภทสัญญา : </div>  ${con.CodeLoan_Con}
                                 </div>
                                 <div class="col-xl col-sm-12 text-center">
-                                    <div class="col text-start d-sm-block d-md-none">ยอดจัด : </div>  ${con.con_to_cal.Cash_Car}
+                                    <span class="d-sm-none d-md-block"> ${con.con_to_cal.Cash_Car}</span>
+                                    <div class="row d-sm-block d-md-none">
+                                        <div class="col text-start ">ยอดจัด : </div>
+                                        <div class="col text-end "> ${con.con_to_cal.Cash_Car} </div>
+                                    </div>
                                 </div>
                                 <div class="col-xl col-sm-12 text-center">
                                     <div class="col text-start d-sm-block d-md-none">ค่าดำเนินการ : </div> ${con.con_to_cal.Process_Car}
@@ -359,7 +483,7 @@
                             `;
                             $(`#contentCon-${con.BranchSent_Con}`).append(content);
 
-                             CalCom(data.employeeName,con.CodeLoan_Con,percent.toFixed(0),checkPA,(con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate),con.Contract_Con)
+                             CalCom(data.employeeName,con.CodeLoan_Con,percent.toFixed(0),checkPA,(con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate),con.Contract_Con,areaCKM,areaCKL)
                         }
                        
                         
@@ -382,7 +506,8 @@
                     sum = 0;
                     checkPA2 = '';
                     checkBuyPa = '';
-                    area = 0;
+                    areaCKM = 0;
+                    areaCKL = 0;
                     branch = '';
                    
                 }
@@ -396,11 +521,16 @@
 </script>
 
 <script>
-    CalCom = (employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con) => {
+    getActive = (docId) =>{
+        $('.cardTabBranch').removeClass('activeTab ');
+        $('#'+docId).addClass('activeTab ');
+
+    }
+    CalCom = (employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con,areaCKM,areaCKL) => {
         $('#rateCom-'+Contract_Con).append(`
             <div class="spinner-border text-secondary spinner-border-sm" role="status"></div>
         `)
-        $(`.totalcomRecieve-${employeeName}`).html(`
+        $(`.totalcomRecieveALL-${employeeName}`).html(`
             <div class="spinner-grow spinner-grow-sm" role="status"></div>
         `)
             $.ajax({
@@ -415,16 +545,17 @@
                 totalInt : totalInt,
                 _token : '{{@csrf_token()}}'
             },
-            success :  (res) => {
-                processResponse(res,res.Branch);
+            success : async (res) => {
+                processResponse(res,res.Branch,areaCKM,areaCKL,CodeLoan_Con);
                 $('#rateCom-'+Contract_Con).empty()
                 $('#rateCom-'+Contract_Con).append(res[0].Commission)
+                console.log(employeeName+' is successfully');
             },
             error : (err) => {
                 $(`.totalcomRecieve-${employeeName}`).empty();
                 $('#rateCom-'+Contract_Con).empty()
-                CalCom(employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con) 
-                console.log(employeeName);
+                CalCom(employeeName,CodeLoan_Con,percent,checkPA,totalInt,Contract_Con,areaCKM,areaCKL) 
+                console.log(employeeName+' is error');
             }
 
             
@@ -434,30 +565,59 @@
    
    let sumCom = 0;
    var arr = [];
-    processResponse = (data,employeeName) => {
+    processResponse = (data,employeeName,areaCKM,areaCKL,CodeLoan_Con) => {
         if (data[0] != null) {
-            arr.push({name:employeeName ,value:data[0].Commission})
+            arr.push({name:employeeName ,value:data[0].Commission,loan:CodeLoan_Con})
 
         }
-        const propertyName = employeeName;
-        const result = sumByPropertyName(arr, propertyName);
-            $(`.totalcomSubper-${employeeName}`).empty();
-            $(`.totalcom-${employeeName}`).empty();
-            $(`.totalcomRecieve-${employeeName}`).empty();
-            $(`.totalcom-${employeeName}`).append(result);
-            $(`.totalcomSubper-${employeeName}`).append((result * 0.40).toFixed(0));
-            $(`.totalcomRecieve-${employeeName}`).append(( result - (result * 0.40) ).toFixed(0));
+       
+            const propertyName = employeeName;
+            
+            const result = sumByPropertyName(arr, propertyName,CodeLoan_Con);
+            if(CodeLoan_Con == 01){
+                $(`.totalarreaCKM-${employeeName}`).html(areaCKM * data[0].Gas);
+                $(`.totalcomCKM-${employeeName}`).html(result);
+                $(`.totalcomSubperCKM-${employeeName}`).html((result * 0.40).toFixed(0));
+                $(`.totalcomRecieveCKM-${employeeName}`).html(( (result - (result * 0.40)) + (areaCKM * data[0].Gas) ).toFixed(0));
+            }else{
+                $(`.totalarreaCKL-${employeeName}`).html(areaCKL * data[0].Gas);
+                $(`.totalcomCKL-${employeeName}`).html(result);
+                $(`.totalcomSubperCKL-${employeeName}`).html((result * 0.40).toFixed(0));
+                $(`.totalcomRecieveCKL-${employeeName}`).html(( (result - (result * 0.40)) + (areaCKM * data[0].Gas) ).toFixed(0));
+
+            }
+
+             $(`.totalcomRecieveALL-${employeeName}`).html( sumByPropertyName(arr, propertyName,00) - ( sumByPropertyName(arr, propertyName,00)*0.4 ) );
+            
+        
     }
 
-    function sumByPropertyName(arr, propertyName) {
+    function sumByPropertyName(arr, propertyName,CodeLoan_Con) {
         let sum = 0;
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].name === propertyName) {
-            sum += parseInt(arr[i].value);
+        if(CodeLoan_Con == 01){
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].name === propertyName && arr[i].loan == 01) {
+                    sum += parseInt(arr[i].value);
+                }
+            }
+        }else if(CodeLoan_Con != 01 && CodeLoan_Con != 00){
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].name === propertyName && arr[i].loan != 01) {
+                    sum += parseInt(arr[i].value);
+                }
+            }
+        }else  if(CodeLoan_Con == 00){
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].name === propertyName) {
+                 sum += parseInt(arr[i].value);
+                }
             }
         }
+        
         return sum;
     }
+
+
 
 
 </script>
