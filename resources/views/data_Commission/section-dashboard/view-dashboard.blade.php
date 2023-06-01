@@ -250,7 +250,7 @@
                             
                         </div> 
                         <span class="d-none d-md-none d-lg-block"> 
-                            <div class="row p-1 bg-light text-center fontSize fw-semibold text-wrap">
+                            <div class="row p-2 bg-warning text-center fontSize fw-semibold text-wrap">
                                 <div class="col-xl-1 col-lg-1 col-sm-12">
                                     #
                                 </div>
@@ -426,7 +426,7 @@
                             checkPA = con.con_to_cal.Buy_PA == 'Yes' ? con.con_to_cal.Buy_PA : 'No';
                             totalInt += ( con.con_to_cal.Profit_Rate - con.con_to_cal.Tax2_Rate );
                             content = `
-                            <div class="row p-1 text-center fontSize border-bottom">
+                            <div class="row p-1 mt-1 text-center fontSize border-bottom ${index % 2 == 0 ? 'bg-light' : ''}">
                                 <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12">
                                   <span class="d-sm-block d-md-block d-lg-none"><b>ลำดับที่</b></span>  ${index+1}
                                 </div>

@@ -100,9 +100,9 @@
                             <h5>ภาพรวมของทีม <span class="text-primary">{{ @$value->nameThai }} ( {{ @$value->employeeName}} )</span></h5> 
                             <div class="card bg-pt-blue border border-none rounded-4 p-3 mb-2" >
                                 <div class="row">
-                                    <div class="col-2">
+                                    <div class="col-2 ">
                                         <div class="bg-white p-1 rounded-4">
-                                            <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 100%;">
+                                            <img src="{{ asset('dist/img/interest.png') }}" alt="" style="max-width : 100%;">
                                         </div>
                                     </div>
                                     <div class="col m-auto">
@@ -118,7 +118,7 @@
                                 <div class="row">
                                     <div class="col-2">
                                         <div class="bg-white p-1 rounded-4">
-                                            <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 100%;">
+                                            <img src="{{ asset('dist/img/abacus.png') }}" alt="" style="max-width : 100%;">
                                         </div>
                                     </div>
                                     <div class="col m-auto">
@@ -134,7 +134,7 @@
                                 <div class="row">
                                     <div class="col-2">
                                         <div class="bg-white p-1 rounded-4">
-                                            <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 100%;">
+                                            <img src="{{ asset('dist/img/percentage.png') }}" alt="" style="max-width : 100%;">
                                         </div>
                                     </div>
                                     <div class="col m-auto">
