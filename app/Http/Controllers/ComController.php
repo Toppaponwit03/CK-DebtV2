@@ -23,7 +23,7 @@ class ComController extends Controller
         if($request->type == 1){
             $dataBranch = tbl_traceEmployee::where('IdCK','!=','')
             ->with(['EmptoCon' => function($query) { 
-                $query->whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
+                $query->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
                 ->where('UserZone',20)
                 ->select('Date_monetary','BranchSent_Con','DataTag_id');
             }])
@@ -34,7 +34,7 @@ class ComController extends Controller
         elseif($request->type == 2){
             $dataBranch = tbl_traceEmployee::where('IdCK','!=','')
             ->with(['EmptoCon' => function($query) { 
-                $query->whereBetween('Date_monetary', [$this->SDueDate, $this->LDueDate])
+                $query->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
                 ->where('UserZone',20)
                 ->with(['ConToCal' => function($query) { 
                     $query->select('Cash_Car');
