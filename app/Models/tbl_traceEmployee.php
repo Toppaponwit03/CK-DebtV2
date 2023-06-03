@@ -23,4 +23,5 @@ class tbl_traceEmployee extends Model
     public function EmptoCon(){
         return $this->hasMany(tbl_contract::class,'BranchSent_Con','IdCK');
     }
+
 }

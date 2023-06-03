@@ -261,9 +261,11 @@
                                                 </span>
                                             </div>
                                             <div class="col-2 text-end">
-                                                <button class="btn btn-warning btn-sm rounded-pill updateTarget-${data.employeeName } updateTarget" onclick="editTarget('target-${ data.employeeName }','inputTarget-${ data.employeeName }','updateTarget-${ data.employeeName }','saveTarget-${data.employeeName }')">แก้ไขเป้า</button>
-                                                <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.empID }')" style="display:none;">บันทึก</button>
-                                                <button class="btn btn-danger btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget"onclick="editTarget()" style="display:none;">X</button>
+                                                @if(@Auth::user()->UserToPrivilege->assignTarget == 'yes')
+                                                    <button class="btn btn-warning btn-sm rounded-pill updateTarget-${data.employeeName } updateTarget" onclick="editTarget('target-${ data.employeeName }','inputTarget-${ data.employeeName }','updateTarget-${ data.employeeName }','saveTarget-${data.employeeName }')">แก้ไขเป้า</button>
+                                                    <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.empID }')" style="display:none;">บันทึก</button>
+                                                    <button class="btn btn-danger btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget"onclick="editTarget()" style="display:none;">X</button>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

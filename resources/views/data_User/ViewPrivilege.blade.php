@@ -96,7 +96,21 @@
                         <h4 class="mt-2">ฟังก์ชั่นการใช้งาน (Feature)</h4>
                         <div class="row">
                             <div class="col border-end">
-                                <h5>รายการติดตามลูกค้า</h5>
+                                <h6 class="fw-semibold">ระบบติดตามหนี้</h6>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="dataCus" id="dataCus" {{ @$dataUser->UserToPrivilege->dataCus == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dataCus">
+                                        ดูหน้ารายการติดตามมลูกค้า (Data Customers)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard" {{ @$dataUser->UserToPrivilege->dashboard == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="dashboard">
+                                        ดูหน้าแดชบอร์ด (Dashboard)
+                                    </label>
+                                </div>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="yes" name="datafilter" id="datafilter" {{ @$dataUser->UserToPrivilege->datafilter == 'yes' ? 'checked' : '' }} >
@@ -149,19 +163,34 @@
 
                             </div>
                             <div class="col border-end">
-                                <h5>เมนูใช้งาน (Tab & Menu)</h5>
+
+                                <h6 class="fw-semibold">ระบบจัดการค่าคอมมิชชั่น</h6>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="yes" name="dataCus" id="dataCus" {{ @$dataUser->UserToPrivilege->dataCus == 'yes' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="dataCus">
-                                        ดูหน้ารายการติดตามมลูกค้า (Data Customers)
+                                    <input class="form-check-input" type="checkbox" value="yes" name="ComSystem" id="ComSystem" {{ @$dataUser->UserToPrivilege->ComSystem == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="ComSystem">
+                                        ระบบคำนวนค่าคอมมิชชั่น (Commission System)
                                     </label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="yes" name="dashboard" id="dashboard" {{ @$dataUser->UserToPrivilege->dashboard == 'yes' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="dashboard">
-                                        ดูหน้าแดชบอร์ด (Dashboard)
+                                    <input class="form-check-input" type="checkbox" value="yes" name="ViewTarget" id="ViewTarget" {{ @$dataUser->UserToPrivilege->ViewTarget == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="ViewTarget">
+                                        กำหนดเป้าให้สาขา (Target Branch)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="ComBranch" id="ComBranch" {{ @$dataUser->UserToPrivilege->ComBranch == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="ComBranch">
+                                        ค่าคอมมิชชั่นสาขา (Commission Branch)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="assignTarget" id="assignTarget" {{ @$dataUser->UserToPrivilege->assignTarget == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="assignTarget">
+                                        แก้ไขเป้าสาขา (Commission Branch)
                                     </label>
                                 </div>
 

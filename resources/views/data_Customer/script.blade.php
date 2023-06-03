@@ -83,6 +83,7 @@
               { data: 'paymentDateTH' },
               { data: 'fieldDayTH' },
               { data: 'powerAppTH' },
+              { data: 'FollowingDate' },
             ],
             bDestroy: true,
         });
@@ -150,6 +151,7 @@
               { data: 'paymentDateTH' },
               { data: 'fieldDayTH' },
               { data: 'powerAppTH' },
+              { data: 'FollowingDate' },
           ],
           bDestroy: true,
       });
@@ -240,6 +242,7 @@
               { data: 'paymentDateTH' },
               { data: 'fieldDayTH' },
               { data: 'powerAppTH' },
+              { data: 'FollowingDate' },
           ],
           bDestroy: true,
       });

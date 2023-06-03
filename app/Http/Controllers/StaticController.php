@@ -64,6 +64,11 @@ class StaticController extends Controller
             $data->teamB = @$request->teamB;
             $data->teamC = @$request->teamC;
             $data->createTag = @$request->CreateCustag;
+
+            $data->ComSystem = @$request->ComSystem;
+            $data->ViewTarget = @$request->ViewTarget;
+            $data->ComBranch = @$request->ComBranch;
+            $data->assignTarget = @$request->assignTarget;
             $data->save();
         }
     }

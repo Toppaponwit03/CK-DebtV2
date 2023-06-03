@@ -44,16 +44,19 @@ class CusController extends Controller
                   return thaidate::simpleDateFormat($data->dealDay);
                 })
                 ->addColumn('paymentDateTH', function ($data) {
-                  return thaidate::simpleDateFormat(@$data->paymentDate);
+                  return (@$data->paymentDate != NULL) ? thaidate::simpleDateFormat(@$data->paymentDate) : '-';
                 })
                 ->addColumn('fieldDayTH', function ($data) {
-                  return thaidate::simpleDateFormat($data->fieldDay);
+                  return (@$data->fieldDay != NULL) ? thaidate::simpleDateFormat($data->fieldDay) : '-';
                 })
                 ->addColumn('powerAppTH', function ($data) {
-                  return thaidate::simpleDateFormat($data->powerApp);
+                  return (@$data->powerApp != NULL) ? thaidate::simpleDateFormat($data->powerApp) : '-';
                 })
                 ->addColumn('lastPaymentdateTH', function ($data) {
                   return thaidate::simpleDateFormat($data->lastPaymentdate);
+                })
+                ->addColumn('FollowingDate', function ($data) {
+                  return (@$data->FollowingDate != NULL) ? thaidate::simpleDateFormat($data->FollowingDate) : '-';
                 })
                 ->addColumn('copyCon', function ($data) {
                   $btnHtml = '<button onclick="myFunction('."'".$data->contractNumber."'".')" class="btn btn-light" style="border-radius: 50px;  background: linear-gradient(180deg, #F2AEB7 0%, #FDE8D4 100%); color: #34495e;font-size:0.87rem;">'.$data->contractNumber.'</button><div style="display:none;"><input type="text" value="'.$data->contractNumber.'" id="'.$data->contractNumber.'"></div>' ;
@@ -168,6 +171,13 @@ class CusController extends Controller
         ->orderBy('dealDay', 'ASC')->get();
         return static::getTB($customers);
       }
+      elseif($request->type == 10){ // ติดตามวันนี้
+        $customers = tbl_customer::where('status','!=','STS-005')
+        ->whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('FollowingDate','=',Carbon::today()->format('Y-m-d'))
+        ->orderBy('FollowingDate', 'ASC')->get();
+        return static::getTB($customers);
+      }
 
     }
     public function create(Request $request)
@@ -190,6 +200,7 @@ class CusController extends Controller
         $data_Tag->payment_date = $request->payment_date;
         $data_Tag->visitArea_date = $request->visitArea_date;
         $data_Tag->PowerApp_date = $request->PowerApp_date;
+        $data_Tag->Following_Date = $request->Following_date;
         $data_Tag->userInsert = Auth::user()->id;
         $data_Tag->save();
 
@@ -198,6 +209,7 @@ class CusController extends Controller
         $data_cus->paymentDate = $request->payment_date;
         $data_cus->fieldDay = $request->visitArea_date;
         $data_cus->powerApp = $request->PowerApp_date;
+        $data_cus->FollowingDate = $request->Following_date;
         $data_cus->update();
 
 
@@ -366,6 +378,7 @@ class CusController extends Controller
         $data_Tag->payment_date = $request->payment_date;
         $data_Tag->visitArea_date = $request->visitArea_date;
         $data_Tag->PowerApp_date = $request->PowerApp_date;
+        $data_Tag->Following_Date = $request->Following_date;
         $data_Tag->userInsert = Auth::user()->id;
         $data_Tag->update();
 
@@ -373,6 +386,7 @@ class CusController extends Controller
         $data_cus->paymentDate = $request->payment_date;
         $data_cus->fieldDay = $request->visitArea_date;
         $data_cus->powerApp = $request->PowerApp_date;
+        $data_cus->FollowingDate = $request->Following_date;
         $data_cus->update();
 
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();

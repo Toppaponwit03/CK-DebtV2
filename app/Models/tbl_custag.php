@@ -10,7 +10,7 @@ class tbl_custag extends Model
 {
     use HasFactory;
     protected $table = 'tbl_custag';
-    protected $fillable = ['id','ContractID','detail','UserInsert'];
+    protected $fillable = ['id','ContractID','detail','actionPlan','payment_date','visitArea_date','PowerApp_date','Following_Date','UserInsert'];
 
     public function CustagPlan(){
         return $this->hasmany(tbl_actionplan::class,'tag_id','id')->orderBy('created_At', 'ASC');

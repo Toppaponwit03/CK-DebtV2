@@ -49,7 +49,7 @@
                 </div>
             </li>
 
-
+            @if(@Auth::user()->UserToPrivilege->ComSystem == 'yes')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tabCommissions"
                     aria-expanded="true" aria-controls="tabCommissions">
@@ -59,15 +59,16 @@
                 <div id="tabCommissions" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        @if(@Auth::user()->UserToPrivilege->dataCus == 'yes')
+                        @if(@Auth::user()->UserToPrivilege->ViewTarget == 'yes')
                         <a class="collapse-item" href="{{route('Com.index')}}?type={{1}}"><i class="fa-solid fa-chart-column"></i> กำหนดเป้าให้สาขา</a>
                         @endif
-                        @if(@Auth::user()->UserToPrivilege->dashboard == 'yes')
+                        @if(@Auth::user()->UserToPrivilege->ComBranch == 'yes')
                         <a class="collapse-item" href="{{route('Com.index')}}?type={{2}}"><i class="fa-solid fa-hand-holding-dollar"></i> ค่าคอมมิชชั่นสาขา</a>
                         @endif
                     </div>
                 </div>
             </li>
+            @endif
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <!-- <li class="nav-item">

@@ -47,6 +47,7 @@ class tbl_customer extends Model
          "paymentDate",
          "fieldDay",
          "powerApp",
+         "FollowingDate",
          "note",
          "actionPlan",
          "paymentDateQuantity",

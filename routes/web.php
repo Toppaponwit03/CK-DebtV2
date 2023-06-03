@@ -46,7 +46,7 @@ Route::resource('static',StaticController::class);
 // ระบบคำนวนค่าคอม
 
 Route::resource('Com',ComController::class);
- 
+Route::post('Com/export/',[ComController::class, 'export'])->name('Com.export');
 });
 
 Route::get('auth/register',function(){

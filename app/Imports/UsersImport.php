@@ -54,14 +54,15 @@ class UsersImport implements ToModel
              "paymentDate" => $row[34],
              "fieldDay" => $row[35],
              "powerApp" => $row[36],
-             "note" => $row[37],
-             "actionPlan" => $row[38],
-             "paymentDateQuantity" => $row[39],
-             "teamGroup" => $row[40],
-             "typeLoan" => $row[41],
-             "Recorder" => $row[42],
-             "Schema" => $row[43],
-             "TotalPay" => $row[44]
+             "FollowingDate" => $row[37],
+             "note" => $row[38],
+             "actionPlan" => $row[39],
+             "paymentDateQuantity" => $row[40],
+             "teamGroup" => $row[41],
+             "typeLoan" => $row[42],
+             "Recorder" => $row[43],
+             "Schema" => $row[44],
+             "TotalPay" => $row[45]
          ]);
          return $data;
     }

@@ -63,37 +63,31 @@
 
 </style>
 
-<!-- <div class="row mb-2">
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <h6>สัญญา เช่าซื้อรถยนต์ <small class="textHeader">(Contracts Center)</small></h6>
-    </div>
-    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 text-end">
-            <form method="get" action="{{route('Com.show',0)}}">
-                @csrf
-                <input type="hidden" name="type" value="2">
-                <input type="hidden" name="loanCode" value="01">
-                <div class="input-group form-inline">
-                <span class="input-group-append">
-                    <input type="date" name="dateStart" id="dateStart" value="" class="form-control   mx-1" placeholder="จากวันที">
-                    <input type="date" name="dateEnd" id="dateEnd" value="" class="form-control   mx-1" placeholder="ถึงวันที่">
-
-                    <button type="submit" class="btn btn-primary rounded-circle mx-1">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                    </button>
-                    
-                    <ul class="dropdown-menu" role="menu">
-                    <li><a class="dropdown-item textSize-13"data-link="">1. ดาวโหลดรายงานค่าคอมมิชชั่น</a></li>
-                    </ul>
-                </span>
-                </div>
-            </form>
-    </div>
-</div> -->
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
+        <div class="row mb-2">
+            <div class="col-6">
+               
+            </div>
+            <div class="col-6 text-end">
+                <div class="d-flex">
+                    <input type="date" name="dateStart" id="dateStart" value="" class="form-control form-control-sm rounded-pill mx-1 text-center" placeholder="จากวันที">
+                    <input type="date" name="dateEnd" id="dateEnd" value="" class="form-control form-control-sm rounded-pill mx-1 text-center" placeholder="ถึงวันที่">
+                    <button type="button" id="btnSearch" class="btn btn-primary btn-sm rounded-circle mx-1">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                    </button>
+                    <a id="btnExportCom" type="button" class="btn btn-success btn-sm rounded-circle mx-1"><i class="fa-solid fa-download"></i></a>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xl-3 col-sm-12">
-                <div class="card p-2 mb-2 rounded-4 border border-tranparent bg-primary text-center text-light">สาขาทั้งหมด (All Branch)</div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card p-2 mb-2 rounded-4 border border-tranparent bg-primary text-center text-light" style="font-size:13px;">สาขาทั้งหมด (All Branch)</div>
+                    </div>
+                </div>
+               
                 <div class="bg-light p-2 scroller">
                     <div class="mb-3" id="pills-tab" role="tablist">
                         <div id="Tabontent"></div>
@@ -103,6 +97,7 @@
             <div class="col-xl-9 col-sm-12 ">
                 <div class="p-2 scroller">
                     <div class="tab-content" id="contentTab">
+                        
                     </div>
                 </div>
             </div>
@@ -113,8 +108,53 @@
 
 
 <script>
+    $("#btnExportCom").click(function(){
+        $('.loadEX').html(`
+        <div class="spinner-border spinner-border-sm" role="status">
+        </div>
+        `);
+        $.ajax({
+            url : "{{route('Com.export')}}",
+            type : "post",
+            data : {
+                _token : '{{ @csrf_token() }}',
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success : (response)=>{
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(response);
+                a.href = url;
+                a.download = 'รายงานค่าคอมมิชชั่น.xlsx';
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+                $('.loadEX').html('')
 
+                Swal.fire({
+                icon: 'success',
+                text: 'ดาวโหลดไฟล์เอกสารเรียบร้อย',
+                timer: 2000,    
+                })
+            },
+            error : (err) =>{
+                $('.loadEX').html('')
+                Swal.fire({
+                icon: 'error',
+                text: 'ดาวโหลดไฟล์เอกสารไม่สำเร็จ',
+                timer: 2000,    
+                })
+
+            }
+        })
+    })
+</script>
+
+<script>
     $(function(){
+        
         $('#Tabontent').append(`
         <div class="row">
             <div class="col m-auto text-center">
@@ -127,11 +167,11 @@
             url : '{{ route("Com.show",0) }}',
             type : 'get',
             data : {
-                type : 2,
+                type : 1,
                 _token : '{{ @csrf_token() }}',
             },
             success : (res) => {
-                // console.log(res);
+                console.log(res);
                 $('#Tabontent').hide().empty();
                 // console.log(res)
                 let htmlHeadTab = '';
@@ -428,7 +468,7 @@
                             content = `
                             <div class="row p-1 mt-1 text-center fontSize border-bottom ${index % 2 == 0 ? 'bg-light' : ''}">
                                 <div class="col-xl-1 col-lg-1 col-md-12 col-sm-12">
-                                  <span class="d-sm-block d-md-block d-lg-none"><b>ลำดับที่</b></span>  ${index+1}
+                                  <span class="d-sm-block d-md-block d-lg-none"><b>ลำดับที่</b></span>  ${index+1} ${con.UserSent_Con}
                                 </div>
                                 <div class="col-xl-2 col-lg-2 text-center">
                                    <a class="btn btn-primary rounded-pill btn-sm" href = "https://ckapproval.com/MasterDataContract/0/edit?type=11&search=${con.Contract_Con}" target="blank"><small>${con.Contract_Con}</small>  </a> 
@@ -552,7 +592,7 @@
             url : '{{ route("Com.show",0) }}',
             type : 'get',
             data : {
-                type : 3,
+                type : 2,
                 employeeName : employeeName,
                 CodeLoan_Con : CodeLoan_Con,
                 percent : percent,

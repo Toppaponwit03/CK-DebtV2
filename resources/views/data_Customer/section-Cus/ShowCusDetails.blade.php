@@ -53,7 +53,7 @@
                                                 {{$value->detail}}
                                             </div>
                                             <div class="card-footer">
-                                                <div class="row" style="">
+                                                <div class="row" style="font-size:13px;">
                                                     <div class="col-xl col-sm-12 text-center">
                                                         <b class="">วันนัดชำระ</b> <p>{{ ($value->payment_date != NULL) ? $value->payment_date : '-'}}</p>
                                                     </div>
@@ -62,6 +62,9 @@
                                                     </div>
                                                     <div class="col-xl col-sm-12 text-center">
                                                         <b>PowerApp</b><p>{{ ($value->PowerApp_date != NULL) ? $value->PowerApp_date : '-' }}</p> 
+                                                    </div>
+                                                    <div class="col-xl col-sm-12 text-center">
+                                                        <b>ติดตามต่อ</b><p>{{ ($value->Following_Date != NULL) ? $value->Following_Date : '-' }}</p> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -80,47 +83,50 @@
 
                             <!-- edit post -->
                             <div class="col-xl-12 col-10">
-                                    <span class="editpost-{{$value->id}}" style="display:none;">
-                                    <div class="card">
-                                        <form id="updateCusTag-{{$value->id}}">
-                                            <div class="card-body">
-                                                <input type="hidden" name="tag_id" value="{{$value->id}}">
-                                                <input type="hidden" name="contractNumber" value="{{$value->ContractID}}">
-                                                <input type="hidden" name="_token" value="{{ @csrf_token() }}">
-                                                <input type="hidden" name="type" value="3">
-                                                <div class="row">
-                                                    <div class="col"><label class="fw-bold">กำลังแก้ไขรายงานการติดตาม</label> </div>
-                                                    <div class="col text-end">
-                                                        <i class="fa-solid fa-map-pin text-primary"></i>
+                                    <span class="editpost-{{$value->id}}" style="display:none; font-size:13px;">
+                                        <div class="card">
+                                            <form id="updateCusTag-{{$value->id}}">
+                                                <div class="card-body">
+                                                    <input type="hidden" name="tag_id" value="{{$value->id}}">
+                                                    <input type="hidden" name="contractNumber" value="{{$value->ContractID}}">
+                                                    <input type="hidden" name="_token" value="{{ @csrf_token() }}">
+                                                    <input type="hidden" name="type" value="3">
+                                                    <div class="row">
+                                                        <div class="col"><label class="fw-bold">กำลังแก้ไขรายงานการติดตาม</label> </div>
+                                                        <div class="col text-end">
+                                                            <i class="fa-solid fa-map-pin text-primary"></i>
+                                                        </div>
+                                                    </div>
+            
+                                                    <textarea class="form-control me-1 addaction rounded rounded-4" name="note[{{$value->id}}]" id="note-{{$value->id}}">{{$value->detail}}</textarea>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="row" style="">
+                                                        <div class="col-xl col-sm-12 text-center">
+                                                            <b class="">วันนัดชำระ</b> <input type="date" class="form-control form-control-sm" value="{{$value->payment_date}}" placeholder="" name="payment_date" id="payment_date"value=""/>
+                                                        </div>
+                                                        <div class="col-xl col-sm-12 text-center">
+                                                            <b>วันลงพื้นที่</b><input type="date" class="form-control form-control-sm" value="{{$value->visitArea_date}}" placeholder="" name="visitArea_date" id="visitArea_date"  value=""/>
+                                                        </div>
+                                                        <div class="col-xl col-sm-12 text-center">
+                                                            <b>PowerApp</b><input type="date" class="form-control form-control-sm" value="{{$value->PowerApp_date}}" placeholder="" name="PowerApp_date" id="PowerApp_date" value=""/>
+                                                        </div>
+                                                        <div class="col-xl col-sm-12 text-center">
+                                                            <b>ติดตามต่อ</b><input type="date" class="form-control form-control-sm" value="{{$value->Following_Date}}" placeholder="" name="Following_date" id="Following_date" value=""/>
+                                                        </div>
                                                     </div>
                                                 </div>
-        
-                                                <textarea class="form-control me-1 addaction rounded rounded-4" name="note[{{$value->id}}]" id="note-{{$value->id}}">{{$value->detail}}</textarea>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <small class="text-muted">{{$value->created_At}}</small>    
                                             </div>
-                                            <div class="card-footer">
-                                                <div class="row" style="">
-                                                    <div class="col-xl col-sm-12 text-center">
-                                                        <b class="">วันนัดชำระ</b> <input type="date" class="form-control" value="{{$value->payment_date}}" placeholder="" name="payment_date" id="payment_date"value=""/>
-                                                    </div>
-                                                    <div class="col-xl col-sm-12 text-center">
-                                                        <b>วันลงพื้นที่</b><input type="date" class="form-control" value="{{$value->visitArea_date}}" placeholder="" name="visitArea_date" id="visitArea_date"  value=""/>
-                                                    </div>
-                                                    <div class="col-xl col-sm-12 text-center">
-                                                        <b>PowerApp</b><input type="date" class="form-control" value="{{$value->PowerApp_date}}" placeholder="" name="PowerApp_date" id="PowerApp_date" value=""/>
-                                                    </div>
-                                                </div>
+                                            <div class="col text-end px-3">
+                                                <small class="text-muted"><a class="BtnSavePost text-muted " style="text-decoration: none; cursor:pointer;" onclick="updateTag('{{$value->id}}');">บันทึก</a></small> 
+                                                <small class="text-muted p-3"><a class="text-muted " style="text-decoration: none; cursor:pointer;" onclick="clickEdit('{{$value->id}}');">ยกเลิกแก้ไข</a></small> 
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="row">
-                                                <div class="col">
-                                                    <small class="text-muted">{{$value->created_At}}</small>    
-                                                </div>
-                                                <div class="col text-end px-3">
-                                                    <small class="text-muted"><a class="BtnSavePost text-muted " style="text-decoration: none; cursor:pointer;" onclick="updateTag('{{$value->id}}');">บันทึก</a></small> 
-                                                    <small class="text-muted p-3"><a class="text-muted " style="text-decoration: none; cursor:pointer;" onclick="clickEdit('{{$value->id}}');">ยกเลิกแก้ไข</a></small> 
-                                                </div>
-                                            </div>
+                                        </div>
                                     </span>
                             </div>
                             <!--end edit post -->
