@@ -130,49 +130,56 @@ class CusController extends Controller
          
       }
       elseif($request->type == 4){
-        $customers = tbl_customer::whereIn('groupDebt',['4.Past 2','5.Past 3'])
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereIn('groupDebt',['4.Past 2','5.Past 3'])
         ->where('typeLoan',1)
         ->orderBy('dealDay', 'ASC')->get();
 
         return static::getTB($customers);
       }
       elseif($request->type == 5){ //ส่งหัวหน้า PLM
-        $customers = tbl_customer::whereIn('status',['STS-009','STS-008'])
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereIn('status',['STS-009','STS-008'])
         ->where('typeLoan',1)
         ->orderBy('dealDay', 'ASC')->get();
 
         return static::getTB($customers);
       }
       elseif($request->type == 6){
-        $customers = tbl_customer::whereIn('status',['STS-009','STS-008'])
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereIn('status',['STS-009','STS-008'])
         ->where('typeLoan',2)
         ->orderBy('dealDay', 'ASC')->get();
 
         return static::getTB($customers);
       }
       elseif($request->type == 7){ // วันชำระวันนี้
-        $customers = tbl_customer::where('status','=','STS-001')
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('status','=','STS-001')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('paymentDate','=',Carbon::today()->format('Y-m-d'))
         ->orderBy('dealDay', 'ASC')->get();
         return static::getTB($customers);
       }
       elseif($request->type == 8){ // ดีลวันนี้
-        $customers = tbl_customer::where('status','!=','STS-005')
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('status','!=','STS-005')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('dealDay','=',Carbon::today()->format('Y-m-d'))
         ->orderBy('dealDay', 'ASC')->get();
         return static::getTB($customers);
       }
       elseif($request->type == 9){ // ดีลเมื่อวาน
-        $customers = tbl_customer::where('status','!=','STS-005')
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('status','!=','STS-005')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('dealDay','=',Carbon::yesterday()->format('Y-m-d'))
         ->orderBy('dealDay', 'ASC')->get();
         return static::getTB($customers);
       }
       elseif($request->type == 10){ // ติดตามวันนี้
-        $customers = tbl_customer::where('status','!=','STS-005')
+        $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->where('status','!=','STS-005')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('FollowingDate','=',Carbon::today()->format('Y-m-d'))
         ->orderBy('FollowingDate', 'ASC')->get();
