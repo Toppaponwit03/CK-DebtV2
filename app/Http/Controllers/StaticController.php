@@ -55,6 +55,7 @@ class StaticController extends Controller
         }
         elseif($request->type==2){
             $data->user_id = @$request->idUser;
+            $data->UpdatePay = @$request->UpdatePay;
             $data->datafilter = @$request->datafilter;
             $data->editstatus = @$request->editstatus;
             $data->imex = @$request->imex;
@@ -69,6 +70,7 @@ class StaticController extends Controller
             $data->ViewTarget = @$request->ViewTarget;
             $data->ComBranch = @$request->ComBranch;
             $data->assignTarget = @$request->assignTarget;
+            $data->exportComm = @$request->exportComm;
             $data->save();
         }
     }

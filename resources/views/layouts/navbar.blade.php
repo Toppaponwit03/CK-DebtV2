@@ -191,18 +191,12 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 @if(@Auth::user()->position == 'admin')
-                                    <button class="dropdown-item" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> อัพเดทการชำระเงิน</button>
                                     <a class="dropdown-item" href ="{{ route('static.index') }}?type={{1}}">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                         กำหนดสิทธิ์การใช้งาน
                                     </a>
                                 @endif
-                                @if(@Auth::user()->UserToPrivilege->imex == 'yes')
-                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    นำเข้า/ส่งออกข้อมูล
-                                </button>
-                                @endif
+
 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">

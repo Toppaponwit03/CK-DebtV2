@@ -1,6 +1,24 @@
 
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
+    <div class="row mb-2">
+      <div class="col-6">
+          
+      </div>
+      <div class="col-6 text-end">
+          <div class="">
+              @if(@Auth::user()->UserToPrivilege->UpdatePay == 'yes')
+              <a class="btn btn-success btn-sm rounded-3 mx-1" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}">อัพเดทการชำระเงิน</a>
+              @endif
+              @if(@Auth::user()->UserToPrivilege->imex == 'yes')
+              <a class="btn btn-success btn-sm rounded-3 mx-1" data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> นำเข้า/ส่งออกข้อมูล
+              </a>
+              @endif
+          </div>
+      </div>
+  </div>
+
         <h5>สาขาทั้งหมด (All Branch)</h5>
         <div class="scroll-slide bg-light" >
             <div class="d-flex p-2" >

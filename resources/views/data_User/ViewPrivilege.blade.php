@@ -98,6 +98,14 @@
                             <div class="col border-end">
                                 <h6 class="fw-semibold">ระบบติดตามหนี้</h6>
 
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="UpdatePay" id="UpdatePay" {{ @$dataUser->UserToPrivilege->UpdatePay == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="UpdatePay">
+                                        อัพเดทการชำระเงิน (Create CusTags)
+                                    </label>
+                                </div>
+
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="yes" name="dataCus" id="dataCus" {{ @$dataUser->UserToPrivilege->dataCus == 'yes' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="dataCus">
@@ -161,6 +169,7 @@
                                     </label>
                                 </div>
 
+
                             </div>
                             <div class="col border-end">
 
@@ -191,6 +200,13 @@
                                     <input class="form-check-input" type="checkbox" value="yes" name="assignTarget" id="assignTarget" {{ @$dataUser->UserToPrivilege->assignTarget == 'yes' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="assignTarget">
                                         แก้ไขเป้าสาขา (Commission Branch)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="exportComm" id="exportComm" {{ @$dataUser->UserToPrivilege->exportComm == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="exportComm">
+                                        ออกรายงานค่าคอมมิชชั่น (Export Commission Report)
                                     </label>
                                 </div>
 

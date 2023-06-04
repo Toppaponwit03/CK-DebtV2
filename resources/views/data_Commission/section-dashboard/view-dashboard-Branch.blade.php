@@ -76,7 +76,9 @@
                     <button type="button" id="btnSearch" class="btn btn-primary btn-sm rounded-circle mx-1">
                         <i class="fas fa-search" aria-hidden="true"></i>
                     </button>
-                    <a id="btnExportCom" type="button" class="btn btn-success btn-sm rounded-circle mx-1"><i class="fa-solid fa-download"></i></a>
+                    @if(@Auth::user()->UserToPrivilege->exportComm == 'yes')
+                        <a id="btnExportCom" type="button" class="btn btn-success btn-sm rounded-circle mx-1"><i class="fa-solid fa-download"></i></a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -109,7 +111,7 @@
 
 <script>
     $("#btnExportCom").click(function(){
-        $('.loadEX').html(`
+        $("#btnExportCom").html(`
         <div class="spinner-border spinner-border-sm" role="status">
         </div>
         `);
@@ -131,7 +133,7 @@
                 a.click();
                 a.remove();
                 window.URL.revokeObjectURL(url);
-                $('.loadEX').html('')
+                $("#btnExportCom").html('<i class="fa-solid fa-download"></i>')
 
                 Swal.fire({
                 icon: 'success',
@@ -140,7 +142,7 @@
                 })
             },
             error : (err) =>{
-                $('.loadEX').html('')
+                $("#btnExportCom").html('<i class="fa-solid fa-download"></i>')
                 Swal.fire({
                 icon: 'error',
                 text: 'ดาวโหลดไฟล์เอกสารไม่สำเร็จ',
