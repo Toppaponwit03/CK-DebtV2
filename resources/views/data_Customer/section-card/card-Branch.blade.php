@@ -8,11 +8,11 @@
       <div class="col-6 text-end">
           <div class="">
               @if(@Auth::user()->UserToPrivilege->UpdatePay == 'yes')
-              <a class="btn btn-success btn-sm rounded-3 mx-1" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}">อัพเดทการชำระเงิน</a>
+              <a class="btn btn-primary btn-sm rounded-3 mx-1" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}"><i class="fa-solid fa-money-bill-trend-up"></i> อัพเดทการชำระเงิน</a>
               @endif
               @if(@Auth::user()->UserToPrivilege->imex == 'yes')
-              <a class="btn btn-success btn-sm rounded-3 mx-1" data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> นำเข้า/ส่งออกข้อมูล
+              <a class="btn btn-success btn-sm rounded-circle mx-1" data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}">
+                <i class="fa-solid fa-download"></i>
               </a>
               @endif
           </div>

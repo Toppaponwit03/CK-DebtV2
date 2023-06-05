@@ -257,7 +257,7 @@ class CusController extends Controller
         $data = tbl_customer::find($id);
         $contract = $data->contractNumber;
 
-        $datapay = DB::connection('ibmiNK')->select("
+        $datapay = DB::connection('ibmi2')->select("
           SELECT 
           RSFHP.CHQTRAN.LOCATRECV,
           RSFHP.CHQTRAN.TMBILDT,
@@ -309,7 +309,7 @@ class CusController extends Controller
         $datenow = date('Y-m-d');
           
         //
-        // $dataPay = DB::connection('ibmiNK')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+        // $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         // (select DISTINCT PSFHP.ARMAST.CONTNO,
         // PSFHP.CHQTRAN.TMBILDT ,
         // PSFHP.ARMAST.NPROFIT as TOTALC,
@@ -325,7 +325,7 @@ class CusController extends Controller
         // group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
         // ORDER BY OD.TMBILDT ASC ");
 
-        $dataPay = DB::connection('ibmiNK')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+        $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT PSFHP.ARMAST.CONTNO,
         PSFHP.CHQTRAN.TMBILDT ,
         PSFHP.ARMAST.NPROFIT as TOTALC,
@@ -355,7 +355,6 @@ class CusController extends Controller
         where RSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
         group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
 
-      dd($dataPay);
 
         foreach ($dataPay as $key => $value){
           tbl_customer::where('contractNumber',trim($value->CONTNO))
