@@ -111,7 +111,7 @@ return [
             'driverName'           => '{IBM DB2 ODBC DRIVER}',
             // General settings
         //
-        'host'                 => 'k1ag3nmazdahyx.homeip.net',            
+            'host'                 => 'k1ag3nmazdahyx.homeip.net',            
             // 'host'                 => '192.168.1.222',
             'protocol'             => 'TCPIP',
             'username'             => 'PSFHP',
@@ -121,6 +121,29 @@ return [
             'prefix'               => '',
             'schema'               => 'information_schema',
             'port'                 => '8213',
+            // charset
+            'toolkit' => [
+            'plugSize' => '512K',
+            'encoding' => "UTF-8",
+            'ccsid' => "874/1208",
+        ],
+        ],
+
+        'ibmiNK' => [
+            'driver'               => 'db2_ibmi_odbc',
+            'driverName'           => '{IBM DB2 ODBC DRIVER}',
+             // General settings
+           //
+           'host'                 => 'k1ag3nmazdahyx.homeip.net', 
+            // 'host'                 => '183.88.247.93',            
+            'protocol'             => 'TCPIP',
+            'username'             => 'PSFHP',
+            'password'             => 'Soft@2K7',
+            //Server settings
+            'database'             => 'NK',
+            'prefix'               => '',
+            'schema'               => 'information_schema',
+            'port'                 => '50000',
             // charset
             'toolkit' => [
             'plugSize' => '512K',
