@@ -52,8 +52,8 @@
 
 
 </style>
-<div class="card border border-white shadow-sm mx-4 mb-2">
-    <div class="p-4">
+<div class="card border border-white shadow-sm mb-2">
+    <div class="p-1">
         <div class="row">
              <!-- left content -->
             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">

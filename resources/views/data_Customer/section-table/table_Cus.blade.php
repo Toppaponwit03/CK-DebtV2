@@ -42,9 +42,9 @@
             
         }
 </style>
-<div class="container-fluid px-4">
+<div class="">
     <div class="card mb-4 border border-white shadow-sm">
-        <div class="p-4 ">
+        <div class="p-1">
           <div class="row">
             <div class="col-12">
               <div class="table-responsive">

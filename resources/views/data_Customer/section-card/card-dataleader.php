@@ -1,6 +1,6 @@
 
-<div class="card border border-white shadow-sm mx-4 mb-2">
-    <div class="p-4">
+<div class="card border border-white shadow-sm mb-2">
+    <div class="p-1">
         <h5>ค้นหาข้อมูล (Data Filter)</h5>
         <div class="scroll-slide bg-light" >
             <div class="d-flex p-2" >

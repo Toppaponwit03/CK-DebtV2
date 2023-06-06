@@ -82,8 +82,13 @@ class CusController extends Controller
       $countPass = DB::select("SELECT 
       traceEmployee,
       sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
-      sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+      sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
+      sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
+      sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
       FROM `tbl_customers` GROUP BY traceEmployee");
+
 
        return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','countPass'));
       
