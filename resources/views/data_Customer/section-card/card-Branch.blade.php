@@ -2,10 +2,10 @@
 <div class="card border border-white shadow-sm mx-4 mb-2">
     <div class="p-4">
     <div class="row mb-2">
-      <div class="col-6">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 text-end">
           
       </div>
-      <div class="col-6 text-end">
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 text-end">
           <div class="">
               @if(@Auth::user()->UserToPrivilege->UpdatePay == 'yes')
               <a class="btn btn-primary btn-sm rounded-3 mx-1" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}"><i class="fa-solid fa-money-bill-trend-up"></i> อัพเดทการชำระเงิน</a>
@@ -65,8 +65,8 @@
                     @endphp
                     <div class="row pt-2">
                         <div class="col-12">
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countper,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress" style="height: 10px;" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-title="Custom popover" data-bs-trigger="hover focus" data-bs-content='<div class="col-12"> PLM : 999 % </div> 30-50 : 999 %'>
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countper,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,15 @@
 </div>
 
 
+<script>
 
+    
+      document.querySelectorAll('[data-bs-toggle="popover"]')
+    .forEach(popover => {
+      new bootstrap.Popover(popover)
+    })
+    
+</script>
 
     
 

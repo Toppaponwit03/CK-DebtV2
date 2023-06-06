@@ -325,6 +325,11 @@ class CusController extends Controller
         // group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
         // ORDER BY OD.TMBILDT ASC ");
 
+        // ประกาศตัวแปร วีนดีล เริ่ม สิ้นสุด s 07/05/2023 e 06/06/2023
+
+        $dateStart = '2023-05-07'; // วันดีลเริ่มต้น
+        $dateEnd = '2023-06-06'; // วันสิ้นสุด
+
         $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT PSFHP.ARMAST.CONTNO,
         PSFHP.CHQTRAN.TMBILDT ,
@@ -333,11 +338,11 @@ class CusController extends Controller
         PSFHP.CHQTRAN.DEBT_BALANCE
         from PSFHP.ARMAST 
         left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
-        where PSFHP.CHQTRAN.TMBILDT < '${datenow}' AND PSFHP.CHQTRAN.TMBILDT >= '2023-05-07'
+        where PSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' AND PSFHP.CHQTRAN.TMBILDT >= '${dateStart}'
         ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
         INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
         left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
-        where PSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
+        where PSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and PSFHP.CHQTRAN.FLAG <> 'C'  
         group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
         UNION
         SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
@@ -348,13 +353,12 @@ class CusController extends Controller
         RSFHP.CHQTRAN.DEBT_BALANCE
         from RSFHP.ARMAST 
         left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO  
-        where RSFHP.CHQTRAN.TMBILDT < '${datenow}' AND RSFHP.CHQTRAN.TMBILDT >= '2023-05-07'  
+        where RSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' AND RSFHP.CHQTRAN.TMBILDT >= '${dateStart}'  
         ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD 
         INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST  
         left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO 
-        where RSFHP.CHQTRAN.TMBILDT >= '2023-05-07' and RSFHP.CHQTRAN.FLAG <> 'C'  
+        where RSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and RSFHP.CHQTRAN.FLAG <> 'C'  
         group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
-
 
         foreach ($dataPay as $key => $value){
           tbl_customer::where('contractNumber',trim($value->CONTNO))

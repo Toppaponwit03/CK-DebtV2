@@ -129,7 +129,7 @@ return [
         ],
         ],
 
-        'ibmiNK' => [
+        'NKS2' => [
             'driver'               => 'db2_ibmi_odbc',
             'driverName'           => '{IBM DB2 ODBC DRIVER}',
              // General settings
@@ -140,10 +140,10 @@ return [
             'username'             => 'PSFHP',
             'password'             => 'Soft@2K7',
             //Server settings
-            'database'             => 'NK',
+            'database'             => 'NKS2',
             'prefix'               => '',
             'schema'               => 'information_schema',
-            'port'                 => '8213',
+            'port'                 => '50000',
             // charset
             'toolkit' => [
             'plugSize' => '512K',
