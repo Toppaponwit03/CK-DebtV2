@@ -10,8 +10,8 @@
         txt = `${val.traceEmployee}`;
 
         gd.push(txt)
-        gdpass.push( `${val.PassBefor}`,`${val.PassNomal}`,`${val.PassPast1}`,`${val.PassPast2}`,`${val.PassPast3}` )
-        gdnotpass.push( `${ parseInt (val.totalBefor - val.PassBefor) }`,`${ parseInt (val.totalNomal - val.PassNomal) }`,`${ parseInt (val.totalPast1 - val.PassPast1) }`,`${ parseInt (val.totalPast2 - val.PassPast2) }`,`${ parseInt (val.totalPast3 - val.PassPast3) }` )
+        gdpass.push( `${val.PassBefor}`,`${val.PassNomal}`,`${val.PassPast1}`,`${val.PassPast2}`,`${val.PassPast3}`,`${val.PassPast4}` )
+        gdnotpass.push( `${ parseInt (val.totalBefor - val.PassBefor) }`,`${ parseInt (val.totalNomal - val.PassNomal) }`,`${ parseInt (val.totalPast1 - val.PassPast1) }`,`${ parseInt (val.totalPast2 - val.PassPast2) }`,`${ parseInt (val.totalPast3 - val.PassPast3) }`,`${ parseInt (val.totalPast4 - val.PassPast4) }` )
 
        
     })

@@ -35,6 +35,7 @@
             </div>
             <div class="col-xl col-sm-12 text-end">
                 <label class="col-form-label">{{@$data->contractNumber}}</label>
+                <input type="hidden" id="contractNumber" value="{{@$data->contractNumber}}">
             </div>
 
             <div class="col-xl-6 col-sm-12 text-start">

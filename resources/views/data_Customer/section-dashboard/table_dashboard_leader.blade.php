@@ -15,12 +15,16 @@
                     <td colspan="3" scope="col" class="text-center">3.Past 1</td>
                     <td colspan="3" scope="col" class="text-center">4.Past 2</td>
                     <td colspan="3" scope="col" class="text-center">5.Past 3</td>
+                    <td colspan="3" scope="col" class="text-center">6.Past 4</td>
                     <td rowspan="2" class="text-center  ">จำนวนลูกค้า<br>ที่ต้องตาม</td>
                     <td rowspan="2" scope="col" class="text-center">ผ่าน</td>
                     <td rowspan="2" scope="col" class="text-center">ไม่ผาน</td>
                     <td rowspan="2" scope="col" class="text-center">%</td>
                   </tr>
                   <tr>
+                    <td>ทั้งหมด</td>
+                    <td>ผ่าน</td>
+                    <td>%</td>
                     <td>ทั้งหมด</td>
                     <td>ผ่าน</td>
                     <td>%</td>
@@ -52,11 +56,13 @@
                   @php
 
 
-                  $total =  $value->totalBefor + $value->totalNomal + $value->totalPast1 + $value->totalPast2 + $value->totalPast3 ;
-                  $totalPass = $value->PassBefor + $value->PassNomal + $value->PassPast1 + $value->PassPast2 + $value->PassPast3 ;
+                  $total =  $value->totalBefor + $value->totalNomal + $value->totalPast1 + $value->totalPast2 + $value->totalPast3 + $value->totalPast4 ;
+                  $totalPass = $value->PassBefor + $value->PassNomal + $value->PassPast1 + $value->PassPast2 + $value->PassPast3 + $value->PassPast4 ;
 
-                  $totalfollPass = $value->PassPast1 + $value->PassPast2 + $value->PassPast3 ;
-                  $totalfoll = $value->totalPast1 + $value->totalPast2 + $value->totalPast3;
+
+
+                  $totalfollPass = $value->PassPast1 + $value->PassPast2 + $value->PassPast3 + $value->PassPast4 ;
+                  $totalfoll = $value->totalPast1 + $value->totalPast2 + $value->totalPast3 + $value->totalPast4;
                   $totalnotPass = $totalfoll - $totalfollPass;
                   $totalper = number_format(( $totalfollPass / ($totalfoll != 0 ? $totalfoll : 1) ) * 100,2);
 
@@ -90,6 +96,10 @@
                       <td>{{$value->PassPast3}}</td>
                       <td>{{ number_format( ( (( $value->PassPast3 != 0 ) ? $value->PassPast3 : 0) / (( $value->totalPast3 != 0 ) ? $value->totalPast3 : 1 )) * 100 ,2) }}</td>
 
+                      <td>{{$value->totalPast4}}</td>
+                      <td>{{$value->PassPast4}}</td>
+                      <td>{{ number_format( ( (( $value->PassPast4 != 0 ) ? $value->PassPast4 : 0) / (( $value->totalPast4 != 0 ) ? $value->totalPast4 : 1 )) * 100 ,2) }}</td>
+
                       <td>{{$totalfoll}}</td>
                       <td>{{@$totalfollPass}}</td>
                       <td>{{@$totalnotPass}}</td>
@@ -100,6 +110,9 @@
                 <tfoot class="bg-success text-white ">
                     <tr class="">
                         <td class="text-center">รวม</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -136,7 +149,7 @@
 <script>
   $(document).ready(function () {
           let arr = [];
-          arr = [1,2,4,5,7,8,10,11,13,14,16,17,19,20,21];
+          arr = [1,2,4,5,7,8,10,11,13,14,16,17,19,20,21,23,22,24];
 
       $('#tbl_dashboard').DataTable({
           ordering: false,
@@ -186,9 +199,9 @@
                     total18 = ( arr2[11] / arr2[10] ) * 100
                     $(api.column(18).footer()).html( total18.toFixed(2) ).addClass('text-center');
 
+                    total21 = ( arr2[15] / arr2[16] ) * 100
+                    $(api.column(25).footer()).html( total21.toFixed(2) ).addClass('text-center');
 
-                    total22 = ( arr2[14] / arr2[13] ) * 100
-                    $(api.column(22).footer()).html( total22.toFixed(2) ).addClass('text-center');
           },
       });
   }); 

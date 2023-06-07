@@ -55,7 +55,6 @@
                         $countPLM = ( $count->totalPassPLM / ($count->totalEmpPLM != 0 ? $count->totalEmpPLM : 1 )) * 100;
                         $countCKM = ( $count->totalPassCKM / ($count->totalEmpCKM != 0 ? $count->totalEmpCKM : 1 )) * 100;
 
-
                         if($countPLM == 100){
                             $colorPLM = 'bg-success';
                         }

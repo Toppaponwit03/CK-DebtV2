@@ -332,8 +332,8 @@ class CusController extends Controller
 
         // ประกาศตัวแปร วีนดีล เริ่ม สิ้นสุด s 07/05/2023 e 06/06/2023
 
-        $dateStart = '2023-05-07'; // วันดีลเริ่มต้น
-        $dateEnd = '2023-06-06'; // วันสิ้นสุด
+        $dateStart = '2023-06-07'; // วันดีลเริ่มต้น
+        $dateEnd = '2023-07-06'; // วันสิ้นสุด
 
         $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT PSFHP.ARMAST.CONTNO,
@@ -458,7 +458,10 @@ class CusController extends Controller
             SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
   
             SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
-            SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3'
+            SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
+
+            SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
+            SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
   
             FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' group by traceEmployee  ;
         ");
@@ -480,12 +483,14 @@ class CusController extends Controller
               SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
     
               SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
-              SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3'
+              SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
+
+              SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
+              SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
     
               FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' group by traceEmployee  ;
           ");
         }
-
     return view('data_Customer.section-dashboard.view',compact('data','head','column'));
 
     }

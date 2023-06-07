@@ -9,8 +9,8 @@
 
     chartData.map(function(val) {
         txt = `${val.traceEmployee}`;
-        total = parseInt(val.totalBefor) + parseInt(val.totalNomal) + parseInt(val.totalPast1) + parseInt(val.totalPast2) + parseInt(val.totalPast3);
-        totalPass = parseInt(val.PassBefor) + parseInt(val.PassNomal) + parseInt(val.PassPast1) + parseInt(val.PassPast2) + parseInt(val.PassPast3);
+        total = parseInt(val.totalBefor) + parseInt(val.totalNomal) + parseInt(val.totalPast1) + parseInt(val.totalPast2) + parseInt(val.totalPast3) + parseInt(val.totalPast4);
+        totalPass = parseInt(val.PassBefor) + parseInt(val.PassNomal) + parseInt(val.PassPast1) + parseInt(val.PassPast2) + parseInt(val.PassPast3) + parseInt(val.PassPast4);
         emp.push(txt)
         empval.push(((totalPass/total)*100).toFixed(2))
       
