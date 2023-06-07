@@ -6,12 +6,51 @@
 
 
 <script>
+  
     $("#UpdatePay").click(()=>{
         $.ajax({
             url : "{{ route('Cus.update',0) }}",
             type : 'put',
             data : {
                 type : 2,
+                datedueStart : $('#datedueStart').val(),
+                datedueEnd : $('#datedueEnd').val(),
+                _token : '{{ csrf_token() }}',
+            },
+            success : (response)=>{
+                
+                Swal.fire({
+                icon: 'success',
+                text: 'อัพเดทข้อมูลเรียบร้อย',
+                showConfirmButton: true,
+                showCancelButton: false,  
+                })
+                $("#modal-sm").modal('toggle');
+            },
+            error : (err)=>{
+              console.log(err);
+              Swal.fire({
+                icon: 'error',
+                title : `ERROR ! ${err.status}`,
+                text: 'อัพเดทข้อมูลไม่สำเร็จ',
+                showConfirmButton: true,
+                showCancelButton: false, 
+                })
+                $("#modal-sm").modal('toggle');
+
+            }
+        })
+    });
+
+
+    $("#BackUp").click(()=>{
+        $.ajax({
+            url : "{{ route('Cus.update',0) }}",
+            type : 'put',
+            data : {
+                type : 4,
+                datedueStart : $('#datedueStart').val(),
+                datedueEnd : $('#datedueEnd').val(),
                 _token : '{{ csrf_token() }}',
             },
             success : (response)=>{

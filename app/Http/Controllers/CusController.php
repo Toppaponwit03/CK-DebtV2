@@ -12,6 +12,8 @@ use App\Models\tbl_custag;
 use App\Models\tbl_actionplan;
 use App\Models\tbl_non;
 use App\Models\tbl_user;
+use App\Models\tbl_historydashboard;
+use App\Models\tbl_duedate;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DB;
@@ -89,8 +91,12 @@ class CusController extends Controller
       sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
       FROM `tbl_customers` GROUP BY traceEmployee");
 
+      $getdue = tbl_duedate::getDuedate();
+      $dateStart = date('Y-').date_format(date_create($getdue->datedueStart),'m-d');
+      $dateEnd = date('Y-').date_format(date_create($getdue->datedueEnd),'m-d');
 
-       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','countPass'));
+
+       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','countPass','getdue'));
       
 
   
@@ -298,6 +304,8 @@ class CusController extends Controller
 
     public function update(Request $request, $id)
     {
+      $dateStart = $request->datedueStart;
+      $dateEnd = $request->datedueEnd;
 
       if($request->type == 1){ //อัพเดทสถานะ
         $data_status = tbl_customer::where('contractNumber',$request->contractNumber)->first();
@@ -308,32 +316,12 @@ class CusController extends Controller
         $statuslist = tbl_statustype::getstatus();
         return response()->view('data_Customer.section-Cus.CardCusDetail',compact('data','statuslist'));
       }
-      else if($request->type == 2){ // อัพเดทการจ่าย
+      elseif($request->type == 2){ // อัพเดทการจ่าย
 
-        $subdate = substr(date('Y-m-d',strtotime("-1 months")), 0, 7) ;
-        $datenow = date('Y-m-d');
-          
-        //
-        // $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
-        // (select DISTINCT PSFHP.ARMAST.CONTNO,
-        // PSFHP.CHQTRAN.TMBILDT ,
-        // PSFHP.ARMAST.NPROFIT as TOTALC,
-        // PSFHP.CHQTRAN.PAYFOR,
-        // PSFHP.CHQTRAN.DEBT_BALANCE
-        // from PSFHP.ARMAST 
-        // left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
-        // where PSFHP.CHQTRAN.TMBILDT < '${datenow}'   
-        // ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
-        // INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
-        // left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
-        // where PSFHP.CHQTRAN.TMBILDT > '${subdate}-07' and PSFHP.CHQTRAN.FLAG <> 'C'  
-        // group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
-        // ORDER BY OD.TMBILDT ASC ");
-
-        // ประกาศตัวแปร วีนดีล เริ่ม สิ้นสุด s 07/05/2023 e 06/06/2023
-
-        $dateStart = '2023-06-07'; // วันดีลเริ่มต้น
-        $dateEnd = '2023-07-06'; // วันสิ้นสุด
+     
+        // $dateStart = '2023-06-07';  วันดีลเริ่มต้น
+        // $dateEnd = '2023-07-06';  วันสิ้นสุด
+        
 
         $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT PSFHP.ARMAST.CONTNO,
@@ -384,7 +372,7 @@ class CusController extends Controller
         ]);
         return 200;
       }
-      else if($request->type == 3){  //อัพเดทการติดตาม
+      elseif($request->type == 3){  //อัพเดทการติดตาม
         $data_Tag = tbl_custag::where('id',$request->tag_id)->first();
         $name = $request->note[$request->tag_id];
         $data_Tag->ContractID = $request->contractNumber;
@@ -406,6 +394,29 @@ class CusController extends Controller
 
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data'));
+
+      }
+      elseif($request->type == 4){ 
+        //initialize array
+        $inserts = [];
+
+        $data = tbl_customer::get();
+
+        foreach($data as $val) {
+            $inserts[] = [ 
+                "traceEmployee" => $val->traceEmployee,
+                "groupDebt" => $val->groupDebt,
+                "status" => $val->status,
+                "teamGroup" => $val->teamGroup ,
+                "typeLoan" => $val->typeLoan,
+                "TotalPay" => $val->TotalPay,
+                "duedateStart" => $dateStart,
+                "duedateEnd" => $dateEnd
+                ]; 
+        }
+        tbl_historydashboard::insert($inserts);
+        // DB::table('saved_estimations')->insert($inserts);
+
 
       }
 

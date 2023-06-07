@@ -3,12 +3,19 @@
     <div class="p-1">
     <div class="row mb-2">
       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 text-end">
-          
+
       </div>
       <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 text-end">
           <div class="">
+
+          <input type="hidden" value="{{date('Y-').date_format(date_create($getdue->datedueStart),'m-d')}}" id="datedueStart">
+          <input type="hidden" value="{{date('Y-').date_format(date_create($getdue->datedueEnd),'m-d')}}" id="datedueEnd">
+
               @if(@Auth::user()->UserToPrivilege->UpdatePay == 'yes')
-              <a class="btn btn-primary btn-sm rounded-3 mx-1" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}"><i class="fa-solid fa-money-bill-trend-up"></i> อัพเดทการชำระเงิน</a>
+              <span data-bs-toggle="popover" data-bs-placement="bottom" data-bs-custom-class="custom-popover" data-bs-title="รายละเอียดการอัพเดท"  data-bs-trigger="hover focus" data-bs-content="วันที่ : {{date('Y-').date_format(date_create($getdue->datedueStart),'m-d')}} - {{date('Y-').date_format(date_create($getdue->datedueEnd),'m-d')}}">
+                  <a class="btn btn-primary btn-sm rounded-3 mx-1" id="UpdatePay" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}" ><i class="fa-solid fa-money-bill-trend-up"></i> อัพเดทการชำระเงิน</a>
+              </span>
+              <a class="btn btn-primary btn-sm rounded-3 mx-1" id="BackUp" data-bs-toggle="modal" data-bs-target="#modal-sm" data-link="{{ route('Cus.show',0) }}?type={{1}}"><i class="fa-solid fa-money-bill-trend-up"></i> BackUp</a>
               @endif
               @if(@Auth::user()->UserToPrivilege->imex == 'yes')
               <a class="btn btn-success btn-sm rounded-circle mx-1" data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}">
@@ -54,6 +61,7 @@
                         $countper = ( $count->totalPass / ($count->totalEmp != 0 ? $count->totalEmp : 1 )) * 100;
                         $countPLM = ( $count->totalPassPLM / ($count->totalEmpPLM != 0 ? $count->totalEmpPLM : 1 )) * 100;
                         $countCKM = ( $count->totalPassCKM / ($count->totalEmpCKM != 0 ? $count->totalEmpCKM : 1 )) * 100;
+
 
                         if($countPLM == 100){
                             $colorPLM = 'bg-success';

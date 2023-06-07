@@ -7,6 +7,7 @@
     </div>
   </div>
 
+  @if(Auth::user()->position == 'admin')
   <div class="row px-4">
     <div class="col">
       <div class="card mb-2 pt-3 border border-white shadow-sm">
@@ -19,6 +20,7 @@
       </div>
     </div> -->
   </div>
+  @endif
 
   <div class="row">
     <div class="col">
