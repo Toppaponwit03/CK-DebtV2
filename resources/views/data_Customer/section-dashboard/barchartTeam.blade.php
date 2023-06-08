@@ -3,9 +3,9 @@
 
 
 @php 
-$total = $data[0]->totalBefor + $data[0]->totalNomal + $data[0]->totalPast1 + $data[0]->totalPast2 + $data[0]->totalPast3 + $data[0]->totalPast4;
-$totalPass = $data[0]->PassBefor + $data[0]->PassNomal + $data[0]->PassPast1 + $data[0]->PassPast2 + $data[0]->PassPast3 + $data[0]->PassPast4;
-$percent = ( $totalPass / $total ) * 100 ;
+@$total = @$data[0]->totalBefor + @$data[0]->totalNomal + @$data[0]->totalPast1 + @$data[0]->totalPast2 + @$data[0]->totalPast3 + @$data[0]->totalPast4;
+@$totalPass = @$data[0]->PassBefor + @$data[0]->PassNomal + @$data[0]->PassPast1 + @$data[0]->PassPast2 + @$data[0]->PassPast3 + @$data[0]->PassPast4;
+@$percent = ( @$totalPass / ( @$total != null ? @$total : 1 ) ) * 100 ;
 @endphp
 
 <script>

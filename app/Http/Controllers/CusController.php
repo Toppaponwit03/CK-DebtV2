@@ -256,6 +256,19 @@ class CusController extends Controller
       if($request->type == 1){ // โชว์โหลดตอนกดอัพเดทการจ่ายเงิน
         return view('data_Customer.section-onload.load-updateTotalPay');
       }
+      elseif($request->type == 2){
+        $traceEmployee = $request->traceEmployee;
+        $countPass = DB::select("SELECT 
+        traceEmployee,
+        sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
+        sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
+        sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+        sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
+        sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
+        sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
+        FROM `tbl_customers` where traceEmployee = '".$traceEmployee."' GROUP BY traceEmployee");
+        return view('data_Customer.section-dashboard.dashboardBranch',compact('countPass','traceEmployee'));
+      }
     }
 
     public function edit(Request $request,$id)
@@ -425,6 +438,9 @@ class CusController extends Controller
 
     public function dashboard(Request $request)
     {
+      $duedateStart =  $request->duedateStart;
+      $duedateEnd =  $request->duedateEnd;
+
       $column = $request->get('typeloan');
 
       if($column == NULL){
@@ -452,6 +468,7 @@ class CusController extends Controller
         $head = Auth::user()->Branch ;
       }
 
+      if($request->duedateStart == NULL || $request->duedateEnd == NULL){
         if(Auth::user()->position == 'user'){
           $data = DB::select("
           SELECT 
@@ -502,8 +519,36 @@ class CusController extends Controller
               FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' group by traceEmployee  ;
           ");
         }
-    return view('data_Customer.section-dashboard.view',compact('data','head','column'));
+      }
+      else{
 
+        $data = DB::select("
+          SELECT 
+            traceEmployee,typeLoan,
+            SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
+            SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
+
+            SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as 'totalNomal',
+            SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassNomal',
+
+            SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as 'totalPast1',
+            SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast1',
+
+            SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as 'totalPast2',
+            SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
+
+            SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
+            SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
+
+            SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
+            SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
+
+            FROM tbl_historydashboard WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and duedateStart >= '".$duedateStart."' and duedateEnd <= '".$duedateEnd."' group by traceEmployee  ;
+        ");
+
+      }
+
+      return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd'));
     }
 
     public function export() 

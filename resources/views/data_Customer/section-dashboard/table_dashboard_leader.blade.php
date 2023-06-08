@@ -1,12 +1,14 @@
-<div class="px-4">
+<div class="">
     <div class="card mb-4 border border-white shadow-sm">
         <div class="p-4">
           <h5>แดชบอร์ด (Dashboard)</h5>
           <div class="row">
+            
             <div class="col">
             <div class="table-responsive">
-              <table class="table table-sm table-bordered text-nowrap text-center" id="tbl_dashboard">
+              <table class="table table-sm table-bordered text-nowrap text-center table-hover" id="tbl_dashboard" style="cursor:pointer;">
                 <thead class="text-white" style="background-color: #34495e;">
+
                   <tr>
                     <td rowspan="2" scope="col">ทีม</td>
                     <td colspan="3" scope="col" class="text-center">รวม</td>
@@ -21,6 +23,7 @@
                     <td rowspan="2" scope="col" class="text-center">ไม่ผาน</td>
                     <td rowspan="2" scope="col" class="text-center">%</td>
                   </tr>
+             
                   <tr>
                     <td>ทั้งหมด</td>
                     <td>ผ่าน</td>
@@ -46,30 +49,31 @@
                   </tr>
                 </thead>
                 <tbody>
-                @php 
-                    $emp = [];
-                    $valemp = [];
-                  
-                  @endphp
+                    @php 
+                        $emp = [];
+                        $valemp = [];
+                      
+                      @endphp
 
-                  @foreach(@$data as $value)
-                  @php
-
-
-                  $total =  $value->totalBefor + $value->totalNomal + $value->totalPast1 + $value->totalPast2 + $value->totalPast3 + $value->totalPast4 ;
-                  $totalPass = $value->PassBefor + $value->PassNomal + $value->PassPast1 + $value->PassPast2 + $value->PassPast3 + $value->PassPast4 ;
+                      @foreach(@$data as $value)
+                      @php
 
 
+                      $total =  $value->totalBefor + $value->totalNomal + $value->totalPast1 + $value->totalPast2 + $value->totalPast3 + $value->totalPast4 ;
+                      $totalPass = $value->PassBefor + $value->PassNomal + $value->PassPast1 + $value->PassPast2 + $value->PassPast3 + $value->PassPast4 ;
 
-                  $totalfollPass = $value->PassPast1 + $value->PassPast2 + $value->PassPast3 + $value->PassPast4 ;
-                  $totalfoll = $value->totalPast1 + $value->totalPast2 + $value->totalPast3 + $value->totalPast4;
-                  $totalnotPass = $totalfoll - $totalfollPass;
-                  $totalper = number_format(( $totalfollPass / ($totalfoll != 0 ? $totalfoll : 1) ) * 100,2);
 
-                  array_push($emp,$value->traceEmployee);
-                  array_push($valemp,$totalfoll);
 
-                  @endphp
+                      $totalfollPass = $value->PassPast1 + $value->PassPast2 + $value->PassPast3 + $value->PassPast4 ;
+                      $totalfoll = $value->totalPast1 + $value->totalPast2 + $value->totalPast3 + $value->totalPast4;
+                      $totalnotPass = $totalfoll - $totalfollPass;
+                      $totalper = number_format(( $totalfollPass / ($totalfoll != 0 ? $totalfoll : 1) ) * 100,2);
+
+                      array_push($emp,$value->traceEmployee);
+                      array_push($valemp,$totalfoll);
+
+                      @endphp
+                    <tr  data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('Cus.show',0) }}?type={{2}}&traceEmployee={{$value->traceEmployee}}">
                       <td>{{$value->traceEmployee}}</td>
 
                       <td>{{$total}}</td>
