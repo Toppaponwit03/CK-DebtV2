@@ -232,6 +232,15 @@
     </div>
   </div>
 
+  <div class="modal fade " id="modal-lgDB">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-pt-blue">
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="modal-md">
     <div class="modal-dialog modal-md">
       <div class="modal-content">

@@ -155,6 +155,11 @@ $(function () {
                 $("#modal-lg .modal-body").load(link, function(){
             });
         });
+        $("#modal-lgDB").on("show.bs.modal", function (e) {
+            var link = $(e.relatedTarget).data("link");
+                $("#modal-lgDB .modal-body").load(link, function(){
+            });
+        });
         $("#modal-lg-v2").on("show.bs.modal", function(e) {
             var link = $(e.relatedTarget).data("link");
             $("#modal-lg-v2 .modal-body").load(link, function() {});

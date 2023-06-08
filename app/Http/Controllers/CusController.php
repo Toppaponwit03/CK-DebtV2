@@ -267,7 +267,31 @@ class CusController extends Controller
         sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
         sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
         FROM `tbl_customers` where traceEmployee = '".$traceEmployee."' GROUP BY traceEmployee");
-        return view('data_Customer.section-dashboard.dashboardBranch',compact('countPass','traceEmployee'));
+
+      $dataHistory = DB::select("SELECT 
+      traceEmployee,duedateEnd,
+      sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+      sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
+      sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
+      sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
+      FROM `tbl_historydashboard` where traceEmployee = '".$traceEmployee."' GROUP BY duedateEnd ORDER BY duedateEnd ASC");
+
+      $arrChartsPLM = array();
+      $arrChartsCKM = array();
+      $datecharts = array();
+      foreach($dataHistory as $countHis){
+
+        $countHisper = ( $countHis->totalPass / ($countHis->totalEmp != 0 ? $countHis->totalEmp : 1 )) * 100;
+        $countHisPLM = ( $countHis->totalPassPLM / ($countHis->totalEmpPLM != 0 ? $countHis->totalEmpPLM : 1 )) * 100;
+        $countHisCKM = ( $countHis->totalPassCKM / ($countHis->totalEmpCKM != 0 ? $countHis->totalEmpCKM : 1 )) * 100;
+        
+        array_push($arrChartsPLM,floatval(number_format($countHisPLM,2)) );
+        array_push($arrChartsCKM,floatval(number_format($countHisCKM,2)) );
+        array_push($datecharts,$countHis->duedateEnd);
+      }
+        return view('data_Customer.section-dashboard.dashboardBranch',compact('countPass','traceEmployee','arrChartsPLM','arrChartsCKM','datecharts'));
       }
     }
 

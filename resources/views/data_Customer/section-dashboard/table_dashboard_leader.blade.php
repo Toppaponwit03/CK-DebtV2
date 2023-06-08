@@ -73,7 +73,7 @@
                       array_push($valemp,$totalfoll);
 
                       @endphp
-                    <tr  data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('Cus.show',0) }}?type={{2}}&traceEmployee={{$value->traceEmployee}}">
+                    <tr  data-bs-toggle="modal" data-bs-target="#modal-lgDB" data-link="{{ route('Cus.show',0) }}?type={{2}}&traceEmployee={{$value->traceEmployee}}">
                       <td>{{$value->traceEmployee}}</td>
 
                       <td>{{$total}}</td>

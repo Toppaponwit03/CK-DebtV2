@@ -1,13 +1,17 @@
-<div class="modal-content bg-pt-blue">
-<div class="px-2">
-    <div class="row">
-        <div class="col">
-            <h4>แดชบอร์ดสาขา (Dashboard Branch)</h4>
+
+<div class="text-dark">
+<div class="px-2 mb-2">
+    <div class="row mb-2">
+        <div class="col m-auto">
+            <h5 class="fw-semibold">แดชบอร์ดสาขา (Dashboard Branch)</h5>
+        </div>
+        <div class="col m-auto text-end">
+            <button type="button" class="btn btn-danger p-2 rounded-pill" data-bs-dismiss="modal" >Close</button>
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
-            <div class="card shadow-sm rounded-4 border border-0 h-100">
+        <div class="col">
+            <div class="card bg-white bg-opacity-75 shadow-sm rounded-4 border border-0 h-100">
                 <div class="rounded pt-2 px-4 pb-2 m-1  " id="" style="">
                     <div class="row">
                         <div class="col">
@@ -55,6 +59,8 @@
                                 $colorCKM = 'bg-danger progress-bar-striped progress-bar-animated';
                             }
                         @endphp
+
+
                     <div class="row pt-2">
                         @if(@$count->totalPassPLM != 0)
                         <div class="col-12">
@@ -85,16 +91,25 @@
                 </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card shadow-sm rounded-4 border border-0 h-100">
+        <div class="col">
+            <div class="card bg-white bg-opacity-75 shadow-sm rounded-4 border border-0 h-100">
                 <div id="charttotal"></div>
+                <div class="row mb-2">
+                    <div class="col text-center border-end">
+                        ผ่าน
+                    </div>
+                    <div class="col text-center">
+                        ไม่ผ่าน
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
-    <div class="row mt-2">
-        <div class="col">
-            <div class="card shadow-sm rounded-4 border border-0">
+        <div class="row mt-2">
+            <div class="col">
+            <h5 class="fw-semibold">ประวัตการติดตาม (Dashboard History)</h5>
+            <div class="card bg-white bg-opacity-75 shadow-lg rounded-4 border border-0">
                 <div id="chartLine"></div>
             </div>
         </div>
@@ -102,22 +117,61 @@
 </div>
 </div>
 
+
 <script>
+
     var options = {
-    series: [{{number_format(@$countper,2)}}],
-    chart: {
-    height: 250,
-    type: 'radialBar',
-    },
-    plotOptions: {
-        radialBar: {
-        hollow: {
-            size: 70,
-        }
+        chart: {
+            height: 250,
+            type: "radialBar",
         },
-    },
-    labels: ['รวม'],
-    };
+
+  series: [{{number_format(@$countper,2)}}],
+  colors: ["#20E647"],
+  plotOptions: {
+    radialBar: {
+      hollow: {
+        margin: 0,
+        size: "70%",
+    //    background: "#293450"
+      },
+      track: {
+        dropShadow: {
+          enabled: true,
+          top: 2,
+          left: 0,
+          blur: 4,
+          opacity: 0.15
+        }
+      },
+      dataLabels: {
+        name: {
+          offsetY: -10,
+          color: "#000",
+          fontSize: "15px"
+        },
+        value: {
+          color: "#000",
+          fontSize: "20px",
+          show: true
+        }
+      }
+    }
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      shade: "dark",
+      type: "vertical",
+      gradientToColors: ["#87D4F9"],
+      stops: [0, 100]
+    }
+  },
+  stroke: {
+    lineCap: "round"
+  },
+  labels: ["รวม"]
+};
 
     var chart = new ApexCharts(document.querySelector("#charttotal"), options);
     chart.render();
@@ -125,43 +179,28 @@
 
 
 <script>
-       var options = {
+        var options = {
           series: [{
-          name: "STOCK ABC",
-          data: [1,9]
+          name: 'PLM',
+          data:  {{json_encode($arrChartsPLM)}},
+        }, {
+          name: '30-50',
+          data:  {{json_encode($arrChartsCKM)}},
         }],
           chart: {
-          type: 'area',
           height: 350,
-          zoom: {
-            enabled: false
-          }
+          type: 'area'
         },
         dataLabels: {
           enabled: false
         },
         stroke: {
-          curve: 'straight'
+          curve: 'smooth'
         },
-        
-        title: {
-          text: 'Fundamental Analysis of Stocks',
-          align: 'left'
-        },
-        subtitle: {
-          text: 'Price Movements',
-          align: 'left'
-        },
-        labels: [1,3],
         xaxis: {
-          type: 'datetime',
+        //   categories:  {{json_encode($datecharts)}},
         },
-        yaxis: {
-          opposite: true
-        },
-        legend: {
-          horizontalAlign: 'left'
-        }
+
         };
 
 
