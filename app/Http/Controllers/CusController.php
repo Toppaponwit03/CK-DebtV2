@@ -334,7 +334,6 @@ class CusController extends Controller
           LEFT JOIN PSFHP.CHQTRAN  ON PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
           WHERE PSFHP.ARMAST.CONTNO = '${contract}' ORDER BY TMBILDT DESC
         ");
-
         return view('data_Customer.section-Cus.viewModal',compact('data','statuslist','datapay'));
       }
     }
@@ -572,7 +571,8 @@ class CusController extends Controller
 
       }
 
-      return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd'));
+      $datadue = tbl_historydashboard::select('duedateStart','duedateEnd')->distinct()->get();
+      return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd','datadue'));
     }
 
     public function export() 

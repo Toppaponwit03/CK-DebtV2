@@ -6,7 +6,9 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use DB;
 use App\Models\CK_Model\tbl_contract;
-
+use App\Models\tbl_staticcommission;
+use App\Models\tbl_target;
+use App\Models\tbl_traceEmployee;
 
 class exportCom implements FromCollection,WithHeadings,WithMapping
 {
@@ -25,7 +27,7 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
         }])
         ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ '2023-05-01','2023-05-31'])
         ->orderBy('UserSent_Con','ASC')
-        ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con')
+        ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
         ->get();
         return $data;
  
@@ -33,7 +35,7 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
     public function headings() :array
     {
         $data = [
-            'เลขที่สัญญา','วันที่โอนเงิน','สาขาที่ส่งจัด','ผู้ส่งจัด','ยอดจัด','ค่าดำเนินการ','ประกันPA','ดอกเบี้ยรวม','ผลตอบแทน'
+            'เลขที่สัญญา','วันที่โอนเงิน','สาขาที่ส่งจัด','ผู้ส่งจัด','ยอดจัด','ค่าดำเนินการ','ประกันPA','ดอกเบี้ยรวม','ผลตอบแทน','ลงพื้นที่','ค่าน้ำมัน'
          ];
         return $data;
 
@@ -41,14 +43,42 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
 
     public function map($invoice): array
     {
+
+        if($invoice->CodeLoan_Con == 04 || $invoice->CodeLoan_Con == 03){
+            $totalInt = 0;
+        }else{
+
+            $totalInt = @$invoice->ConToCal->Profit_Rate - @$invoice->ConToCal->Tax2_Rate;
+        }
+
+        if(@$invoice->ConToCal->Buy_PA =='Yes'){
+            $pa = 'YPA';
+        }else{
+            $pa = 'NPA';
+        }
+
+        $percent = 100;
+
+        $dataCom =  tbl_staticcommission::where('TypeLoans', @$invoice->CodeLoan_Con)
+        ->whereRaw('? between StotalInterest and TtotalInterest', $totalInt)
+        ->selectRaw('case when '.$percent.' < 80 then '.$pa.'70  
+        when '.$percent.' < 100 then '.$pa.'80  
+        when '.$percent.' < 120 then '.$pa.'100  
+        else  '.$pa.'120 end as Commission, TypeLoans,Gas')
+         ->first();
+
         return[
             @$invoice->Contract_Con,
-            @$invoice->id,
             @$invoice->Date_monetary,
-            @$invoice->id,
-            @$invoice->id,
-            @$invoice->id,
-            @$invoice->id,    
+            @$invoice->ContractToBranch->Name_Branch,
+            @$invoice->ContractToUserBranch->name,
+            @$invoice->ConToCal->Cash_Car,
+            @$invoice->ConToCal->Process_Car,
+            @$invoice->ConToCal->Insurance_PA,
+            @$invoice->ConToCal->Profit_Rate - @$invoice->ConToCal->Tax2_Rate,
+            '-',
+            @$invoice->Date_Checkers,
+            @$invoice->Date_Checkers != NULL ? $dataCom->Gas : 0,
         ];
        
     }

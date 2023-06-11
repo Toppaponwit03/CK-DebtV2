@@ -5,6 +5,7 @@ namespace App\Models\CK_Model;
 use App\Models\CK_Model\tbl_calculate;
 use App\Models\CK_Model\tbl_custagcal;
 use App\Models\CK_Model\tbl_typeLoan;
+use App\Models\CK_Model\tbl_userck;
 use App\Models\tbl_traceEmployee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,16 @@ class tbl_contract extends Model
     public function ConToEmp()
     {
         return $this->belongsTo(tbl_traceEmployee::class,'IdCK','BranchSent_Con');
+    }
+
+    public function ContractToBranch()
+    {
+        return $this->belongsTo(tbl_branch::class,'BranchSent_Con','id');
+    }
+
+    public function ContractToUserBranch()
+    {
+        return $this->belongsTo(tbl_userck::class,'UserSent_Con','id');
     }
 
 }
