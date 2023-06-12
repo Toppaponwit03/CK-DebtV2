@@ -43,7 +43,23 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
 
     public function map($invoice): array
     {
+        $data = tbl_contract::
+        where('UserZone',20)
+        ->where('BranchSent_Con',$invoice->BranchSent_Con)
+        ->with(['ConToCal' => function($query) { 
+            $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
+        }])
+        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ '2023-05-01','2023-05-31'])
+        ->orderBy('UserSent_Con','ASC')
+        ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
+        ->get();
 
+        $emps = tbl_traceEmployee::select('empID','IdCK')->where('IdCK',$invoice->BranchSent_Con)->first();
+        $sum = 0;
+            foreach($data as $con){
+                $sum += ( $con->ConToCal->Cash_Car + $con->ConToCal->Insurance_PA +$con->ConToCal->Process_Car );
+            }
+        
         if($invoice->CodeLoan_Con == 04 || $invoice->CodeLoan_Con == 03){
             $totalInt = 0;
         }else{
@@ -57,8 +73,7 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
             $pa = 'NPA';
         }
 
-        $percent = 100;
-
+        $percent = number_format(( $sum / $emps->EmptoTarget->Target ) * 100,0);
         $dataCom =  tbl_staticcommission::where('TypeLoans', @$invoice->CodeLoan_Con)
         ->whereRaw('? between StotalInterest and TtotalInterest', $totalInt)
         ->selectRaw('case when '.$percent.' < 80 then '.$pa.'70  
@@ -76,7 +91,7 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
             @$invoice->ConToCal->Process_Car,
             @$invoice->ConToCal->Insurance_PA,
             @$invoice->ConToCal->Profit_Rate - @$invoice->ConToCal->Tax2_Rate,
-            '-',
+            $dataCom->Commission ,
             @$invoice->Date_Checkers,
             @$invoice->Date_Checkers != NULL ? $dataCom->Gas : 0,
         ];

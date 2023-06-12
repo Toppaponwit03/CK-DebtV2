@@ -10,6 +10,8 @@ use App\Models\tbl_traceEmployee;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use DB;
+
 class tbl_contract extends Model
 {
     use HasFactory;
@@ -52,5 +54,7 @@ class tbl_contract extends Model
     {
         return $this->belongsTo(tbl_userck::class,'UserSent_Con','id');
     }
+
+ 
 
 }
