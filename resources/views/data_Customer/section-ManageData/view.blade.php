@@ -36,6 +36,7 @@
                     url : "{{route('export.excel')}}",
                     type : "post",
                     data : {
+                        type : 1,
                         _token : '{{ @csrf_token() }}',
                     },
                     xhrFields: {

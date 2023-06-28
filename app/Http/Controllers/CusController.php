@@ -19,6 +19,7 @@ use Carbon\CarbonInterval;
 use DB;
 use Datatables;
 
+use App\Exports\exportSFHP;
 use App\Imports\UsersImport;
 use App\Exports\exportDataCustomers;
 use Maatwebsite\Excel\Facades\Excel;
@@ -581,10 +582,14 @@ class CusController extends Controller
       return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd','datadue'));
     }
 
-    public function export() 
+    public function export(Request $request) 
     {
-
-       return Excel::download(new exportDataCustomers, 'รายงานทีมติดตามหนี้.xlsx');
+      if($request->type == 1){
+        return Excel::download(new exportDataCustomers, 'รายงานทีมติดตามหนี้.xlsx');
+      }
+      elseif ($request->type == 2){
+        return Excel::download(new exportSFHP, 'รายงานSFHP.xlsx'); // รายงาน SFHP
+      }
     }
     public function import() 
     {
