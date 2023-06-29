@@ -23,11 +23,11 @@
         <hr>
         <div class="scroller px-2" style="min-height : 520px;">
             @foreach (@$data->CustoCustag as $key => $value)
-            <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion mb-1" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#CuasTag-{{$value->id}}" aria-expanded="true" aria-controls="CuasTag-{{$value->id}}">
-                        วันที่ : {{$value->created_At}}
+                        รายงานการติดตามในเดือน : <b> {{ App\datethai\thaidate::simpleDateFormatfullmonth($value->created_At) }} </b>
                     </button>
                     </h2>
                     <div id="CuasTag-{{$value->id}}" class="accordion-collapse collapse {{$key == 0 ? 'show' : ''}}" aria-labelledby="panelsStayOpen-headingOne">
@@ -187,7 +187,7 @@
                                  <br>
                                 <div class="input-group mb-3">
                                     <textarea class="form-control me-1 addaction rounded rounded-4" name="addaction" id="addaction-{{$value->id}}"></textarea>
-                                    <span class="input-group-text bg-white border border-white" id="inputGroup-sizing-default"><button type="button" class="btn btn-primary rounded-circle" onclick=" addPlan('{{$value->id}}','{{$value->ContractID}}')"><i class="fa-regular fa-paper-plane"></i></button></span>
+                                    <span class="input-group-text bg-white border border-white " id="inputGroup-sizing-default"><button type="button" class="btn btn-primary rounded-circle btn-send" onclick=" addPlan('{{$value->id}}','{{$value->ContractID}}')"><i class="fa-regular fa-paper-plane"></i></button></span>
                                     
                                 </div>
                             </div>
@@ -203,6 +203,7 @@
     <script>
 
         addPlan = (tag_id,ContractID) =>{
+            $('.btn-send').prop('disabled',true);
             let addaction = $(`#addaction-${tag_id}`).val();
             $.ajax({
                 url : "{{ route('Cus.store') }}",
@@ -215,6 +216,7 @@
                     _token : '{{ @csrf_token() }}'
                 },
                 success : (res)=>{
+                    $('.btn-send').prop('disabled',false);
                     console.log(res);
                     html = `             
                                 <div class="row bg-light p-2 g-2">
@@ -245,7 +247,33 @@
                     $(`#addaction-${tag_id}`).val('');
                 },
                 error : (err)=>{
-    
+                    $('.btn-send').prop('disabled',false);
+                    html = `             
+                                <div class="row bg-light p-2 g-2" style="opacity : 0.8;">
+                                 <div class="col-xl-1 col-2 mb-1">
+                                        @if(Auth::user()->position == 'headA' || Auth::user()->position == 'headB'  )
+                                            <img class="bg-light p-1 rounded-circle border border-3" src="{{ asset('dist/img/head.png') }}" alt="Responsive image" style="max-width: 100%;">
+                                         @elseif(Auth::user()->position == 'admin')
+                                             <img class="bg-light p-1 rounded-circle border border-3" src="{{ asset('dist/img/admin.png') }}" alt="Responsive image" style="max-width: 100%;">
+                                        @else
+                                            <img class="bg-light p-1 rounded-circle border border-3" src="{{ asset('dist/img/teamwork.png') }}" alt="Responsive image" style="max-width: 100%;">
+                                        @endif
+                                    </div>
+                                    <div class="col-xl col-10">
+                                            <div class="card border border-2 border-danger">
+                                                <div class="card-body">
+                                                   ส่งไม่สำเร็จ !
+                                                </div>
+                                            </div>  
+                                            <div class="col">
+                                                <small class="text-muted"</small> 
+                                            </div>
+                                    </div>
+                                </div>      
+                    `;
+
+                    $(`#cardPlan-${tag_id}`).append(html);
+                    $(`#addaction-${tag_id}`).val('');
                 }
             })
         

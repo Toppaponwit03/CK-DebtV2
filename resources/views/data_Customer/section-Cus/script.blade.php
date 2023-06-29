@@ -70,10 +70,9 @@
                 Swal.fire({
                 icon: 'error',
                 title : `ERROR ${err.status}`,
-                title: 'อัพเดทสถานะไม่สำเร็จ !',
+                text: 'อัพเดทสถานะไม่สำเร็จ !',
                 showConfirmButton: false,
-                showCancelButton: false,
-                timer: 2000    
+                showCancelButton: false,  
                 })
             }
         });

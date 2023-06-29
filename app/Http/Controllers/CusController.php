@@ -345,9 +345,22 @@ class CusController extends Controller
       $dateEnd = $request->datedueEnd;
 
       if($request->type == 1){ //อัพเดทสถานะ
+        
         $data_status = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         $data_status->status = $request->statuschecks;
         $data_status->update();
+        
+        
+        $data_Tag = tbl_custag::where('ContractID',$request->contractNumber)->orderBy('id','desc')->first();
+        $data_plan = new tbl_actionplan;
+
+        $data_plan->tag_id = $data_Tag->id;
+        $data_plan->date_plan = date('Y-m-d');
+        $data_plan->ContractID = $request->contractNumber;
+        $data_plan->detail = 'ได้อัพเดทสถานะเป็น '.$data_status->CustoStatus->details;
+        $data_plan->userInsert = Auth::user()->id;
+        $data_plan->userInsertname = Auth::user()->name;
+        $data_plan->save();
 
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         $statuslist = tbl_statustype::getstatus();
@@ -433,31 +446,123 @@ class CusController extends Controller
         return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data'));
 
       }
-      elseif($request->type == 4){ 
-        //initialize array
-        $inserts = [];
+      elseif($request->type == 4){  // backup
 
-        $data = tbl_customer::get();
+        // $inserts = [];
+        // $data = tbl_customer::get();
+        // foreach($data as $val) {
+        //   tbl_historydashboard::create([ 
+        //         "traceEmployee" => $val->traceEmployee,
+        //         "groupDebt" => $val->groupDebt,
+        //         "status" => $val->status,
+        //         "teamGroup" =>1 ,
+        //         "typeLoan" => $val->typeLoan,
+        //         "TotalPay" => $val->TotalPay,
+        //         "duedateStart" => $dateStart,
+        //         "duedateEnd" => $dateEnd
+        //         ]); 
+        // }
 
-        foreach($data as $val) {
-            $inserts[] = [ 
-                "traceEmployee" => $val->traceEmployee,
-                "groupDebt" => $val->groupDebt,
-                "status" => $val->status,
-                "teamGroup" => $val->teamGroup ,
-                "typeLoan" => $val->typeLoan,
-                "TotalPay" => $val->TotalPay,
-                "duedateStart" => $dateStart,
-                "duedateEnd" => $dateEnd
-                ]; 
+        tbl_customer::truncate(); // เคลียร์ข้อมูลเดิม
+        $loanCode = ['01', 'P01', '50', '30'];
+        $CheckTL = ['50', '30'];
+        $teamA = ['BPRU','HYN','JN','NT1','NT2','RPHU','SING','SK','TEPA','HDY','SDAO','SDAO2','RPHU2'];
+        $datenow = date("Y-m-d");
+
+        $dataDebt = DB::connection('ibmi2')->select(" 
+        SELECT * FROM PSFHP.VWDEBT_RPSPASTDUE 
+        LEFT JOIN  PSFHP.SETGRADE ON  PSFHP.VWDEBT_RPSPASTDUE.GRDCOD = PSFHP.SETGRADE.GRDCOD
+        WHERE SUMARYDATE = '${datenow}' AND  EXPREAL < 4 
+        ");  
+
+  
+        foreach ($dataDebt as $data){
+
+          $SUBCONTNO_3050 = substr( trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), 0, 2);
+          $SUBCONTNO_P = substr( trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), 0, 3);
+          $SUBCONTNO_NEW = substr( trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), 4, 2);
+  
+          if (in_array( $SUBCONTNO_3050, $CheckTL) ) { // check typeloan
+            $typeloan = '2';
+          }
+          else {
+            $typeloan = '1';
+          }
+  
+  
+          if (in_array( $SUBCONTNO_3050, $loanCode) || in_array( $SUBCONTNO_P, $loanCode) || in_array( $SUBCONTNO_NEW, $loanCode) ) { // check loancode
+            $loancode =  '01';
+          }
+          else {
+            $loancode = '02';
+          }
+
+          if(in_array(trim($data->SALECOD), $teamA)){ // check team group
+            $teamgroup = 1;
+          }
+          else{
+            $teamgroup = 2;
+          }
+
+          if( $loancode == '01' && trim(iconv('Tis-620', 'utf-8', $data->EXPREAL)) >= 3){
+            // 
+          }
+          else{
+             tbl_customer::create( [
+                 // "id" => 1,
+                 "Branch" => '', // NON
+                 "contractNumber" => trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), // เลชสัญญา
+                 "namePrefix" => trim(iconv('Tis-620', 'utf-8', $data->SNAM)), // คำนำหน้า
+                 "firstname" => trim(iconv('Tis-620', 'utf-8', $data->NAME1)), // ชื่อ
+                 "lastname" => trim(iconv('Tis-620', 'utf-8', $data->NAME2)), // นามสกุล
+                 "phone" => trim(iconv('Tis-620', 'utf-8', $data->TELP)), // เบอร์โทร
+                 "productName" => trim(iconv('Tis-620', 'utf-8', $data->MODEL)), // รุ่นสินค้า
+                 "sellEmployee" => trim(iconv('Tis-620', 'utf-8', $data->SALECOD)),// พนง ขาย
+                 "traceEmployee" => trim(iconv('Tis-620', 'utf-8', $data->SALECOD)), //ทีมตามใน
+                 "totalInstallment" => trim(iconv('Tis-620', 'utf-8', $data->TOTPRC)), // ยอดผ่อนทั้งหมด
+                 "firstInstallment" => trim(iconv('Tis-620', 'utf-8', $data->FDATE)), // วันดีลงวดแรก
+                 "dealDay" => trim(iconv('Tis-620', 'utf-8', $data->DUEDATE)), // วันดีลงวด
+                 "installment" => trim(iconv('Tis-620', 'utf-8', $data->DAMT)), //ผ่อนงวดละ
+                 "realDebt" => trim(iconv('Tis-620', 'utf-8', $data->EXPREAL)), // ค้างจริง
+                 "nextDebt" => trim(iconv('Tis-620', 'utf-8', $data->NEXT_EXPREAL)), //ค้าง Next
+                 "groupDebt" => trim(iconv('Tis-620', 'utf-8', $data->SWEXPPRD)), //กลุ่มค้างงวด
+                 "fromDebt" => trim(iconv('Tis-620', 'utf-8', $data->EXP_FRM)), // จากงวด
+                 "toDebt" => trim(iconv('Tis-620', 'utf-8', $data->EXP_TO)), // ถึงงวด
+                 "arrears" => trim(iconv('Tis-620', 'utf-8', $data->TOTLKANG)), // เงินค้างงวด
+                 "lastPaymentdate" => trim(iconv('Tis-620', 'utf-8', $data->LPAYD)), //วันชำระล่าสุด
+                 "lastPayment" => trim(iconv('Tis-620', 'utf-8', $data->LPAYA)), //ยอดชำระล่าสุด
+                 "finePay" => trim(iconv('Tis-620', 'utf-8', $data->PAYINT)), // ค่าปรับ
+                 "totalPayment" => trim(iconv('Tis-620', 'utf-8', $data->TOTPAY)), // รวมยอดชำระ // ** ไม่รวมค่าปรับ **
+                 "balanceDebt" => trim(iconv('Tis-620', 'utf-8', $data->PARBAL)), // ลูกหนี้คงเหลือ
+                 "minimumInstallment" => trim($data->GRDCAL), // งวดขั้นต่ำ // ** ยังไม่มี ** ( ตารางเกรด )
+                 "minimumPayout" => floatval(trim(($data->DAMT * $data->GRDCAL))), // ยอดจ่ายขั้นต่ำ // ** ยังไม่มี ** ( ค่างวด * เกรด )
+                 "contractGrade" => trim(iconv('Tis-620', 'utf-8', $data->GRDCOD)), // เกรดสัญญา
+                 "status" => 'STS-010', // ผ่านเกณฑ์
+                 "callDate" => NULL, // วันที่โทรติดตาม
+                 "quantitycallDate" => NULL, // โทรติดตามมาแล้ว (วัน)
+                 "callDateOut" => NULL, // วันที่ติดตาม (นอก)
+                 "quantitycallDateOut" => NULL, // ติดตามมาแล้ว (วัน)
+                 "traceTeamOut" => NULL, // ทีมตาม (นอก)
+                 "paymentDate" => NULL, // วันที่นัดชำระ
+                 "fieldDay" => NULL, // วันลงพื้นที่
+                 "powerApp" => NULL, // วันลง POWERAPP
+                 "FollowingDate" => NULL, // ติดตามต่อ
+                 "note" => NULL, // action plan
+                 "paymentDateQuantity" => NULL, //นัดชำระมาแล้ว (วัน)
+                 "teamGroup" => $teamgroup, // ทีม
+                 "typeLoan" => $typeloan, // ประเภทสัญญา 30-50 หรือ PLM
+                 "Recorder" => NULL, // ผู้ลงบันทึกล่าสุด
+                 "Schema" => 'PSFHP', // ตาราง
+                 "TotalPay" => 0, // ยอดชำระรวมในเดือนนี้
+             ]);
+           }
+
+      
         }
-        tbl_historydashboard::insert($inserts);
-        // DB::table('saved_estimations')->insert($inserts);
+
 
 
       }
-
-
     }
 
     public function dashboard(Request $request)
