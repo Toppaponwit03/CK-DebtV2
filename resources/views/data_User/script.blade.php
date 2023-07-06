@@ -80,10 +80,203 @@
     })
 </script>
 
+{{-- add User --}}
 <script>
-    checkBranch = $('#checkBranch').val();
-    if(checkBranch != ''){
-        checkBranch = checkBranch.replace(/,/g,',#')
-        $(`#${checkBranch}`).prop('checked', true);
-    }
+
+    $('#btn-addUser').click(()=>{
+       if($('.name').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกชื่อ',
+               timer : '2000',
+           })
+           
+       }
+      else if($('.email').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกอีเมล',
+               timer : '2000',
+           })
+       }
+       else if($('.password').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกรหัสผ่าน',
+               timer : '2000',
+           })
+       }
+       else if($('.Conpassword').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกรหัสผ่าน',
+               timer : '2000',
+           })
+       }
+       else if($('.Branch').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณาเลือกสาขา',
+               timer : '2000',
+           })
+       }
+       else if($('.position').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณาเลือกสิทธิ์ผู้ใช้งาน',
+               timer : '2000',
+           })
+       }
+       else{
+   
+          
+               $.ajax({
+                   url : "{{ route('static.store') }}",
+                   type : 'post',
+                   data :  $('#addUser').serialize(),
+                   success : (res)=>{
+                       swal.fire({
+                           icon : 'success',
+                           text : 'เพิ่มผู้ใช้งานเรียบร้อย',
+                           timer : '2000',
+                       })
+   
+                       $('.modal').modal('hide');
+                   },
+                   error : (err)=> {
+                       swal.fire({
+                           icon : 'error',
+                           text : 'เพิ่มผู้ใช้งานไม่สำเร็จ',
+                           timer : '2000',
+                       })
+                   }
+               })
+           }
+     })
+   
 </script>
+
+
+{{-- edit User --}}
+<script>
+
+    $('#btn-editUser').click(()=>{
+       if($('.name').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกชื่อ',
+               timer : '2000',
+           })
+           
+       }
+      else if($('.email').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกอีเมล',
+               timer : '2000',
+           })
+       }
+       else if($('.password').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกรหัสผ่าน',
+               timer : '2000',
+           })
+       }
+       else if($('.Conpassword').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณากรอกรหัสผ่าน',
+               timer : '2000',
+           })
+       }
+       else if($('.Branch').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณาเลือกสาขา',
+               timer : '2000',
+           })
+       }
+       else if($('.position').val() == '' ){
+           swal.fire({
+               icon : 'info',
+               text : 'กรุณาเลือกสิทธิ์ผู้ใช้งาน',
+               timer : '2000',
+           })
+       }
+       else{
+   
+          
+               $.ajax({
+                   url : "{{ route('static.update',0) }}",
+                   type : 'put',
+                   data :  $('#addUser').serialize(),
+                   success : (res)=>{
+                       swal.fire({
+                           icon : 'success',
+                           text : 'แก้ไขผู้ใช้งานเรียบร้อย',
+                           timer : '2000',
+                       })
+   
+                       $('.modal').modal('hide');
+                   },
+                   error : (err)=> {
+                       swal.fire({
+                           icon : 'error',
+                           text : 'แก้ไขผู้ใช้งานไม่สำเร็จ',
+                           timer : '2000',
+                       })
+                   }
+               })
+           }
+     })
+   
+</script>
+
+{{-- remove User --}}
+<script>
+    $(function(){
+        $('.btn-removeUser').click((e)=>{  
+            Swal.fire({
+                title: 'ต้องการบล็อคผู้ใช้ ใช่หรือไม่ ?',
+                text: "ผู้ใช้นี้จะถูกบล็อคไม่ให้เข้าใช้งานในระบบได้อีกต่อไปจนกว่าจะมีการกู้คืน !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่ ,ต้องการบล็อค',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let id = $(e.currentTarget).attr('id');   
+                        $.ajax({
+                            url : "{{ route('static.update',0) }}",
+                            type : 'put',
+                            data :  {
+                                func : 'removeUser',
+                                userID : id,
+                                _token : '{{ @CSRF_TOKEN() }}'
+                            },
+                            success : (res)=>{
+                                swal.fire({
+                                    icon : 'success',
+                                    text : 'บล๊อคผู้ใช้งานเรียบร้อย',
+                                    timer : '2000',
+                                })
+                
+                                $('.modal').modal('hide');
+                            },
+                            error : (err)=> {
+                                swal.fire({
+                                    icon : 'error',
+                                    text : 'บล๊อคผู้ใช้งานไม่สำเร็จ',
+                                    timer : '2000',
+                                })
+                            }
+                        }) 
+                    }
+                }) 
+        })
+    })
+   
+</script>
+

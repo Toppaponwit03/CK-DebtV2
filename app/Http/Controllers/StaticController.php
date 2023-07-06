@@ -7,6 +7,7 @@ use App\Models\tbl_user;
 use App\Models\User;
 use App\Models\tbl_privilege;
 use App\Models\tbl_traceEmployee;
+use Illuminate\Support\Facades\Hash;
 
 class StaticController extends Controller
 {
@@ -27,6 +28,13 @@ class StaticController extends Controller
           }
     }
 
+    public function create(Request $request){
+        if($request->func == 'addUser'){
+        $dataBranch = tbl_traceEmployee::getBranch();
+            return view('data_User.section-createUser.view',compact('dataBranch'));
+        }
+    }
+
     public function edit(Request $request,$id)
     {
         $user = tbl_user::find($id);
@@ -36,7 +44,18 @@ class StaticController extends Controller
         }
     }
     public function store(Request $request){
-
+        if($request->func == 'createUser'){
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->password_val = $request->password;
+            $user->Branch = $request->Branch;
+            $user->position = $request->position;
+            // dd($user);
+            $user->save();
+            
+        }
     }
 
     public function update(Request $request, $id)
@@ -72,6 +91,25 @@ class StaticController extends Controller
             $data->assignTarget = @$request->assignTarget;
             $data->exportComm = @$request->exportComm;
             $data->save();
+        }
+        elseif($request->func == 'editUser'){
+
+                $user = User::find($request->userID);
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->password = Hash::make($request->password);
+                $user->password_val = $request->password;
+                $user->Branch = $request->Branch;
+                $user->position = $request->position;
+                // dd($user);
+                $user->save();
+                
+            
+        }
+        elseif($request->func == 'removeUser'){
+            $user = User::find($request->userID);
+            $user->password = 'NULL';
+            $user->save();
         }
     }
 

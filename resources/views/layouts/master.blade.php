@@ -45,6 +45,9 @@
     </head>
 
     <style>
+        .text-green{
+            color : #47CD64;
+        }
         .bg-pt-blue{
             background-color :	#bae1ff;
             color : #fff;
@@ -205,7 +208,7 @@
             });
         </script>
 
-<div class="modal fade" id="modal-xl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="modal-xl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-body">
@@ -262,6 +265,28 @@
     </div>
   </div>
 </div>
+
+  <!-- Modal Load.. -->
+  <div class="modal fade " id="modal-sm-load"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content bg-transparent" style="border:0;">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col mx-3 text-center">
+                <lord-icon
+                  src="https://cdn.lordicon.com/ypttvtwr.json"
+                  trigger="loop"
+                  style="width:200px;height:200px">
+              </lord-icon>
+              <div class="bg-white p-2 pt-3 rounded-5">
+                <h6 class=""><b>กำลังอัพเดทข้อมูล โปรดรอซักครู่... </b></h6>
+              </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

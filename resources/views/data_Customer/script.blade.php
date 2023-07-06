@@ -8,74 +8,102 @@
 <script>
   
     $("#UpdatePay").click(()=>{
-        $.ajax({
-            url : "{{ route('Cus.update',0) }}",
-            type : 'put',
-            data : {
-                type : 2,
-                datedueStart : $('#datedueStart').val(),
-                datedueEnd : $('#datedueEnd').val(),
-                _token : '{{ csrf_token() }}',
-            },
-            success : (response)=>{
-                
-                Swal.fire({
-                icon: 'success',
-                text: 'อัพเดทข้อมูลเรียบร้อย',
-                showConfirmButton: true,
-                showCancelButton: false,  
-                })
-                $("#modal-sm").modal('toggle');
-            },
-            error : (err)=>{
-              console.log(err);
-              Swal.fire({
-                icon: 'error',
-                title : `ERROR ! ${err.status}`,
-                text: 'อัพเดทข้อมูลไม่สำเร็จ',
-                showConfirmButton: true,
-                showCancelButton: false, 
-                })
-                $("#modal-sm").modal('toggle');
 
-            }
-        })
+        Swal.fire({
+                title: 'ต้องการอัพเดทการชำระ ใช่หรือไม่ ?',
+                text: `ระบบจะทำการอัพเดทการชำระและสถานะของลูกค้า นับตั้งแต่วันที่ ${ $('#datedueStart').val() } - ${ $('#datedueEnd').val() }`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่ ,ต้องการอัพเดท',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal-sm-load').modal('show')
+                        $.ajax({
+                            url : "{{ route('Cus.update',0) }}",
+                            type : 'put',
+                            data : {
+                                type : 2,
+                                datedueStart : $('#datedueStart').val(),
+                                datedueEnd : $('#datedueEnd').val(),
+                                _token : '{{ csrf_token() }}',
+                            },
+                            success : (response)=>{
+                                $('#modal-sm-load').modal('hide')
+                                Swal.fire({
+                                icon: 'success',
+                                text: 'อัพเดทข้อมูลเรียบร้อย',
+                                showConfirmButton: true,
+                                showCancelButton: false,  
+                                })
+                            },
+                            error : (err)=>{
+                            $('#modal-sm-load').modal('hide')
+                            Swal.fire({
+                                icon: 'error',
+                                title : `ERROR ! ${err.status}`,
+                                text: 'อัพเดทข้อมูลไม่สำเร็จ',
+                                showConfirmButton: true,
+                                showCancelButton: false, 
+                                })
+                                $("#modal-sm").modal('toggle');
+
+                            }
+                        })
+                    }
+                }) 
+
+
     });
 
 
     $("#BackUp").click(()=>{
-        $.ajax({
-            url : "{{ route('Cus.update',0) }}",
-            type : 'put',
-            data : {
-                type : 4,
-                datedueStart : $('#datedueStart').val(),
-                datedueEnd : $('#datedueEnd').val(),
-                _token : '{{ csrf_token() }}',
-            },
-            success : (response)=>{
-                
-                Swal.fire({
-                icon: 'success',
-                text: 'อัพเดทข้อมูลเรียบร้อย',
-                showConfirmButton: true,
-                showCancelButton: false,  
-                })
-                $("#modal-sm").modal('toggle');
-            },
-            error : (err)=>{
-              console.log(err);
-              Swal.fire({
-                icon: 'error',
-                title : `ERROR ! ${err.status}`,
-                text: 'อัพเดทข้อมูลไม่สำเร็จ',
-                showConfirmButton: true,
-                showCancelButton: false, 
-                })
-                $("#modal-sm").modal('toggle');
+        Swal.fire({
+                title: 'ต้องการ BackUp ข้อมูล ?',
+                text: "ข้อมูลของเดือนนี้จะถูกล้างออกทั้งหมด และจะเก็บข้อมูลแดชบอร์ดในประวัติย้อนหลัง !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่ ,ต้องการ Backup',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#modal-sm-load').modal('show')
+                        $.ajax({
+                            url : "{{ route('Cus.update',0) }}",
+                            type : 'put',
+                            data : {
+                                type : 4,
+                                datedueStart : $('#datedueStart').val(),
+                                datedueEnd : $('#datedueEnd').val(),
+                                _token : '{{ csrf_token() }}',
+                            },
+                            success : (response)=>{
+                                $('#modal-sm-load').modal('hide')
+                                Swal.fire({
+                                icon: 'success',
+                                text: 'อัพเดทข้อมูลเรียบร้อย',
+                                showConfirmButton: true,
+                                showCancelButton: false,  
+                                })
+                            },
+                            error : (err)=>{
+                            $('#modal-sm-load').modal('hide')
+                            Swal.fire({
+                                icon: 'error',
+                                title : `ERROR ! ${err.status}`,
+                                text: 'อัพเดทข้อมูลไม่สำเร็จ',
+                                showConfirmButton: true,
+                                showCancelButton: false, 
+                                })
+                                $("#modal-sm").modal('toggle');
 
-            }
-        })
+                            }
+                        })
+                    }
+                }) 
+
     });
 </script>
 

@@ -82,7 +82,7 @@ class CusController extends Controller
       $teamClists = tbl_traceEmployee::where('teamGroup','=','3')->get();
       $type = $request->get('type');
 
-      $countPass = DB::select("SELECT 
+      $countPass = DB::select("SELECT
       traceEmployee,
       sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
       sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
@@ -98,18 +98,18 @@ class CusController extends Controller
 
 
        return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','countPass','getdue'));
-      
 
-  
+
+
     }
     public function getData(Request $request){
       $BranchList = Auth::user()->UserToPrivilege->branch;
       if($request->type == 1){ // ดึงข้อมูล
-        
+
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
         ->orderBy('dealDay', 'ASC')->get();
 
-    
+
         return static::getTB($customers);
       }
       elseif($request->type == 2){
@@ -135,11 +135,11 @@ class CusController extends Controller
         ->when($request->input('Branch'), function ($query, $Branch) {
           return $query->whereIn('Branch', $Branch);
         })
-        
-        ->orderBy('dealDay', 'ASC')->get();  
+
+        ->orderBy('dealDay', 'ASC')->get();
           return static::getTB($customers);
 
-         
+
       }
       elseif($request->type == 4){
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
@@ -259,7 +259,7 @@ class CusController extends Controller
       }
       elseif($request->type == 2){
         $traceEmployee = $request->traceEmployee;
-        $countPass = DB::select("SELECT 
+        $countPass = DB::select("SELECT
         traceEmployee,
         sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
         sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
@@ -269,7 +269,7 @@ class CusController extends Controller
         sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
         FROM `tbl_customers` where traceEmployee = '".$traceEmployee."' GROUP BY traceEmployee");
 
-      $dataHistory = DB::select("SELECT 
+      $dataHistory = DB::select("SELECT
       traceEmployee,duedateEnd,
       sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
       sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
@@ -287,7 +287,7 @@ class CusController extends Controller
         $countHisper = ( $countHis->totalPass / ($countHis->totalEmp != 0 ? $countHis->totalEmp : 1 )) * 100;
         $countHisPLM = ( $countHis->totalPassPLM / ($countHis->totalEmpPLM != 0 ? $countHis->totalEmpPLM : 1 )) * 100;
         $countHisCKM = ( $countHis->totalPassCKM / ($countHis->totalEmpCKM != 0 ? $countHis->totalEmpCKM : 1 )) * 100;
-        
+
         array_push($arrChartsPLM,floatval(number_format($countHisPLM,2)) );
         array_push($arrChartsCKM,floatval(number_format($countHisCKM,2)) );
         array_push($datecharts,$countHis->duedateEnd);
@@ -307,7 +307,7 @@ class CusController extends Controller
         $contract = $data->contractNumber;
 
         $datapay = DB::connection('ibmi2')->select("
-          SELECT 
+          SELECT
           RSFHP.CHQTRAN.LOCATRECV,
           RSFHP.CHQTRAN.TMBILDT,
           RSFHP.CHQTRAN.TMBILL,
@@ -317,11 +317,11 @@ class CusController extends Controller
           RSFHP.CHQTRAN.PAYINT,
           RSFHP.CHQTRAN.DSCINT,
           RSFHP.CHQTRAN.NETPAY
-          FROM RSFHP.ARMAST 
+          FROM RSFHP.ARMAST
           LEFT JOIN RSFHP.CHQTRAN  ON RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO
-          WHERE RSFHP.ARMAST.CONTNO = '${contract}'  
+          WHERE RSFHP.ARMAST.CONTNO = '${contract}'
           UNION
-          SELECT 
+          SELECT
           PSFHP.CHQTRAN.LOCATRECV,
           PSFHP.CHQTRAN.TMBILDT,
           PSFHP.CHQTRAN.TMBILL,
@@ -331,7 +331,7 @@ class CusController extends Controller
           PSFHP.CHQTRAN.PAYINT,
           PSFHP.CHQTRAN.DSCINT,
           PSFHP.CHQTRAN.NETPAY
-          FROM PSFHP.ARMAST 
+          FROM PSFHP.ARMAST
           LEFT JOIN PSFHP.CHQTRAN  ON PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
           WHERE PSFHP.ARMAST.CONTNO = '${contract}' ORDER BY TMBILDT DESC
         ");
@@ -345,12 +345,12 @@ class CusController extends Controller
       $dateEnd = $request->datedueEnd;
 
       if($request->type == 1){ //อัพเดทสถานะ
-        
+
         $data_status = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         $data_status->status = $request->statuschecks;
         $data_status->update();
-        
-        
+
+
         $data_Tag = tbl_custag::where('ContractID',$request->contractNumber)->orderBy('id','desc')->first();
         $data_plan = new tbl_actionplan;
 
@@ -368,10 +368,10 @@ class CusController extends Controller
       }
       elseif($request->type == 2){ // อัพเดทการจ่าย
 
-     
+
         // $dateStart = '2023-06-07';  วันดีลเริ่มต้น
         // $dateEnd = '2023-07-06';  วันสิ้นสุด
-        
+
 
         $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT PSFHP.ARMAST.CONTNO,
@@ -379,14 +379,14 @@ class CusController extends Controller
         PSFHP.ARMAST.NPROFIT as TOTALC,
         PSFHP.CHQTRAN.PAYFOR,
         PSFHP.CHQTRAN.DEBT_BALANCE
-        from PSFHP.ARMAST 
-        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO  
+        from PSFHP.ARMAST
+        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
         where PSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' AND PSFHP.CHQTRAN.TMBILDT >= '${dateStart}'
-        ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD 
-        INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST  
-        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO 
-        where PSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and PSFHP.CHQTRAN.FLAG <> 'C'  
-        group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO 
+        ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD
+        INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST
+        left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
+        where PSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and PSFHP.CHQTRAN.FLAG <> 'C'
+        group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO
         UNION
         SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT RSFHP.ARMAST.CONTNO,
@@ -394,13 +394,13 @@ class CusController extends Controller
         RSFHP.ARMAST.NPROFIT as TOTALC,
         RSFHP.CHQTRAN.PAYFOR,
         RSFHP.CHQTRAN.DEBT_BALANCE
-        from RSFHP.ARMAST 
-        left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO  
-        where RSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' AND RSFHP.CHQTRAN.TMBILDT >= '${dateStart}'  
-        ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD 
-        INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST  
-        left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO 
-        where RSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and RSFHP.CHQTRAN.FLAG <> 'C'  
+        from RSFHP.ARMAST
+        left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO
+        where RSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' AND RSFHP.CHQTRAN.TMBILDT >= '${dateStart}'
+        ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD
+        INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST
+        left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO
+        where RSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and RSFHP.CHQTRAN.FLAG <> 'C'
         group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
 
         foreach ($dataPay as $key => $value){
@@ -451,7 +451,7 @@ class CusController extends Controller
         // $inserts = [];
         // $data = tbl_customer::get();
         // foreach($data as $val) {
-        //   tbl_historydashboard::create([ 
+        //   tbl_historydashboard::create([
         //         "traceEmployee" => $val->traceEmployee,
         //         "groupDebt" => $val->groupDebt,
         //         "status" => $val->status,
@@ -460,7 +460,7 @@ class CusController extends Controller
         //         "TotalPay" => $val->TotalPay,
         //         "duedateStart" => $dateStart,
         //         "duedateEnd" => $dateEnd
-        //         ]); 
+        //         ]);
         // }
 
         tbl_customer::truncate(); // เคลียร์ข้อมูลเดิม
@@ -469,27 +469,26 @@ class CusController extends Controller
         $teamA = ['BPRU','HYN','JN','NT1','NT2','RPHU','SING','SK','TEPA','HDY','SDAO','SDAO2','RPHU2'];
         $datenow = date("Y-m-d");
 
-        $dataDebt = DB::connection('ibmi2')->select(" 
-        SELECT * FROM PSFHP.VWDEBT_RPSPASTDUE 
+        $dataDebt = DB::connection('ibmi2')->select("
+        SELECT * FROM PSFHP.VWDEBT_RPSPASTDUE
         LEFT JOIN  PSFHP.SETGRADE ON  PSFHP.VWDEBT_RPSPASTDUE.GRDCOD = PSFHP.SETGRADE.GRDCOD
-        WHERE SUMARYDATE = '${datenow}' AND  EXPREAL < 4 
-        ");  
+        WHERE SUMARYDATE = '${datenow}' AND  EXPREAL < 4
+        ");
 
-  
         foreach ($dataDebt as $data){
 
           $SUBCONTNO_3050 = substr( trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), 0, 2);
           $SUBCONTNO_P = substr( trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), 0, 3);
           $SUBCONTNO_NEW = substr( trim(iconv('Tis-620', 'utf-8', $data->CONTNO)), 4, 2);
-  
+
           if (in_array( $SUBCONTNO_3050, $CheckTL) ) { // check typeloan
             $typeloan = '2';
           }
           else {
             $typeloan = '1';
           }
-  
-  
+
+
           if (in_array( $SUBCONTNO_3050, $loanCode) || in_array( $SUBCONTNO_P, $loanCode) || in_array( $SUBCONTNO_NEW, $loanCode) ) { // check loancode
             $loancode =  '01';
           }
@@ -505,7 +504,7 @@ class CusController extends Controller
           }
 
           if( $loancode == '01' && trim(iconv('Tis-620', 'utf-8', $data->EXPREAL)) >= 3){
-            // 
+            //
           }
           else{
              tbl_customer::create( [
@@ -557,7 +556,7 @@ class CusController extends Controller
              ]);
            }
 
-      
+
         }
 
 
@@ -600,57 +599,57 @@ class CusController extends Controller
       if($request->duedateStart == NULL || $request->duedateEnd == NULL){
         if(Auth::user()->position == 'user'){
           $data = DB::select("
-          SELECT 
+          SELECT
             traceEmployee,typeLoan,
             SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
             SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
-  
+
             SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as 'totalNomal',
             SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassNomal',
-  
+
             SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as 'totalPast1',
             SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast1',
-  
+
             SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as 'totalPast2',
             SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
 
             SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast',
             SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast',
-  
+
             SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
             SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
 
             SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
             SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
-  
+
             FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' group by traceEmployee  ;
         ");
         }
         else {
           $data = DB::select("
-            SELECT 
+            SELECT
               traceEmployee,typeLoan,
               SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
               SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
-    
+
               SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as 'totalNomal',
               SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassNomal',
-    
+
               SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as 'totalPast1',
               SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast1',
-    
+
               SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as 'totalPast2',
               SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
 
               SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast',
               SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast',
-    
+
               SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
               SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
 
               SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
               SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
-    
+
               FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' group by traceEmployee  ;
           ");
         }
@@ -658,7 +657,7 @@ class CusController extends Controller
       else{
 
         $data = DB::select("
-          SELECT 
+          SELECT
             traceEmployee,typeLoan,
             SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
             SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
@@ -687,7 +686,7 @@ class CusController extends Controller
       return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd','datadue'));
     }
 
-    public function export(Request $request) 
+    public function export(Request $request)
     {
       if($request->type == 1){
         return Excel::download(new exportDataCustomers, 'รายงานทีมติดตามหนี้.xlsx');
@@ -696,10 +695,10 @@ class CusController extends Controller
         return Excel::download(new exportSFHP, 'รายงานSFHP.xlsx'); // รายงาน SFHP
       }
     }
-    public function import() 
+    public function import()
     {
         Excel::import(new UsersImport,request()->file('file'));
-               
+
         return response()->json(['success' => true]);
     }
 }

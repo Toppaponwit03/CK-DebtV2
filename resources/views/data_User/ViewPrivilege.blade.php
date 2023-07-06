@@ -227,4 +227,12 @@
 </div>
 @include('data_User.script')
 
+<script>
+    checkBranch = $('#checkBranch').val();
+    if(checkBranch != ''){
+        checkBranch = checkBranch.replace(/,/g,',#')
+        $(`#${checkBranch}`).prop('checked', true);
+    }
+</script>
+
 @endsection

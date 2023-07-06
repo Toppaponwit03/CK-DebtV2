@@ -20,7 +20,7 @@ class register extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -30,7 +30,7 @@ class register extends Controller
      */
     public function create(Request $request)
     {
-     
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -43,15 +43,15 @@ class register extends Controller
           $dataUser->name = $request->name;
           $dataUser->email = $request->email;
           $dataUser->password = $request->password;
-         // $dataUser->password_val = $request->password;
+          $dataUser->password_val = $request->password;
           $dataUser->Branch = $request->Branch;
           $dataUser->position = $request->position;
 
           $dataUser->save();
 
           return redirect()->route('login');
-          
-          
+
+
     }
 
     /**
