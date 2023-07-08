@@ -193,7 +193,7 @@
                                 @if(@Auth::user()->position == 'admin')
                                     <a class="dropdown-item" href ="{{ route('static.index') }}?type={{1}}">
                                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        กำหนดสิทธิ์การใช้งาน
+                                        ตั้งค่าระบบ
                                     </a>
                                 @endif
 

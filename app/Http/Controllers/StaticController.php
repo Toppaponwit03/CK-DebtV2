@@ -116,7 +116,7 @@ class StaticController extends Controller
             $data->status = $request->status != NULL ?  $request->status : 'inactive' ;
             $data->save();
 
-            $status = tbl_statustype::getstatus();
+            $status = tbl_statustype::get();
             $html = view('data-static.section-append.data-status',compact('status'))->render();
             return response()->json(['html' => $html]);
         }
@@ -208,7 +208,7 @@ class StaticController extends Controller
             $data->status = $request->status != NULL ?  $request->status : 'inactive' ;
             $data->save();
 
-            $status = tbl_statustype::getstatus();
+            $status = tbl_statustype::get();
             $html = view('data-static.section-append.data-status',compact('status'))->render();
             return response()->json(['html' => $html]);
         }

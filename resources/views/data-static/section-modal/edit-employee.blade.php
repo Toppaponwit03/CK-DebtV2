@@ -24,7 +24,7 @@
                 <input type="hidden" name="id" value="{{@$data->id}}">
                 <div class="p-5">
                     <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4"><i class="fa-solid fa-user-check"></i> เพิ่มทีมตามใหม่ !</h1>
+                        <h1 class="h4 text-gray-900 mb-4"><i class="fa-solid fa-user-check"></i> แก้ไขสาขา !</h1>
                     </div>
                     <div class="form-group row">
                         <div class="col-3">
@@ -101,21 +101,24 @@
                     $('.addSpin').empty()
                     console.log(res);
 
+                    $('#data-employee').html(res.html)
+                    $('.modal').modal('hide');
+
                    await swal.fire({
                         icon : 'success',
-                        title : 'เพิ่มสาขาเรียบร้อย',
-                        timer : 3000,
+                        title : 'อัพเดทสาขาเรียบร้อย',
+                        timer : 2000,
                     })
+   
 
-                    $('#data-employee').html(res.html)
                 },
                 error : (err) => {
                     $('#btn-editEmp').prop('disabled',false)
                     $('.addSpin').empty()
                     swal.fire({
                         icon : 'error',
-                        title : 'เพิ่มสาขาไม่สำเร็จ !',
-                        timer : 3000,
+                        title : 'อัพเดทสาขาไม่สำเร็จ !',
+                        timer : 2000,
                     })
                 }
             })

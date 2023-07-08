@@ -22,7 +22,7 @@
                 <input type="hidden" name="func" value="createEmp">
                 <div class="p-5">
                     <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4"><i class="fa-solid fa-user-check"></i> เพิ่มทีมตามใหม่ !</h1>
+                        <h1 class="h4 text-gray-900 mb-4"><i class="fa-solid fa-user-check"></i> เพิ่มสาขาใหม่ !</h1>
                     </div>
                     <div class="form-group row">
                         <div class="col-3">
@@ -98,7 +98,7 @@
                    await swal.fire({
                         icon : 'success',
                         title : 'เพิ่มสาขาเรียบร้อย',
-                        timer : 3000,
+                        timer : 2000,
                     })
 
                     $('#data-employee').html(res.html)
@@ -109,7 +109,7 @@
                     swal.fire({
                         icon : 'error',
                         title : 'เพิ่มสาขาไม่สำเร็จ !',
-                        timer : 3000,
+                        timer : 2000,
                     })
                 }
             })

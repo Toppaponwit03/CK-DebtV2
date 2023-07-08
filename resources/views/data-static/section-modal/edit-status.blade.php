@@ -79,10 +79,16 @@
                 success : (res) =>{
                     $('#btn-editStatus').prop('disabled',false)
                     $('.addSpin').empty()
+
+                    console.log(res);
+
+                    $('#data-status').html(res.html)
+                    $('.modal').modal('hide');
+
                     swal.fire({
                         icon : 'success',
                         title : 'อัพเดทสถานะเรียบร้อย',
-                        timer : 3000,
+                        timer : 2000,
                     })
                 },
                 error : (err) => {
@@ -91,7 +97,7 @@
                     swal.fire({
                         icon : 'error',
                         title : 'อัพเดทสถานะไม่สำเร็จ !',
-                        timer : 3000,
+                        timer : 2000,
                     })
                 }
             })

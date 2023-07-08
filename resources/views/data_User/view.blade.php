@@ -61,13 +61,16 @@
 
 <div class="row g-2">
     <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
-      <div class="card p-2">
+      <div class="card p-2 h-100">
         <div class="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <button class="nav-link btn-light col-12" disabled>ตั้งค่าระบบ <i class="fa-solid fa-gear"></i></button>
-          <button class="nav-link active col-12" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">ข้อมูลผู้ใช้ระบบ <i class="fa-solid fa-database"></i></button>
-          <button class="nav-link col-12" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">ทีมตามหนี้ <i class="fa-solid fa-user-group"></i></button>
-          <button class="nav-link col-12" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false">กลุ่มค้างงวด <i class="fa-solid fa-layer-group"></i></button>
-          <button class="nav-link col-12" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">สถานะ <i class="fa-solid fa-hourglass-half"></i></button>
+          <button class="nav-link rounded-pill btn-light col-12" disabled>ตั้งค่าระบบ <i class="fa-solid fa-gear"></i></button>
+          <button class="nav-link rounded-pill active col-12" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">ข้อมูลผู้ใช้ระบบ <i class="fa-solid fa-database"></i></button>
+          <button class="nav-link rounded-pill col-12" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">ตั้งค่าสาขา <i class="fa-regular fa-building"></i></button>
+          <button class="nav-link rounded-pill col-12" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false">ตั้งค่ากลุ่มค้างงวด <i class="fa-solid fa-layer-group"></i></button>
+          <button class="nav-link rounded-pill col-12" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">ตั้งค่าสถานะ <i class="fa-solid fa-hourglass-half"></i></button>
+        </div>
+        <div class="d-flex align-items-end justify-content-center h-100">
+          <img src="{{ asset('dist/img/pilot.png') }}" class="d-none d-lg-block"  style="max-width :65%;">
         </div>
       </div>
     </div>
@@ -96,9 +99,6 @@
             {{-- ข้อมูลสถานะ --}}
             @include('data-static.section-append.data-status')
           </div>
-        </div>
-        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
-          ...
         </div>
       </div>
     </div>

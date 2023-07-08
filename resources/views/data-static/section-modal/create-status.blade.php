@@ -78,10 +78,13 @@
             success : (res) =>{
                 $('#btn-addStatus').prop('disabled',false)
                 $('.addSpin').empty()
+
+                $('#data-status').html(res.html)
+                $('.modal').modal('hide');
                 swal.fire({
                     icon : 'success',
                     title : 'เพิ่มสถานะเรียบร้อย',
-                    timer : 3000,
+                    timer : 2000,
                 })
             },
             error : (err) => {
@@ -90,7 +93,7 @@
                 swal.fire({
                     icon : 'error',
                     title : 'เพิ่มสถานะไม่สำเร็จ !',
-                    timer : 3000,
+                    timer : 2000,
                 })
             }
         })

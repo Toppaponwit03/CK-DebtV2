@@ -24,7 +24,7 @@
                 <input type="hidden" name="id" value="{{@$data->id}}">
                 <div class="p-5">
                     <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4"><i class="fa-solid fa-user-check"></i> เพิ่มกลุ่มค้างงวด !</h1>
+                        <h1 class="h4 text-gray-900 mb-4"><i class="fa-solid fa-user-check"></i> แก้ไขกลุ่มค้างงวด !</h1>
                     </div>
                     <div class="form-group row">
                         <div class="col-3">
@@ -76,10 +76,13 @@
                 success : async (res) =>{
                     $('#btn-updateGroupdebt').prop('disabled',false)
                     $('.addSpin').empty()
+
+                    $('#data-groupdebt').html(res.html)
+                    $('.modal').modal('hide');
                    await swal.fire({
                         icon : 'success',
                         title : 'อัพเดทกลุ่มค้างงวดเรียบร้อย',
-                        timer : 3000,
+                        timer : 2000,
                     })
                     $('#data-groupdebt').html(res.html)
                 },
@@ -89,7 +92,7 @@
                   await swal.fire({
                         icon : 'error',
                         title : 'อัพเดทกลุ่มค้างงวดไม่สำเร็จ !',
-                        timer : 3000,
+                        timer : 2000,
                     })
                 }
             })

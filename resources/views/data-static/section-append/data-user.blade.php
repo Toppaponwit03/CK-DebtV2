@@ -1,7 +1,13 @@
 <div class="card p-3">
     <div class="row">
         <div class="col">
-            <h5>ข้อมูลผู้ใช้ระบบ </h5>
+            {{-- <img src="{{ asset('dist/img/gif/editing.gif') }}"  style="max-width :20%;"> <h5><i class="fa-solid fa-gear"></i> ข้อมูลผู้ใช้ระบบ ( Setting Users )</h5> --}}
+            <div class="d-flex">
+                <img src="{{ asset('dist/img/gif/editing.gif') }}" class="col"  style="max-width :75px;"> 
+                <div class="col m-auto">
+                    <h5> ข้อมูลผู้ใช้ระบบ ( Setting Users )</h5>
+                </div>
+            </div>
         </div>
         <div class="col text-end">
             <div type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="{{ route('static.create') }}?func={{'addUser'}}"><i class="fa-solid fa-user-plus"></i></div>
