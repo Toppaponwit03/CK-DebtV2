@@ -53,7 +53,7 @@ class headcontroller extends Controller
         }
 
         $groupDebt = tbl_groupdebt::orderby('groupDebtID', 'ASC')->get();
-        $statuslist = tbl_statustype::orderBy('statusID', 'ASC')->get();
+        $statuslist = tbl_statustype::orderBy('id', 'ASC')->get();
         $non = tbl_non::orderBy('id', 'ASC')->get();
         $branch = tbl_customer::select('Branch')->distinct()->get();
         $emplist = tbl_traceEmployee::where('teamGroup','=',$numteam)->orderBy('teamGroup', 'ASC')->get();
@@ -158,7 +158,7 @@ class headcontroller extends Controller
         $groupDebtlist = $request->get('groupDebt');
         $nonlist = $request->get('nonlist');
         $groupDebt = tbl_groupdebt::orderby('groupDebtID', 'ASC')->get();
-        $statuslist = tbl_statustype::orderBy('statusID', 'ASC')->get();
+        $statuslist = tbl_statustype::orderBy('id', 'ASC')->get();
         $non = tbl_non::orderBy('id', 'ASC')->get();
         $branch = tbl_customer::select('Branch')->distinct()->get();
         $emplist = tbl_traceEmployee::where('teamGroup','=',$numteam)->orderBy('teamGroup', 'ASC')->get();
@@ -808,7 +808,7 @@ class headcontroller extends Controller
 
        $groupDebt = tbl_groupdebt::orderby('groupDebtID', 'ASC')->get();     
 
-       $statuslist = tbl_statustype::orderBy('statusID', 'ASC')->get();
+       $statuslist = tbl_statustype::orderBy('id', 'ASC')->get();
        $countresulttype = count($customers->get());
        $customers =  $customers->paginate();     
        $links = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";

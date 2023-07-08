@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tbl_statustypes', function (Blueprint $table) {
-            $table->id('statusID');
+            $table->id('id');
             $table->string('statusName',255)->nullable();
             $table->string('details',255)->nullable();
             $table->timestamps();

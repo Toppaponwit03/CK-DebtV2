@@ -53,6 +53,14 @@ let text = data;
       $('.checkteamB').prop('checked', false);
      }
   });
+  $('.teamD').click(function(){
+     if ($(".teamD").is(":checked")) {
+      $('.checkteamD').prop('checked', true);
+     } 
+     else{
+      $('.checkteamD').prop('checked', false);
+     }
+  });
 </script>
 
 

@@ -247,7 +247,7 @@
                                             </div>
                                             <div class="col m-auto">
                                                 <span class="badge text-dark target target-${data.employeeName}">${ (data.empto_target != null) ? data.empto_target.Target : '0'  }</span> 
-                                                <input type="text" value="" class="form-control inputTarget inputTarget-${data.employeeName}" id="valTarget-${data.empID}" style="display:none;">
+                                                <input type="text" value="" class="form-control inputTarget inputTarget-${data.employeeName}" id="valTarget-${data.id}" style="display:none;">
                                             </div>
                                             <div class="col-2 m-auto text-center">
                                                 <!--
@@ -263,7 +263,7 @@
                                             <div class="col-2 text-end">
                                                 @if(@Auth::user()->UserToPrivilege->assignTarget == 'yes')
                                                     <button class="btn btn-warning btn-sm rounded-pill updateTarget-${data.employeeName } updateTarget" onclick="editTarget('target-${ data.employeeName }','inputTarget-${ data.employeeName }','updateTarget-${ data.employeeName }','saveTarget-${data.employeeName }')">แก้ไขเป้า</button>
-                                                    <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.empID }')" style="display:none;">บันทึก</button>
+                                                    <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.id }')" style="display:none;">บันทึก</button>
                                                     <button class="btn btn-danger btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget"onclick="editTarget()" style="display:none;">X</button>
                                                 @endif
                                             </div>
@@ -302,7 +302,7 @@
             data : {
                 type : 1,
                 EmpName : target,
-                EmpId : value,
+                id : value,
                 Targets : valuetarget,
                 _token : "{{ @csrf_token() }}"
             },
@@ -330,7 +330,7 @@
             data : {
                 type : 1,
                 EmpName : target,
-                EmpId : value,
+                id : value,
                 Targets : valuetarget,
                 _token : "{{ @csrf_token() }}"
             },

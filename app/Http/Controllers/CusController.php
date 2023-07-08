@@ -80,6 +80,7 @@ class CusController extends Controller
       $teamAlists = tbl_traceEmployee::where('teamGroup','=','1')->get();
       $teamBlists = tbl_traceEmployee::where('teamGroup','=','2')->get();
       $teamClists = tbl_traceEmployee::where('teamGroup','=','3')->get();
+      $teamDlists = tbl_traceEmployee::where('teamGroup','=','4')->get();
       $type = $request->get('type');
 
       $countPass = DB::select("SELECT
@@ -97,7 +98,7 @@ class CusController extends Controller
       $dateEnd = date('Y-').date_format(date_create($getdue->datedueEnd),'m-d');
 
 
-       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','countPass','getdue'));
+       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','teamDlists','countPass','getdue'));
 
 
 

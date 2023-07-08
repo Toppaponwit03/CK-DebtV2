@@ -47,7 +47,7 @@ class ComController extends Controller
     {
         if($request->type == 1){
             $data = new tbl_target;
-            $data->EmpId = $request->EmpId;
+            $data->id = $request->id;
             $data->EmpName = $request->EmpName;
             $data->Target = $request->Targets;
             $data->save();
@@ -128,14 +128,14 @@ class ComController extends Controller
     public function update(Request $request, $id)
     {
         if($request->type == 1){
-            $data = tbl_target::where('EmpId',$request->EmpId)->first();
+            $data = tbl_target::where('id',$request->id)->first();
             if($data != null){
                 $data->Target = @$request->Targets;
                 $data->update();
             }
             else{
                 $data = new tbl_target;
-                $data->EmpId = $request->EmpId;
+                $data->id = $request->id;
                 $data->EmpName = $request->EmpName;
                 $data->Target = $request->Targets;
                 $data->save();

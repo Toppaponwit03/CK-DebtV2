@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tbl_trace_employees', function (Blueprint $table) {
-            $table->id('empID');
+            $table->id('id');
             $table->string('employeeName',255)->nullable();
             $table->string('Details',255)->nullable();
             $table->string('teamGroup',10)->nullable();

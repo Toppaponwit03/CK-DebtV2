@@ -76,6 +76,17 @@
                             </div>
                             @endforeach
                         </div>
+                        <div class="col border-end">
+                            <h5>ทีม D</h5>
+                            @foreach(@$teamDlists as $data)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="emp[]" value="{{$data->employeeName}}" id="{{$data->employeeName}}">
+                                <label class="form-check-label" for="{{$data->employeeName}}">
+                                    {{$data->employeeName}} ({{$data->nameThai}})
+                                </label>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="row">
                         <div class="text-end">
@@ -145,6 +156,13 @@
                                     <input class="form-check-input" type="checkbox" value="yes" name="teamC" id="teamC" {{ @$dataUser->UserToPrivilege->teamC == 'yes' ? 'checked' : '' }} >
                                     <label class="form-check-label" for="teamC">
                                         ค้นหาข้อมูลของทีม C (Search Team C)
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="teamD" id="teamD" {{ @$dataUser->UserToPrivilege->teamD == 'yes' ? 'checked' : '' }} >
+                                    <label class="form-check-label" for="teamD">
+                                        ค้นหาข้อมูลของทีม D (Search Team D)
                                     </label>
                                 </div>
 

@@ -54,7 +54,7 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
         ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
         ->get();
 
-        $emps = tbl_traceEmployee::select('empID','IdCK')->where('IdCK',$invoice->BranchSent_Con)->first();
+        $emps = tbl_traceEmployee::select('id','IdCK')->where('IdCK',$invoice->BranchSent_Con)->first();
         $sum = 0;
             foreach($data as $con){
                 $sum += ( $con->ConToCal->Cash_Car + $con->ConToCal->Insurance_PA +$con->ConToCal->Process_Car );

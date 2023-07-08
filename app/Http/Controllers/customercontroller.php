@@ -62,7 +62,7 @@ class customercontroller extends Controller
       }
         $groupDebt = tbl_groupdebt::orderby('groupDebtID', 'ASC')->get();
 
-        $statuslist = tbl_statustype::orderBy('statusID', 'ASC')->get();
+        $statuslist = tbl_statustype::orderBy('id', 'ASC')->get();
 
         $non = tbl_non::orderBy('id', 'ASC')->get();
         $branch = tbl_customer::select('Branch')->distinct()->get();
@@ -114,7 +114,7 @@ class customercontroller extends Controller
         $groupDebtlist = $request->get('groupDebt');
         $nonlist = $request->get('nonlist');
         $groupDebt = tbl_groupdebt::orderby('groupDebtID', 'ASC')->get();
-        $statuslist = tbl_statustype::orderBy('statusID', 'ASC')->get();
+        $statuslist = tbl_statustype::orderBy('id', 'ASC')->get();
         $non = tbl_non::orderBy('id', 'ASC')->get();
         $branch = tbl_customer::select('Branch')->distinct()->get();
         $emplist = tbl_traceEmployee::where('teamGroup','=','1')->orWhere('teamGroup','=','2')->orWhere('teamGroup','=','2')->orWhere('employeeName','=','KAI')->orderBy('teamGroup', 'ASC')->get();
