@@ -18,10 +18,10 @@
     overflow-x: hidden;
   }
 </style>
-    <div class="">
+    <div class="tr">
         <h5>ประวัติการติดตาม</h5>
         <hr>
-        <div class="scroller px-2" style="min-height : 520px;">
+        <div id="scrollBottom" class="scroller px-2" style="min-height : 520px;">
             @foreach (@$data->CustoCustag as $key => $value)
             <div class="accordion mb-1" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
@@ -186,7 +186,7 @@
                                 
                                  <br>
                                 <div class="input-group mb-3">
-                                    <textarea class="form-control me-1 addaction rounded rounded-4" name="addaction" id="addaction-{{$value->id}}"></textarea>
+                                    <textarea class="form-control me-1 addaction rounded rounded-4" name="addaction" id="addaction-{{$value->id}}" onclick="scrollWin()"></textarea>
                                     <span class="input-group-text bg-white border border-white " id="inputGroup-sizing-default"><button type="button" class="btn btn-primary rounded-circle btn-send" onclick=" addPlan('{{$value->id}}','{{$value->ContractID}}')"><i class="fa-regular fa-paper-plane"></i></button></span>
                                     
                                 </div>
@@ -199,6 +199,13 @@
             @endforeach
         </div>
     </div>
+
+    <script>
+        function scrollWin() {
+        var element = document.querySelector('#scrollBottom');
+        element.scrollTop = element.scrollHeight;
+        }
+    </script>
 
     <script>
 

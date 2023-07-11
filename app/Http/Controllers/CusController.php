@@ -34,7 +34,10 @@ class CusController extends Controller
       return   Datatables()->of($dataTB)
                 ->addIndexColumn()
                 ->addColumn('btnStaus', function ($data) {
-                  $btnStat = '<button type="button" id="SearchBtn" class="btn btn-warning rounded-circle" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>';
+                  $btnStat = '
+                  <button type="button" id="SearchBtn" class="btn btn-warning rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>
+                  <button type="button" id="SearchBtn" class="btn btn-secondary rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=2 "><i class="fa-regular fa-pen-to-square"></i> </button>
+                  ';
                   return $btnStat;
                 })
                 ->addColumn('statusname', function ($data) {
@@ -337,6 +340,10 @@ class CusController extends Controller
           WHERE PSFHP.ARMAST.CONTNO = '${contract}' ORDER BY TMBILDT DESC
         ");
         return view('data_Customer.section-Cus.viewModal',compact('data','statuslist','datapay'));
+      }
+      elseif($request->type == 2){
+        $data = tbl_customer::find($id);
+        return view('data_Customer.section-Cus.editDataCus',compact('data'));
       }
     }
 
