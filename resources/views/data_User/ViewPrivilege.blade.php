@@ -187,6 +187,13 @@
                                     </label>
                                 </div>
 
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" name="EditDataDebt" id="EditDataDebt" {{ @$dataUser->UserToPrivilege->EditDataDebt == 'yes' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="EditDataDebt">
+                                        แก้ไขข้อมูลลูกหนี้ (data editing)
+                                    </label>
+                                </div>
+
 
                             </div>
                             <div class="col border-end">

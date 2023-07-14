@@ -155,6 +155,7 @@ class StaticController extends Controller
             $data->ComBranch = @$request->ComBranch;
             $data->assignTarget = @$request->assignTarget;
             $data->exportComm = @$request->exportComm;
+            $data->EditDataDebt = @$request->EditDataDebt;
             $data->save();
         }
         elseif($request->func == 'editUser'){ //แก้ไข User

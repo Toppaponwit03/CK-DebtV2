@@ -34,10 +34,17 @@ class CusController extends Controller
       return   Datatables()->of($dataTB)
                 ->addIndexColumn()
                 ->addColumn('btnStaus', function ($data) {
-                  $btnStat = '
-                  <button type="button" id="SearchBtn" class="btn btn-warning rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>
-                  <button type="button" id="SearchBtn" class="btn btn-secondary rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=2 "><i class="fa-regular fa-pen-to-square"></i> </button>
-                  ';
+
+                  if (Auth::user()->UserToPrivilege->EditDataDebt == 'yes'){
+                    $btnStat = '
+                    <button type="button" id="SearchBtn" class="btn btn-warning rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>
+                    <button type="button" id="SearchBtn" class="btn btn-secondary rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=2 "><i class="fa-solid fa-user-pen"></i> </button>
+                    ';
+                  } else{
+                    $btnStat = '
+                    <button type="button" id="SearchBtn" class="btn btn-warning rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>
+                    ';
+                  }
                   return $btnStat;
                 })
                 ->addColumn('statusname', function ($data) {
@@ -343,7 +350,10 @@ class CusController extends Controller
       }
       elseif($request->type == 2){
         $data = tbl_customer::find($id);
-        return view('data_Customer.section-Cus.editDataCus',compact('data'));
+        $groupDebt = tbl_groupdebt::getGroupdebt();
+        $non = tbl_non::getNon();
+        $dataBranch = tbl_traceEmployee::getBranch();
+        return view('data_Customer.section-Cus.editDataCus',compact('data','groupDebt','non','dataBranch'));
       }
     }
 
@@ -569,6 +579,38 @@ class CusController extends Controller
 
 
 
+      }
+      elseif($request->type == 5){
+       $data = tbl_customer::find($request->id);
+          // $data->Branch = $request->Branch;
+          // $data->contractNumber = $request->contractNumber;
+          $data->namePrefix = $request->namePrefix;
+          $data->firstname = $request->firstname;
+          $data->lastname = $request->lastname;
+          $data->phone = $request->phone;
+          $data->productName = $request->productName;
+          $data->sellEmployee = $request->sellEmployee;
+          $data->traceEmployee = $request->traceEmployee;
+          $data->traceTeamOut  = $request->traceTeamOut;
+          $data->firstInstallment = $request->firstInstallment;
+          $data->dealDay = $request->dealDay;
+          $data->totalInstallment = $request->totalInstallment;
+          $data->paymentDate = $request->paymentDate;
+          $data->installment = $request->installment;
+          $data->realDebt = $request->realDebt;
+          $data->arrears = $request->arrears;
+          $data->lastPaymentdate = $request->lastPaymentdate;
+          $data->groupDebt = $request->groupDebt;
+          $data->teamGroup = $request->teamGroup;
+          $data->groupDebt = $request->groupDebt;
+          $data->typeLoan = $request->typeLoan;
+          $data->TotalPay = $request->TotalPay;
+          $data->minimumInstallment = $request->minimumInstallment;
+          $data->minimumPayout = $request->minimumPayout;
+          $data->nextDebt = $request->nextDebt;
+          $data->groupDebt = $request->groupDebt;
+       $data->update();
+        return 200;
       }
     }
 
