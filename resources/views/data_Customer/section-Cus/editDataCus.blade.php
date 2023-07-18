@@ -12,7 +12,7 @@
 <div class="row">
     {{-- left content --}}
     <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12  text-center">
-        <div class="row">   
+        <div class="row">
           <div class="col-xl col-sm-12 text-center">
             <h4>ข้อมูลลูกหนี้</h4>
             @php
@@ -30,7 +30,7 @@
                     $color = 'text-bg-warning';
                     $border = 'border-warning';
                 }
-                  
+
               @endphp
             <img class="w-50 bg-light p-1 rounded-circle border border-3 {{$border}}" src="{{ asset('dist/img/man.png') }}"" alt="">
             <br>
@@ -68,43 +68,43 @@
                   @endforeach
                 </select>
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">เลขที่สัญญา</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->contractNumber }}" name="contractNumber" placeholder="เลขที่สัญญา">
               </div>
             </div> --}}
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">คำนำหน้าชื่อ</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->namePrefix }}" name="namePrefix" placeholder="คำนำหน้าชื่อ">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">ชื่อ</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->firstname }}" name="firstname" placeholder="ชื่อ">
               </div>
             </div>
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">นามสกุล</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->lastname }}" name="lastname" placeholder="นามสกุล">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">เบอร์โทร</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->phone }}" name="phone" placeholder="เบอร์โทร">
               </div>
             </div>
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">รุ่นรถ</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->productName }}" name="productName" placeholder="รุ่นรถ">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">พนักงานขาย</label>
               <div class="col-sm-4">
                 <select class="form-select form-select-sm" name="sellEmployee" id="sellEmployee" >
@@ -115,7 +115,7 @@
                 </select>
               </div>
             </div>
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">ทีมตามใน</label>
               <div class="col-sm-4">
@@ -126,7 +126,7 @@
                   @endforeach
                 </select>
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">ทีมตามนอก</label>
               <div class="col-sm-4">
                 <select class="form-select form-select-sm" name="traceTeamOut" id="traceTeamOut" >
@@ -137,38 +137,38 @@
                 </select>
               </div>
             </div>
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">วันชำระงวดแรก</label>
               <div class="col-sm-4">
                 <input type="date" class="form-control form-control-sm" value="{{ @$data->firstInstallment }}" name="firstInstallment" placeholder="วันชำระงวดแรก">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">วันดีล</label>
               <div class="col-sm-4">
                 <input type="date" class="form-control form-control-sm" value="{{ @$data->dealDay }}" name="dealDay" placeholder="วันดีล">
               </div>
             </div>
-            
+
 
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">ยอดผ่อนรวม</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->totalInstallment }}" name="totalInstallment" placeholder="ยอดผ่อนรวม">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">วันที่ชำระ</label>
               <div class="col-sm-4">
                 <input type="date" class="form-control form-control-sm" value="{{ @$data->paymentDate }}" name="paymentDate" placeholder="วันที่ชำระ">
               </div>
             </div>
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">ค่างวด</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->installment }}" name="installment" placeholder="ค่างวด">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">ค้างจริง</label>
               <div class="col-sm-4">
                 <input type="number" class="form-control form-control-sm" value="{{ @$data->realDebt }}" name="realDebt" placeholder="ค้างจริง">
@@ -180,7 +180,7 @@
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->arrears }}" name="arrears" placeholder="เงินค้างงวด">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">วันที่ชำระล่าสุด</label>
               <div class="col-sm-4">
                 <input type="date" class="form-control form-control-sm" value="{{ @$data->lastPaymentdate }}" name="lastPaymentdate" placeholder="วันที่ชำระล่าสุด">
@@ -195,9 +195,10 @@
                   <option value="" {{ @$data->teamGroup == 1 ? 'selected' : '' }}>1.ทีม A</option>
                   <option value="" {{ @$data->teamGroup == 2 ? 'selected' : '' }}>2.ทีม B</option>
                   <option value="" {{ @$data->teamGroup == 3 ? 'selected' : '' }}>3.ทีม C</option>
+                  <option value="" {{ @$data->teamGroup == 4 ? 'selected' : '' }}>4.ทีม D</option>
                 </select>
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">ประเภทสัญญา</label>
               <div class="col-sm-4">
                 <select class="form-select form-select-sm" name="groupDebt" id="groupDebt">
@@ -208,13 +209,13 @@
                 </select>
               </div>
             </div>
-      
+
             <div class="row mb-1">
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">ยอดชำระรวม</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->TotalPay }}" name="TotalPay" placeholder="ยอดชำระรวม">
               </div>
-      
+
             </div>
 
             <div class="row mb-1">
@@ -222,7 +223,7 @@
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->minimumInstallment }}" name="minimumInstallment" placeholder="งวดขั้นต่ำ">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">ยอดจ่ายขั้นต่ำ</label>
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->minimumPayout }}" name="minimumPayout" placeholder="ยอดจ่ายขั้นต่ำ">
@@ -234,7 +235,7 @@
               <div class="col-sm-4">
                 <input type="text" class="form-control form-control-sm" value="{{ @$data->nextDebt }}" name="nextDebt" placeholder="ค้าง Next">
               </div>
-      
+
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">กลุ่มค้างงวด</label>
               <div class="col-sm-4">
                 <select class="form-select form-select-sm" name="groupDebt" id="groupDebt" >
@@ -259,71 +260,71 @@
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->fromDebt }}" name="fromDebt" placeholder="col-form-label-sm">
             </div>
-    
+
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">toDebt</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->toDebt }}" name="toDebt" placeholder="col-form-label-sm">
             </div>
           </div>
-    
 
-    
+
+
           <div class="row mb-1">
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">lastPayment</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->lastPayment }}" name="lastPayment" placeholder="col-form-label-sm">
             </div>
-    
+
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">finePay</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->finePay }}" name="finePay" placeholder="col-form-label-sm">
             </div>
           </div>
-    
+
           <div class="row mb-1">
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">totalPayment</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->totalPayment }}" name="totalPayment" placeholder="col-form-label-sm">
             </div>
-    
+
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">balanceDebt</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->balanceDebt }}" name="balanceDebt" placeholder="col-form-label-sm">
             </div>
           </div>
-    
 
-    
+
+
           <div class="row mb-1">
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">contractGrade</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->contractGrade }}" name="contractGrade" placeholder="col-form-label-sm">
             </div>
-    
+
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">status</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->status }}" name="status" placeholder="col-form-label-sm">
             </div>
           </div>
-    
+
           <div class="row mb-1">
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">callDate</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->callDate }}" name="callDate" placeholder="col-form-label-sm">
             </div>
-    
+
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">quantitycallDate</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->quantitycallDate }}" name="quantitycallDate" placeholder="col-form-label-sm">
             </div>
           </div>
-    
+
           <div class="row mb-1">
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">callDateOut</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->callDateOut }}" name="callDateOut" placeholder="col-form-label-sm">
             </div>
-    
+
             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">quantitycallDateOut</label>
             <div class="col-sm-4">
               <input type="text" class="form-control form-control-sm" value="{{ @$data->quantitycallDateOut }}" name="quantitycallDateOut" placeholder="col-form-label-sm">
@@ -369,5 +370,5 @@
       }
     })
   })
-  
+
 </script>
