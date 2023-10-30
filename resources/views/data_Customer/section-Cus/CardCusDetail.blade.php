@@ -71,7 +71,7 @@
 
 
 
-        <hr> 
+        {{-- <hr> 
 
         <div class="row mt-4">
             <div class="col-xl-4 col-sm-12 text-end">
@@ -86,9 +86,30 @@
             </div>
         </div>
 
+
+        <div class="row mt-4" id="dateApp" style="{{@$data->status != 'STS-001' ? 'display: none' : ''}};">
+            <div class="col-xl-4 col-sm-12 text-end">
+                <label class="col-form-label">วันนัดชำระ :</label>
+            </div>
+            <div class="col-xl-8 col-sm-12">
+                    <input type="date" value="{{ @$data->paymentDate }}" name="payment_date" id="payment_date" class="form-control">
+            </div>
+        </div> --}}
+
     </form>
 
     <script>
+
+        $('#statuschecks').change(()=>{
+            let status = $('#statuschecks').val();
+            if(status == 'STS-001'){
+                $('#dateApp').toggle()
+            } else {
+                $('#dateApp').hide()
+            }
+        })
+
+
         $('#formCard input[type=text]').attr('disabled',true);
 
         $('.STS-005').hide();

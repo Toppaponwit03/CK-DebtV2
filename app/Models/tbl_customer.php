@@ -58,6 +58,10 @@ class tbl_customer extends Model
          "TotalPay"
     ];
 
+    public function CustoApp(){
+        return $this->hasmany(tbl_appointment::class,'ContractNumber','contractNumber');
+    }
+
     public function CustoCustag(){
         return $this->hasmany(tbl_custag::class,'ContractID','contractNumber')->orderby('id','DESC');
     }

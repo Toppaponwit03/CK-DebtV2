@@ -21,8 +21,8 @@ class ComController extends Controller
 
     public function __construct() // วันดีล
     {
-        $this->SDueDate = '2023-05-01';
-        $this->LDueDate = '2023-05-31';
+        $this->SDueDate = '2023-09-01';
+        $this->LDueDate = '2023-09-30';
     }
     public function index(Request $request)
     {

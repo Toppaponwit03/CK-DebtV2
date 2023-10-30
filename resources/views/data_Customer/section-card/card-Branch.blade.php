@@ -61,32 +61,28 @@
                         $countper = ( $count->totalPass / ($count->totalEmp != 0 ? $count->totalEmp : 1 )) * 100;
                         $countPLM = ( $count->totalPassPLM / ($count->totalEmpPLM != 0 ? $count->totalEmpPLM : 1 )) * 100;
                         $countCKM = ( $count->totalPassCKM / ($count->totalEmpCKM != 0 ? $count->totalEmpCKM : 1 )) * 100;
+                        $countLoan = ( $count->totalPassLoan / ($count->totalEmpLoan != 0 ? $count->totalEmpLoan : 1 )) * 100;
+                        $count12More = ( $count->totalPass12More / ($count->totalEmp12More != 0 ? $count->totalEmp12More : 1 )) * 100;
+                        $countMiss = ( $count->totalPassMiss / ($count->totalEmpMiss != 0 ? $count->totalEmpMiss : 1 )) * 100;
 
 
-                        if($countPLM == 100){
-                            $colorPLM = 'bg-success';
+                        if($countPLM == 100 || $countCKM == 100 || $countLoan == 100){
+                            $color = 'bg-success';
                         }
-                        elseif($countPLM > 50){
-                            $colorPLM = 'bg-warning progress-bar-striped progress-bar-animated';
-                        }
-                        else{
-                            $colorPLM = 'bg-danger progress-bar-striped progress-bar-animated';
-                        }
-                        if($countCKM == 100){
-                            $colorCKM = 'bg-success';
-                        }
-                        elseif($countCKM > 50){
-                            $colorCKM = 'bg-warning progress-bar-striped progress-bar-animated';
+                        elseif($countPLM > 50 || $countLoan > 50 || $countLoan > 50 ){
+                            $color = 'bg-warning progress-bar-striped progress-bar-animated';
                         }
                         else{
-                            $colorCKM = 'bg-danger progress-bar-striped progress-bar-animated';
+                            $color = 'bg-danger progress-bar-striped progress-bar-animated';
                         }
+
+                       
                     @endphp
                     <div class="row pt-2">
                         @if(@$count->totalPassPLM != 0)
-                        <div class="col border-end">
+                        <div class="col ">
                             <div class="progress mb-1" style="height: 10px;">
-                                <div class="progress-bar {{$colorPLM}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countPLM,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countPLM,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col text-center" style="font-size:12px;"><span class="fw-semibold">PLM : {{number_format($countPLM,2)}} %</span> </div>
@@ -94,12 +90,42 @@
                         </div>
                         @endif
                         @if(@$count->totalPassCKM != 0)
-                        <div class="col">
+                        <div class="col ">
                             <div class="progress" style="height: 10px;">
-                                <div class="progress-bar {{$colorCKM}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countCKM,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countCKM,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col text-center" style="font-size:12px;"><span class="fw-semibold">30-50 : {{number_format($countCKM,2)}} %</span> </div>
+                            </div>
+                        </div>
+                        @endif
+                        @if(@$count->totalPassLoan != 0)
+                        <div class="col ">
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countLoan,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col text-center" style="font-size:12px;"><span class="fw-semibold">สินเชื่อ : {{number_format($countLoan,2)}} %</span> </div>
+                            </div>
+                        </div>
+                        @endif
+                        @if(@$count->totalPass12More != 0)
+                        <div class="col ">
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($count12More,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col text-center" style="font-size:12px;"><span class="fw-semibold">สินเชื่อ : {{number_format($count12More,2)}} %</span> </div>
+                            </div>
+                        </div>
+                        @endif
+                        @if(@$count->totalPassMiss != 0)
+                        <div class="col ">
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar {{$color}}" role="progressbar" aria-label="Danger example" style="width: {{number_format($countMiss,2)}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" ></div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col text-center" style="font-size:12px;"><span class="fw-semibold">สินเชื่อ : {{number_format($countMiss,2)}} %</span> </div>
                             </div>
                         </div>
                         @endif

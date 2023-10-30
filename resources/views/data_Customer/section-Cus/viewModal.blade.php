@@ -10,14 +10,6 @@
       <div id="cardCus">
         @include('data_Customer.section-Cus.CardCusDetail')
       </div>
-      <div class="row text-right mt-2 bg-light">
-        <div class="col-sm-12 text-center">
-              @if(@Auth::user()->UserToPrivilege->editstatus == 'yes')
-                <button type="button"  id="btn-updateStat" name="btn-updateStat" class="btn btn-primary">อัพเดทสถานะ</button>
-              @endif
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
-            </div> 
-        </div>
     </div>
   
     <div class="col-xl-9 col-sm-12 p-2"> <!-- right -->

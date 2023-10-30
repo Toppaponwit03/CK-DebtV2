@@ -120,7 +120,7 @@
                            </li>
                          </ul>
                      </th>
-                     <th class="no-sort" scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                     <!-- <th class="no-sort" scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                        เลขที่สัญญา </a>
                        <ul class="dropdown-menu dropdown-menu-light  bg-white  h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                          <li>
@@ -157,15 +157,103 @@
                            </div>
                          </li>
                        </ul>
+                     </th> -->
+                     <th class="no-sort" scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                       เลขที่สัญญา </a>
+                       <ul class="dropdown-menu dropdown-menu-light  bg-white  h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:20rem;">
+                         <li>
+                           <div class="" >
+                             <div class="row">
+                                 <div class="d-grid">
+                                   <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ประเภทสัญญา <i class="fa-solid fa-filter"></i></button>
+                                 </div>
+                               </div> 
+                               <div class="form-check m-2">
+                                 <div class="row onhover">
+                                   <label class="form-check-label"> 
+                                   <div class="col">     
+                                     <input class="form-check-input" type="radio" value="1" id="สัญญา PLM"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 1) ? 'checked' : '' }} @endfor>
+                                     สัญญา PLM
+                                     </label>
+                                   </div>
+                                 </div>
+                                 <div class="row onhover">
+                                   <label class="form-check-label"> 
+                                   <div class="col">     
+                                     <input class="form-check-input" type="radio" value="2" id="30-50"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 2) ? 'checked' : '' }} @endfor>
+                                     30-50
+                                     </label>
+                                   </div>
+                                 </div>
+                                 <div class="row onhover">
+                                  <label class="form-check-label"> 
+                                  <div class="col">     
+                                    <input class="form-check-input" type="radio" value="3" id="สินเชื่อ"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 3) ? 'checked' : '' }} @endfor>
+                                    สินเชื่อ
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="row onhover">
+                                  <label class="form-check-label"> 
+                                  <div class="col">     
+                                    <input class="form-check-input" type="radio" value="4" id="สัญญาค้างมากกว่า 12 งวด"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 4) ? 'checked' : '' }} @endfor>
+                                    สัญญาค้างมากกว่า 12 งวด
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="row onhover">
+                                  <label class="form-check-label"> 
+                                  <div class="col">     
+                                    <input class="form-check-input" type="radio" value="5" id="MISSDATA"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 5) ? 'checked' : '' }} @endfor>
+                                    MISSDATA
+                                    </label>
+                                  </div>
+                                </div>
+                                 
+                               </div>
+                               <hr>
+                               <div class="row">
+                                 <div class="d-grid">
+                                   <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
+                                 </div>
+                               </div> 
+                           </div>
+                         </li>
+                       </ul>
                      </th>
                      <th class="no-sort" scope="col">ชื่อ / นามสกุล </th>
                      <th class="no-sort" scope="col">
-                         <a class="nav-link dropdown-toggle employeeDropdown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                         <a class="nav-link dropdown-toggle " href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                          ทีมตามใน </a>
                          <ul class="dropdown-menu dropdown-menu-light bg-white  p-2" aria-labelledby="navbarDarkDropdownMenuLink">
                            <li>
                              <div class="container row" style="overflow-x : hidden; overflow-y : scroll; max-height : 400px; min-width:100%;">
 
+                             @if(@Auth::user()->position == 'user')
+                              <div class="col px-4">
+                                <div class="row">
+                                  <div class="d-grid">
+                                    <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีมที่รับผิดชอบ <i class="fa-solid fa-filter"></i></button>
+                                  </div>
+                                </div> 
+                                <div class="row onhover bg-warning">
+                                  <label class="form-check-label"> 
+                                  <div class="form-check"style="font-size:1rem;">
+                                    <input class="form-check-input teamA" type="checkbox" value=""  name = "traceEmployee[]" >
+                                    <b>ทีมที่รับผิดชอบ</b></label>
+                                  </div>
+                                </div>  
+                                @foreach(@$BranchWork as $item)
+                                <div class="row onhover">
+                                  <label class="form-check-label"> 
+                                  <div class="form-check"style="font-size:1rem;">
+                                    <input class="form-check-input checkteamA" type="checkbox" value="{{$item->employeeName}}" id = "{{$item->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($item->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
+                                    {{$item->nameThai}} ({{$item->employeeName}}) </label>
+                                  </div>
+                                </div>
+                                @endforeach
+                              </div>
+                              @endif
                               @if(@Auth::user()->UserToPrivilege->teamA == 'yes')
                                 <div class="col px-4">
                                     <div class="row">
