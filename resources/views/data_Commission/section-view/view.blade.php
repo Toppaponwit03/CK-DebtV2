@@ -56,7 +56,7 @@
     <div class="p-1">
         <div class="row">
              <!-- left content -->
-            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12">
+            <div class="col-xl col-lg col-md-12 col-sm-12">
                 <div class="card bg-warning border border-none rounded-4 p-3">
                     <div class="row" style ="max-height : 200px;">
                         <div class="col-6">
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <div class="col-6 text-end">
-                             <img src="{{ asset('dist/img/stay-home.png') }}"  style="max-width :50%;">
+                             <img src="{{ asset('dist/img/stay-home.png') }}"  style="max-width :25%;">
                         </div>
                     </div>
                 </div>
@@ -93,11 +93,11 @@
             </div>
 
             <!-- right content -->
-            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">     
+            {{-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
                 <div class="tab-content" id="pills-tabContent">
                     @foreach($dataBranch as $value)
                         <div class="tab-pane fade" id="tabBranch-{{$value->employeeName}}" role="tabpanel" aria-labelledby="pills-tabBranch-{{$value->employeeName}}" tabindex="0">
-                            <h5>ภาพรวมของทีม <span class="text-primary">{{ @$value->nameThai }} ( {{ @$value->employeeName}} )</span></h5> 
+                            <h5>ภาพรวมของทีม <span class="text-primary">{{ @$value->nameThai }} ( {{ @$value->employeeName}} )</span></h5>
                             <div class="card bg-pt-blue border border-none rounded-4 p-3 mb-2" >
                                 <div class="row">
                                     <div class="col-2 ">
@@ -106,14 +106,14 @@
                                         </div>
                                     </div>
                                     <div class="col m-auto">
-                                    <p class="">ยอดจัดดรวม</p> 
+                                    <p class="">ยอดจัดดรวม</p>
                                     </div>
                                     <div class="col m-auto text-end">
-                                    <h4 class="totalCash-{{$value->employeeName}}"></h4> 
+                                    <h4 class="totalCash-{{$value->employeeName}}"></h4>
                                     </div>
                                 </div>
                             </div>
-        
+
                             <div class="card bg-pt2-purple border border-none rounded-4 p-3 mb-2" >
                                 <div class="row">
                                     <div class="col-2">
@@ -122,14 +122,14 @@
                                         </div>
                                     </div>
                                     <div class="col m-auto">
-                                    <p>จำนวนเคส</p> 
+                                    <p>จำนวนเคส</p>
                                     </div>
                                     <div class="col m-auto text-end">
                                         <h4>{{@$value->EmptoCon->count('BranchSent_Con')}}</h4>
                                     </div>
                                 </div>
                             </div>
-        
+
                             <div class="card bg-pt-red border border-none rounded-4 p-3" >
                                 <div class="row">
                                     <div class="col-2">
@@ -138,7 +138,7 @@
                                         </div>
                                     </div>
                                     <div class="col m-auto">
-                                    <p>เปอร์เซ็นงานตาม</p> 
+                                    <p>เปอร์เซ็นงานตาม</p>
                                     </div>
                                     <div class="col m-auto text-end">
                                         <h4>95 %</h4>
@@ -146,8 +146,8 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach    
-                </div>   
+                    @endforeach
+                </div>
 
                 <div class="row mt-3">
                     <div class="col">
@@ -177,8 +177,8 @@
                     </div>
                 </div>
 
-               
-            </div>
+
+            </div> --}}
         </div>
     </div>
 </div>
@@ -210,7 +210,7 @@
                 for(let [index,data] of res[0].entries()){
                     for(let [index,datacon] of res[1].entries()){
                         if (data.IdCK == datacon.BranchSent_Con){
-        
+
                             let Cash_Car = datacon.con_to_cal.Cash_Car ;
                             let Process_Car = datacon.con_to_cal.Process_Car ;
                             let Buy_PA = datacon.con_to_cal.Buy_PA ;
@@ -219,9 +219,9 @@
                             let pa = (Buy_PA == 'Yes') ? Insurance_PA : 0 ;
                             let total = (Cash_Car + Process_Car) + (Include_PA == 'Yes' && Buy_PA == 'Yes') ? Insurance_PA : 0 ;
                              sum += parseFloat(Cash_Car) + parseFloat(Process_Car) + parseFloat(pa) ;
-        
-        
-                        
+
+
+
                         }
                     }
                     $(`.totalCash-${data.employeeName}`).append( sum.toLocaleString() );
@@ -231,7 +231,7 @@
                         }else{
                             color = 'text-danger';
                         }
-                   
+
                     $('#CardContent').append(`
                                 <div class="card border border-white p-2 rounded-2 mb-2 hover-up cardlist" id="${data.employeeName}" onclick="getActive('${data.employeeName}');">
                                     <div class="" id="pills-tabBranch-${data.employeeName}" data-bs-toggle="pill" data-bs-target="#tabBranch-${data.employeeName}" type="button" role="tab" aria-controls="tabBranch-${data.employeeName}" aria-selected="true">
@@ -243,10 +243,10 @@
                                                 <img src="{{ asset('dist/img/branch.png') }}" alt="" style="max-width : 25%;">
                                             </div>
                                             <div class="col m-auto">
-                                               <span class="badge text-dark"> ${data.nameThai} ( ${data.employeeName}  )</span> 
+                                               <span class="badge text-dark"> ${data.nameThai} ( ${data.employeeName}  )</span>
                                             </div>
                                             <div class="col m-auto">
-                                                <span class="badge text-dark target target-${data.employeeName}">${ (data.empto_target != null) ? data.empto_target.Target : '0'  }</span> 
+                                                <span class="badge text-dark target target-${data.employeeName}">${ (data.empto_target != null) ? data.empto_target.Target : '0'  }</span>
                                                 <input type="text" value="" class="form-control inputTarget inputTarget-${data.employeeName}" id="valTarget-${data.id}" style="display:none;">
                                             </div>
                                             <div class="col-2 m-auto text-center">
@@ -263,14 +263,14 @@
                                             <div class="col-2 text-end">
                                                 @if(@Auth::user()->UserToPrivilege->assignTarget == 'yes')
                                                     <button class="btn btn-warning btn-sm rounded-pill updateTarget-${data.employeeName } updateTarget" onclick="editTarget('target-${ data.employeeName }','inputTarget-${ data.employeeName }','updateTarget-${ data.employeeName }','saveTarget-${data.employeeName }')">แก้ไขเป้า</button>
-                                                    <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.id }')" style="display:none;">บันทึก</button>
+                                                    <button class="btn btn-success btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget" onclick="updateTarget('${ data.employeeName }','${ data.id }','${ data.id }')" style="display:none;">บันทึก</button>
                                                     <button class="btn btn-danger btn-sm rounded-pill saveTarget-${ data.employeeName } saveTarget"onclick="editTarget()" style="display:none;">X</button>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-        
+
                     `).fadeIn();
                     sum = 0;
                 }
@@ -294,7 +294,7 @@
 <script>
 
 
-    saveTarget = (target,value) => {
+updateTarget = (target,value) => {
         let valuetarget = $('#valTarget-'+value).val();
         $.ajax({
             url : '{{ route("Com.store") }}',
@@ -318,36 +318,36 @@
 
             }
         })
-        
+
     }
 
 
-    updateTarget = (target,value) => {
-        let valuetarget = $('#valTarget-'+value).val();
-        $.ajax({
-            url : '{{ route("Com.update",0) }}',
-            type : 'put',
-            data : {
-                type : 1,
-                EmpName : target,
-                id : value,
-                Targets : valuetarget,
-                _token : "{{ @csrf_token() }}"
-            },
-            success : (res) => {
-                $('.inputTarget').hide();
-                $('.target').show();
-                $('.target-'+target).empty();
-                $('.target-'+target).append(valuetarget);
-                $('.saveTarget-'+target).toggle();
-                $('.updateTarget-'+target).toggle();
-            },
-            error : (err) =>{
+    // updateTarget = (target,value) => {
+    //     let valuetarget = $('#valTarget-'+value).val();
+    //     $.ajax({
+    //         url : '{{ route("Com.update",0) }}',
+    //         type : 'put',
+    //         data : {
+    //             type : 1,
+    //             EmpName : target,
+    //             id : value,
+    //             Targets : valuetarget,
+    //             _token : "{{ @csrf_token() }}"
+    //         },
+    //         success : (res) => {
+    //             $('.inputTarget').hide();
+    //             $('.target').show();
+    //             $('.target-'+target).empty();
+    //             $('.target-'+target).append(valuetarget);
+    //             $('.saveTarget-'+target).toggle();
+    //             $('.updateTarget-'+target).toggle();
+    //         },
+    //         error : (err) =>{
 
-            }
-        })
-        
-    }
+    //         }
+    //     })
+
+    // }
 
     editTarget = (target,inputtarget,save,update)=>{
         $('.updateTarget').show();
@@ -377,7 +377,7 @@
                 }
             }
             },
-        
+
             plotOptions: {
             bar: {
                 columnWidth: '45%',
@@ -399,11 +399,11 @@
                 ['Peter', 'Brown'],
                 ['Mary', 'Evans'],
                 ['David', 'Wilson'],
-                ['Lily', 'Roberts'], 
+                ['Lily', 'Roberts'],
             ],
             labels: {
                 style: {
-            
+
                 fontSize: '12px'
                 }
             }

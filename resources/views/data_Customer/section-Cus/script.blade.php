@@ -44,37 +44,47 @@
         let _token = $('#_token').val();
         let contractNumber = $('#contractNumber').val();
         let statuschecks = $('#statuschecks').val();
-        $.ajax({
-            url : "{{ route('Cus.update',0) }}",
-            type : "put",
-            data : {
-                type : 1 ,
-                contractNumber:contractNumber,
-                statuschecks:statuschecks,
-                _token :_token
-            },
-            success : (response)=>{
-                console.log(response)
-                $('#cardCus').html(response);   
+        let payment_date = $('#payment_date').val();
 
-                Swal.fire({
-                icon: 'success',
-                title: 'อัพเดทสถานะเรียบร้อย',
-                showConfirmButton: false,
-                showCancelButton: false,
-                timer: 2000    
-                })
-            },
-            error : (err)=>{
-
-                Swal.fire({
-                icon: 'error',
-                title : `ERROR ${err.status}`,
-                text: 'อัพเดทสถานะไม่สำเร็จ !',
-                showConfirmButton: false,
-                showCancelButton: false,  
-                })
-            }
-        });
+        if(statuschecks == 'STS-001' && payment_date == ''){
+            swal.fire({
+                icon: 'warning',
+                title: 'กรุณาลงวันที่นัดชำระ',
+            })
+        } else {
+            $.ajax({
+                url : "{{ route('Cus.update',0) }}",
+                type : "put",
+                data : {
+                    type : 1 ,
+                    contractNumber:contractNumber,
+                    statuschecks:statuschecks,
+                    payment_date:payment_date,
+                    _token :_token
+                },
+                success : (response)=>{
+                    console.log(response)
+                    $('#cardCus').html(response);   
+    
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'อัพเดทสถานะเรียบร้อย',
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    timer: 2000    
+                    })
+                },
+                error : (err)=>{
+    
+                    Swal.fire({
+                    icon: 'error',
+                    title : `ERROR ${err.status}`,
+                    text: 'อัพเดทสถานะไม่สำเร็จ !',
+                    showConfirmButton: false,
+                    showCancelButton: false,  
+                    })
+                }
+            });
+        }
     });
 </script>

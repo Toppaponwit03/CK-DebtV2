@@ -9,5 +9,5 @@ class tbl_target extends Model
 {
     use HasFactory;
     protected $table = 'tbl_target';
-    protected $fillable = ['id','EmpName','Target','created_at','updated_at'];
+    protected $fillable = ['id','EmpName','Target','EmpId','created_at','updated_at'];
 }

@@ -192,16 +192,16 @@
               <div class="col-sm-4">
                 <select class="form-select form-select-sm" name="teamGroup" id="teamGroup">
                   <option value="">-- เลือกทีม --</option>
-                  <option value="" {{ @$data->teamGroup == 1 ? 'selected' : '' }}>1.ทีม A</option>
-                  <option value="" {{ @$data->teamGroup == 2 ? 'selected' : '' }}>2.ทีม B</option>
-                  <option value="" {{ @$data->teamGroup == 3 ? 'selected' : '' }}>3.ทีม C</option>
-                  <option value="" {{ @$data->teamGroup == 4 ? 'selected' : '' }}>4.ทีม D</option>
+                  <option value="1" {{ @$data->teamGroup == 1 ? 'selected' : '' }}>1.ทีม A</option>
+                  <option value="2" {{ @$data->teamGroup == 2 ? 'selected' : '' }}>2.ทีม B</option>
+                  <option value="3" {{ @$data->teamGroup == 3 ? 'selected' : '' }}>3.ทีม C</option>
+                  <option value="4" {{ @$data->teamGroup == 4 ? 'selected' : '' }}>4.ทีม D</option>
                 </select>
               </div>
 
               <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm fw-semibold text-danger">ประเภทสัญญา</label>
               <div class="col-sm-4">
-                <select class="form-select form-select-sm" name="groupDebt" id="groupDebt">
+                <select class="form-select form-select-sm" name="typeLoan" id="typeLoan">
                   <option value="">-- ประเภมสัญญา --</option>
                   <option value="1" {{ @$data->typeLoan == 1 ? 'selected' : '' }}>PLM (1)</option>
                   <option value="2" {{ @$data->typeLoan == 2 ? 'selected' : '' }}>30-50 (2)</option>

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\tbl_appointment;
 use Auth;
 use App\datethai\thaidate;
 use Illuminate\Http\Request;
@@ -57,7 +58,31 @@ class CusController extends Controller
                   return thaidate::simpleDateFormat($data->dealDay);
                 })
                 ->addColumn('paymentDateTH', function ($data) {
-                  return (@$data->paymentDate != NULL) ? thaidate::simpleDateFormat(@$data->paymentDate) : '-';
+                  $today = Carbon::now();
+                  $dataDate = Carbon::parse($data->paymentDate);
+                  $thaidate = (@$data->paymentDate != NULL) ? thaidate::simpleDateFormat($data->paymentDate) : '-';
+
+                  if(@$data->paymentDate != NULL){
+                    if(@$today > @$dataDate && @$data->CustoStatus->details != 'ผ่าน'){
+                      $tagHtml = '<div class="" title="เลยวันชำระ"  style="border-radius: 50px; background:   linear-gradient(90deg, rgba(255,238,159,1) 0%, rgba(255,241,106,1) 18%, rgba(255,243,0,1) 100%); color: #34495e;font-size:0.87rem;" ">
+                      <div >
+                      <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+                      <lord-icon
+                          src="https://cdn.lordicon.com/wdqztrtx.json"
+                          trigger="loop"
+                          colors="primary:#121331"
+                          style="width:20px;height:20px">
+                      </lord-icon>
+                      </div> ' .$thaidate.'
+                      </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : '.@$data->CustoApp->count("ContractNumber").'</span>';
+                    }else {
+                      $tagHtml = '<div> '.$thaidate.' </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : '.@$data->CustoApp->count("ContractNumber").'</span>' ;
+                    }
+                  }else{
+                    $tagHtml = '<div> '.$thaidate.' </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : '.@$data->CustoApp->count("ContractNumber").'</span>' ;
+                  }
+
+                  return $tagHtml;
                 })
                 ->addColumn('fieldDayTH', function ($data) {
                   return (@$data->fieldDay != NULL) ? thaidate::simpleDateFormat($data->fieldDay) : '-';
@@ -75,7 +100,7 @@ class CusController extends Controller
                   $btnHtml = '<button onclick="myFunction('."'".$data->contractNumber."'".')" class="btn btn-light" style="border-radius: 50px;  background: linear-gradient(180deg, #F2AEB7 0%, #FDE8D4 100%); color: #34495e;font-size:0.87rem;">'.$data->contractNumber.'</button><div style="display:none;"><input type="text" value="'.$data->contractNumber.'" id="'.$data->contractNumber.'"></div>' ;
                   return $btnHtml;
                 })
-                ->rawColumns(['copyCon','btnStaus'])
+                ->rawColumns(['paymentDateTH','copyCon','btnStaus'])
                 ->make(true);
     }
 
@@ -86,11 +111,12 @@ class CusController extends Controller
       $statuslist = tbl_statustype::getstatus();
       $non = tbl_non::getNon();
       $dataBranch = tbl_traceEmployee::getBranch();
-
+      $BranchList = Auth::user()->UserToPrivilege->branch;
       $teamAlists = tbl_traceEmployee::where('teamGroup','=','1')->get();
       $teamBlists = tbl_traceEmployee::where('teamGroup','=','2')->get();
       $teamClists = tbl_traceEmployee::where('teamGroup','=','3')->get();
       $teamDlists = tbl_traceEmployee::where('teamGroup','=','4')->get();
+      $BranchWork = tbl_traceEmployee::whereIn('employeeName',explode(",",$BranchList))->get();
       $type = $request->get('type');
 
       $countPass = DB::select("SELECT
@@ -98,17 +124,24 @@ class CusController extends Controller
       sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
       sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
       sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '3'  THEN 1 ELSE 0  END ) as totalEmpLoan,
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '4'  THEN 1 ELSE 0  END ) as totalEmp12More,
+      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '5'  THEN 1 ELSE 0  END ) as totalEmpMiss,
       sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
       sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
-      sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
+      sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM,
+      sum(CASE WHEN`typeLoan` = '3' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassLoan,
+      sum(CASE WHEN`typeLoan` = '4' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass12More,
+      sum(CASE WHEN`typeLoan` = '5' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassMiss
       FROM `tbl_customers` GROUP BY traceEmployee");
+
 
       $getdue = tbl_duedate::getDuedate();
       $dateStart = date('Y-').date_format(date_create($getdue->datedueStart),'m-d');
       $dateEnd = date('Y-').date_format(date_create($getdue->datedueEnd),'m-d');
 
 
-       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','teamDlists','countPass','getdue'));
+       return view('data_Customer.view', compact('positionUser','groupDebt','statuslist','non','dataBranch','teamAlists','teamBlists' ,'teamClists','teamDlists','countPass','getdue','BranchWork'));
 
 
 
@@ -305,6 +338,13 @@ class CusController extends Controller
       }
         return view('data_Customer.section-dashboard.dashboardBranch',compact('countPass','traceEmployee','arrChartsPLM','arrChartsCKM','datecharts'));
       }
+      elseif($request->type == 3){
+        $data = tbl_custag::where('id',$request->id)->first();
+        $getdue = tbl_duedate::getDuedate();
+
+        $html = view('data_Customer.section-Cus.MesDetails',compact('data','getdue'))->render();
+        return response()->json(['html'=>$html]);
+      }
     }
 
     public function edit(Request $request,$id)
@@ -316,8 +356,24 @@ class CusController extends Controller
         $statuslist = tbl_statustype::getstatus();
         $data = tbl_customer::find($id);
         $contract = $data->contractNumber;
-
-        $datapay = DB::connection('ibmi2')->select("
+        dump($data->teamGroup);
+        if($data->teamGroup == 4){
+          $datapay = DB::connection('ibmi2')->select("
+          SELECT
+          SFHP.CHQTRAN.LOCATRECV,
+          SFHP.CHQTRAN.TMBILDT,
+          SFHP.CHQTRAN.TMBILL,
+          SFHP.CHQTRAN.PAYFOR,
+          SFHP.CHQTRAN.PAYTYP,
+          SFHP.CHQTRAN.PAYAMT,
+          SFHP.CHQTRAN.PAYINT,
+          SFHP.CHQTRAN.DSCINT,
+          SFHP.CHQTRAN.NETPAY
+          FROM SFHP.ARMAST
+          LEFT JOIN SFHP.CHQTRAN  ON SFHP.CHQTRAN.CONTNO = SFHP.ARMAST.CONTNO
+          WHERE SFHP.ARMAST.CONTNO = '${contract}' ORDER BY TMBILDT DESC");
+        } else {
+          $datapay = DB::connection('ibmi2')->select("
           SELECT
           RSFHP.CHQTRAN.LOCATRECV,
           RSFHP.CHQTRAN.TMBILDT,
@@ -346,7 +402,12 @@ class CusController extends Controller
           LEFT JOIN PSFHP.CHQTRAN  ON PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
           WHERE PSFHP.ARMAST.CONTNO = '${contract}' ORDER BY TMBILDT DESC
         ");
-        return view('data_Customer.section-Cus.viewModal',compact('data','statuslist','datapay'));
+        }
+        $getdue = tbl_duedate::getDuedate();
+        $dateStart = date('Y-').date_format(date_create($getdue->datedueStart),'m-d');
+        $dateEnd = date('Y-').date_format(date_create($getdue->datedueEnd),'m-d');
+
+        return view('data_Customer.section-Cus.viewModal',compact('data','statuslist','datapay','getdue'));
       }
       elseif($request->type == 2){
         $data = tbl_customer::find($id);
@@ -364,14 +425,16 @@ class CusController extends Controller
 
       if($request->type == 1){ //อัพเดทสถานะ
 
+        $data_Tag = tbl_custag::where('ContractID',$request->contractNumber)->orderBy('id','desc')->first();
+        $data_Tag->payment_date = $request->payment_date;
+        $data_Tag->update();
+
         $data_status = tbl_customer::where('contractNumber',$request->contractNumber)->first();
+        $data_status->paymentDate = $request->payment_date;
         $data_status->status = $request->statuschecks;
         $data_status->update();
 
-
-        $data_Tag = tbl_custag::where('ContractID',$request->contractNumber)->orderBy('id','desc')->first();
         $data_plan = new tbl_actionplan;
-
         $data_plan->tag_id = $data_Tag->id;
         $data_plan->date_plan = date('Y-m-d');
         $data_plan->ContractID = $request->contractNumber;
@@ -380,10 +443,24 @@ class CusController extends Controller
         $data_plan->userInsertname = Auth::user()->name;
         $data_plan->save();
 
+
+
+          $searchApp = tbl_appointment::where('ContractNumber',$request->contractNumber)->where('DateApp',$request->payment_date)->first();
+          if(@$searchApp == NULL){
+            $appointment = new tbl_appointment;
+            $appointment->ContractNumber	= $request->contractNumber;
+            $appointment->Status	= @$request->statuschecks;
+            $appointment->DateApp	= $request->payment_date; // วันนีดชำระ
+            $appointment->date	= date('Y-m-d');
+            $appointment->save();
+          }
+
+
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         $statuslist = tbl_statustype::getstatus();
         return response()->view('data_Customer.section-Cus.CardCusDetail',compact('data','statuslist'));
       }
+
       elseif($request->type == 2){ // อัพเดทการจ่าย
 
 
@@ -419,7 +496,22 @@ class CusController extends Controller
         INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST
         left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO
         where RSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and RSFHP.CHQTRAN.FLAG <> 'C'
-        group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO ");
+        group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO
+        UNION
+        SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
+        (select DISTINCT SFHP.ARMAST.CONTNO,
+        SFHP.CHQTRAN.TMBILDT ,
+        SFHP.ARMAST.NPROFIT as TOTALC,
+        SFHP.CHQTRAN.PAYFOR,
+        SFHP.CHQTRAN.DEBT_BALANCE
+        from SFHP.ARMAST
+        left join SFHP.CHQTRAN on SFHP.CHQTRAN.CONTNO = SFHP.ARMAST.CONTNO
+        where SFHP.CHQTRAN.TMBILDT <= '${dateEnd}' AND SFHP.CHQTRAN.TMBILDT >= '${dateStart}'
+        ORDER BY SFHP.CHQTRAN.TMBILDT DESC ) OD
+        INNER JOIN (select SFHP.ARMAST.CONTNO,  SUM(SFHP.CHQTRAN.PAYAMT) as TOTALP from SFHP.ARMAST
+        left join SFHP.CHQTRAN on SFHP.CHQTRAN.CONTNO = SFHP.ARMAST.CONTNO
+        where SFHP.CHQTRAN.TMBILDT >= '${dateStart}' and SFHP.CHQTRAN.FLAG <> 'C'
+        group BY SFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO");
 
         foreach ($dataPay as $key => $value){
           tbl_customer::where('contractNumber',trim($value->CONTNO))
@@ -439,6 +531,7 @@ class CusController extends Controller
           'flag' => 'yes'
         ]);
 
+        // ชำระแล้วไม่พอ
         tbl_customer::whereRaw('TotalPay > 0 and TotalPay < minimumPayout')
         ->orWhereRaw("CAST( replace(arrears,',','') as float) < minimumPayout and TotalPay < CAST( replace(arrears,',','') as float) and TotalPay > 0")
         ->where('status','!=','STS-005')

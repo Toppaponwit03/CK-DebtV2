@@ -117,7 +117,7 @@ return [
             'username'             => 'PSFHP',
             'password'             => 'Soft@2K7',
             //Server settings
-            'database'             => 'DBMSCKH',
+            'database'             => 'HY',
             'prefix'               => '',
             'schema'               => 'information_schema',
             'port'                 => '8213',
