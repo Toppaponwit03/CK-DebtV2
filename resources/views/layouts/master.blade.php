@@ -26,7 +26,7 @@
     {{-- Icon Title --}}
     <link rel="icon" type="image/x-icon" href="{{ asset('dist/img/leasingLogo1.jpg') }}">
     <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
-    
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
@@ -68,12 +68,12 @@
             background-color :	#ffb3ba;
             color : #fff;
         }
-        
+
         .bg-pt2-blue{
             background-color :	#a2d2ff;
             color : #fff;
         }
-        
+
         .bg-pt2-red{
             background-color :	#ffafcc;
             color : #fff;
@@ -82,7 +82,7 @@
             background-color :	#cdb4db;
             color : #fff;
         }
-        
+
         .bg-warm-orange-1{
             background-color :	#fec5bb;
             color : #fff;
@@ -125,7 +125,7 @@
             width: 300px;
             height: 600px;
             background-color: #DCDCDC;
-            overflow: scroll; 
+            overflow: scroll;
         }
         .scrollbar
         {
@@ -134,11 +134,11 @@
             width: 65px;
             background: #Fff;
             overflow-y: scroll;
-            margin-bottom: 25px; 
+            margin-bottom: 25px;
         }
         .force-overflow
         {
-            min-height: 450px;  
+            min-height: 450px;
         }
         #scroll-bar::-webkit-scrollbar-track
         {
@@ -172,7 +172,7 @@
             background-color: #Fff;
             opacity: 0.5;
         }
-        
+
 
     </style>
 
@@ -195,13 +195,13 @@
     @yield('modal')
 
     @include('layouts.publicScript')
-        <script>   
-            $(document).on("load", function() { 
+        <script>
+            $(document).on("load", function() {
             $('#data-table').hide();
             $('#data-table-onload').show();
             });
             $(document).ready(function () {
-            
+
                 $("#data-tbody").css("visibility", "");
                 $('#data-table').show();
             $('#data-table-onload').hide();

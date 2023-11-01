@@ -44,7 +44,7 @@
     }
 </style>
 
-    
+
 
     <!-- hidden input -->
     <input type="hidden" name="position" id="position" value="{{Auth::user()->position}}">
@@ -68,7 +68,7 @@
         @include('data_Customer.section-table.table_Cus')
     </div>
   </div>
-  
+
     @include('data_Customer.script')
 
 @endsection

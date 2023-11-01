@@ -7,7 +7,7 @@
        /* width: 100%; */
 
 
-       
+
    }
    table caption {
        font-size: 1.5em;
@@ -15,9 +15,9 @@
    }
    table tr {
        background-color: #fff;
-   
+
        padding: .35em;
-       
+
    }
    table th,
    table td {
@@ -29,8 +29,8 @@
    table thead th {
        padding: .425em;
        text-align: center;
-       border: 1px solid #ccc; 
-   
+       border: 1px solid #ccc;
+
    }
    table th {
 
@@ -39,7 +39,7 @@
        text-transform: uppercase;
        background-color: #34495e;
        color:#ffffff;
-       
+
    }
 </style>
 <div class="">
@@ -63,7 +63,7 @@
                      <th class="no-sort">Action</th>
                      <th class="no-sort" scope="col">
                          <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"  data-bs-auto-close="outside" >
-                         สถานะ </a>  
+                         สถานะ </a>
                          <ul class="dropdown-menu dropdown-menu-light bg-white h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
                            <li >
                              <div class="">
@@ -71,26 +71,26 @@
                                  <div class="d-grid">
                                    <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>สถานะ <i class="fa-solid fa-filter"></i></button>
                                  </div>
-                               </div> 
+                               </div>
                                @foreach(@$statuslist as $datastatus)
                                <div class="row onhover">
-                                 <label class="form-check-label"> 
+                                 <label class="form-check-label">
                                  <div class="form-check"style="font-size:1rem;">
                                    <input class="form-check-input" type="checkbox" value="{{$datastatus->Status_code}}" id="{{$datastatus->details}}"  name="searchstatus[]">
                                    {{$datastatus->details}} </label>
                                  </div>
                                </div>
                                @endforeach
-                         
+
                                <div class="row">
                                  <div class="d-grid">
                                    <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                  </div>
-                               </div>           
+                               </div>
                              </div>
                            </li>
                          </ul>
-                     </th>             
+                     </th>
                      <th class="no-sort" scope="col"> <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                          NON </a>
                          <ul class="dropdown-menu dropdown-menu-light bg-white h-auto p-2" aria-labelledby="navbarDarkDropdownMenuLink" style = "width:15rem;">
@@ -100,10 +100,10 @@
                                  <div class="d-grid">
                                    <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>NON <i class="fa-solid fa-filter"></i></button>
                                  </div>
-                               </div> 
+                               </div>
                                    @foreach(@$non as $valnon)
                                <div class="row onhover">
-                                 <label class="form-check-label"> 
+                                 <label class="form-check-label">
                                  <div class="form-check"style="font-size:1rem;">
                                      <input class="form-check-input" type="checkbox" value="{{$valnon->nameNon}}"  name = "Branch[]"  @for($i=0;$i<@$countresultChecked;$i++) {{ ($valnon->nameNon == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                    {{@$valnon->nameNon}} </label>
@@ -115,7 +115,7 @@
                                      <div class="d-grid">
                                        <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                      </div>
-                                   </div> 
+                                   </div>
                              </div>
                            </li>
                          </ul>
@@ -129,19 +129,19 @@
                                  <div class="d-grid">
                                    <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ประเภทสัญญา <i class="fa-solid fa-filter"></i></button>
                                  </div>
-                               </div> 
+                               </div>
                                <div class="form-check m-2">
                                  <div class="row onhover">
-                                   <label class="form-check-label"> 
-                                   <div class="col">     
+                                   <label class="form-check-label">
+                                   <div class="col">
                                      <input class="form-check-input" type="radio" value="1" id="PLM"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 1) ? 'checked' : '' }} @endfor>
                                      สัญญา PLM
                                      </label>
                                    </div>
                                  </div>
                                  <div class="row onhover">
-                                   <label class="form-check-label"> 
-                                   <div class="col">     
+                                   <label class="form-check-label">
+                                   <div class="col">
                                      <input class="form-check-input" type="radio" value="2" id="30-50"  name="typeLoan[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ( @$namecode == 2) ? 'checked' : '' }} @endfor>
                                      30-50
                                      </label>
@@ -153,7 +153,7 @@
                                  <div class="d-grid">
                                    <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                  </div>
-                               </div> 
+                               </div>
                            </div>
                          </li>
                        </ul>
@@ -172,17 +172,17 @@
                                       <div class="d-grid">
                                         <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม A ทั้งหมด <i class="fa-solid fa-filter"></i></button>
                                       </div>
-                                    </div> 
+                                    </div>
                                     <div class="row onhover bg-warning">
-                                      <label class="form-check-label"> 
+                                      <label class="form-check-label">
                                       <div class="form-check"style="font-size:1rem;">
                                         <input class="form-check-input teamA" type="checkbox" value=""  name = "traceEmployee[]" >
                                         <b>ทีม A ทั้งหมด</b></label>
                                       </div>
-                                    </div>  
+                                    </div>
                                     @foreach(@$teamAlists as $emplistsA)
                                     <div class="row onhover">
-                                      <label class="form-check-label"> 
+                                      <label class="form-check-label">
                                       <div class="form-check"style="font-size:1rem;">
                                         <input class="form-check-input checkteamA" type="checkbox" value="{{$emplistsA->employeeName}}" id = "{{$emplistsA->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsA->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                         {{$emplistsA->nameThai}} ({{$emplistsA->employeeName}}) </label>
@@ -198,23 +198,23 @@
                                    <div class="d-grid">
                                      <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม B ทั้งหมด <i class="fa-solid fa-filter"></i></button>
                                    </div>
-                                 </div> 
+                                 </div>
                                  <div class="row onhover bg-warning">
-                                  <label class="form-check-label"> 
+                                  <label class="form-check-label">
                                   <div class="form-check"style="font-size:1rem;">
                                     <input class="form-check-input teamB" type="checkbox" value="" name = "traceEmployee[]">
                                     <b>ทีม B ทั้งหมด</b></label>
                                   </div>
-                                </div> 
+                                </div>
                                  @foreach(@$teamBlists as $emplistsB)
                                  <div class="row onhover">
-                                   <label class="form-check-label"> 
+                                   <label class="form-check-label">
                                    <div class="form-check"style="font-size:1rem;">
                                      <input class="form-check-input checkteamB" type="checkbox" value="{{$emplistsB->employeeName}}" id="{{$emplistsB->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsB->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                      {{$emplistsB->nameThai}} ({{$emplistsB->employeeName}}) </label>
                                    </div>
                                  </div>
-                                 @endforeach                    
+                                 @endforeach
                                 </div>
                               @endif
 
@@ -224,16 +224,16 @@
                                     <div class="d-grid">
                                       <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม C ทั้งหมด <i class="fa-solid fa-filter"></i></button>
                                     </div>
-                                  </div> 
+                                  </div>
                                   @foreach(@$teamClists as $emplistsC)
                                   <div class="row onhover">
-                                    <label class="form-check-label"> 
+                                    <label class="form-check-label">
                                     <div class="form-check"style="font-size:1rem;">
                                       <input class="form-check-input checkteamC" type="checkbox" value="{{$emplistsC->employeeName}}" id="{{$emplistsC->employeeName}}"  name = "traceEmployee[]"  @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsC->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                       {{$emplistsC->nameThai}} ({{$emplistsC->employeeName}}) </label>
                                     </div>
                                   </div>
-                                  @endforeach                    
+                                  @endforeach
                                 </div>
                               @endif
 
@@ -243,23 +243,23 @@
                                     <div class="d-grid">
                                       <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>ทีม D ทั้งหมด <i class="fa-solid fa-filter"></i></button>
                                     </div>
-                                  </div> 
+                                  </div>
                                   <div class="row onhover bg-warning">
-                                    <label class="form-check-label"> 
+                                    <label class="form-check-label">
                                     <div class="form-check"style="font-size:1rem;">
                                       <input class="form-check-input teamD" type="checkbox" value="" name = "traceEmployee[]">
                                       <b>ทีม D ทั้งหมด</b></label>
                                     </div>
-                                  </div>  
+                                  </div>
                                   @foreach(@$teamDlists as $emplistsD)
                                   <div class="row onhover">
-                                    <label class="form-check-label"> 
+                                    <label class="form-check-label">
                                     <div class="form-check"style="font-size:1rem;">
                                       <input class="form-check-input checkteamD" type="checkbox" value="{{$emplistsD->employeeName}}" id="{{$emplistsD->employeeName}}"  name = "traceEmployee[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($emplistsD->employeeName == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                       {{$emplistsD->nameThai}} ({{$emplistsD->employeeName}}) </label>
                                     </div>
                                   </div>
-                                  @endforeach                   
+                                  @endforeach
                                 </div>
                               @endif
                             </div>
@@ -285,10 +285,10 @@
                                  <div class="d-grid">
                                    <button class="btn btn-primary rounded-pill mb-1" type="button" disabled>กลุ่มค้างงวด <i class="fa-solid fa-filter"></i></button>
                                  </div>
-                               </div> 
+                               </div>
                                @foreach(@$groupDebt as $datadebt)
                                <div class="row onhover">
-                               <label class="form-check-label"> 
+                               <label class="form-check-label">
                                <div class="form-check"style="font-size:1rem;">
                                  <input class="form-check-input" type="checkbox" value="{{$datadebt->nameGroup}}"  name = "groupDebt[]" @for($i=0;$i<@$countresultChecked;$i++) {{ ($datadebt->nameGroup == @$resultChecked[$i]) ? 'checked' : '' }} @endfor>
                                  {{$datadebt->nameGroup}} </label>
@@ -300,7 +300,7 @@
                                  <div class="d-grid">
                                    <button class="btn btn-warning btn-clear rounded-pill mt-1" type="button" onclick="getBranchAll(1);">ล้างการค้นหา <i class="fa-solid fa-eraser"></i></button>
                                  </div>
-                               </div> 
+                               </div>
                              </div>
                            </li>
                          </ul>

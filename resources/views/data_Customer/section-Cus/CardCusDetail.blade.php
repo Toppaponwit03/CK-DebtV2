@@ -1,5 +1,5 @@
 
-    <div class="row">   
+    <div class="row">
         <div class="col-xl col-sm-12 text-center">
           <h4>ข้อมูลลูกหนี้</h4>
           @php
@@ -17,7 +17,7 @@
                   $color = 'text-bg-warning';
                   $border = 'border-warning';
               }
-                
+
             @endphp
           <img class="w-50 bg-light p-1 rounded-circle border border-3 {{$border}}" src="{{ asset('dist/img/man.png') }}" alt="">
           <br>
@@ -71,20 +71,20 @@
 
 
 
-        <hr> 
+        <hr>
 
         <div class="row mt-4">
-            <div class="col-xl-4 col-sm-12 text-end">
+            <div class="col-xl-4 col-sm- 12 text-end">
                 <label class="col-form-label">สถานะ :</label>
             </div>
             <div class="col-xl-8 col-sm-12">
                 <select name="statuschecks" id="statuschecks" class="form-select" {{ ( (@Auth::user()->UserToPrivilege->editstatus != 'yes') || ($data->flag == 'yes')) ? 'disabled' : '' }}>
                     @foreach($statuslist as $datastatus)
-                        <option class="{{$datastatus->Status_code}}" value="{{$datastatus->Status_code}}" {{$datastatus->Status_code == @$data->status ? 'selected' : ''}}  >{{$datastatus->details}}</option>  
+                        <option class="{{$datastatus->Status_code}}" value="{{$datastatus->Status_code}}" {{$datastatus->Status_code == @$data->status ? 'selected' : ''}}  >{{$datastatus->details}}</option>
                     @endforeach
                 </select>
             </div>
-        </div>
+          </div>
 
     </form>
 
@@ -92,5 +92,5 @@
         $('#formCard input[type=text]').attr('disabled',true);
 
         $('.STS-005').hide();
-     
+
     </script>

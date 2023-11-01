@@ -438,6 +438,13 @@ class CusController extends Controller
           'status' => 'STS-005',
           'flag' => 'yes'
         ]);
+
+        tbl_customer::whereRaw('TotalPay > 0 and TotalPay < minimumPayout')
+        ->orWhereRaw("CAST( replace(arrears,',','') as float) < minimumPayout and TotalPay < CAST( replace(arrears,',','') as float) and TotalPay > 0")
+        ->where('status','!=','STS-005')
+        ->update([
+          'status' => 'STS-006'
+        ]);
         return 200;
       }
       elseif($request->type == 3){  //อัพเดทการติดตาม

@@ -95,23 +95,23 @@ return [
         'ck' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST_SECOND', '192.168.89.2'),
+            'host' => env('DB_HOST_SECOND', '192.168.89.4'),
             'port' => env('DB_PORT_SECOND', '1433'),
             'database' => env('DB_DATABASE_SECOND', 'laravel_leasingGroupV2'),
             'username' => env('DB_USERNAME_SECOND', 'sa'),
-            'password' => env('DB_PASSWORD_SECOND', 'CH#p9@hp#02'),
+            'password' => env('DB_PASSWORD_SECOND', '68ZwyX%F01'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
         ],
 
-           
+
         'ibmi2' => [
             'driver'               => 'db2_ibmi_odbc',
             'driverName'           => '{IBM DB2 ODBC DRIVER}',
             // General settings
         //
-            'host'                 => 'k1ag3nmazdahyx.homeip.net',            
+            'host'                 => 'k1ag3nmazdahyx.homeip.net',
             // 'host'                 => '192.168.1.222',
             'protocol'             => 'TCPIP',
             'username'             => 'PSFHP',
@@ -134,8 +134,8 @@ return [
             'driverName'           => '{IBM DB2 ODBC DRIVER}',
              // General settings
            //
-        //    'host'                 => 'k1ag3nmazdahyx.homeip.net', 
-            'host'                 => '183.88.247.93',            
+        //    'host'                 => 'k1ag3nmazdahyx.homeip.net',
+            'host'                 => '183.88.247.93',
             'protocol'             => 'TCPIP',
             'username'             => 'PSFHP',
             'password'             => 'Soft@2K7',
