@@ -10,6 +10,7 @@ use App\Models\CK_Model\tbl_userck;
 use Illuminate\Http\Request;
 
 use App\Exports\exportCom;
+use App\Exports\exportCom2;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 use DB;
@@ -21,8 +22,8 @@ class ComController extends Controller
 
     public function __construct() // วันดีล
     {
-        $this->SDueDate = '2023-09-01';
-        $this->LDueDate = '2023-09-30';
+        $this->SDueDate = '2023-10-01';
+        $this->LDueDate = '2023-10-31';
     }
     public function index(Request $request)
     {
@@ -137,7 +138,8 @@ class ComController extends Controller
 
     public function export()
     {
-       return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่น.xlsx');
+    //    return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่น.xlsx');
+    return Excel::download(new exportCom2, 'รายงานค่าคอมมิชชั่น2.xlsx');
     }
 
 

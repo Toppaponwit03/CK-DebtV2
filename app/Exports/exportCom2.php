@@ -13,38 +13,46 @@ use App\Models\tbl_staticcommission;
 use App\Models\tbl_target;
 use App\Models\tbl_traceEmployee;
 
-class exportCom implements FromCollection,WithHeadings,WithMapping
+class exportCom2 implements FromCollection,WithHeadings,WithMapping
 {
     /**
     * @return \Illuminate\Support\Collection
     */
 
+    public function __construct() // วันดีล
+    {
+        $this->SDueDate = '2023-10-01';
+        $this->LDueDate = '2023-10-31';
+        $this->TypeLoan = 1 ;
+    }
     public function collection()
     {
-        $Fdate = request('Fdate');
-        $Tdate = request('Tdate');
-        $data = tbl_contract::
-        where('UserZone',20)
-        ->with(['ConToCal' => function($query) {
-            $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
-        }])
-        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ '2023-10-01','2023-10-31'])
-        ->orderBy('UserSent_Con','ASC')
-        ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
-        ->get();
+        // $data = tbl_contract::
+        // where('UserZone',20)
+        // ->with(['ConToCal' => function($query) {
+        //     $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
+        // }])
+        // ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate ])
+        // ->orderBy('UserSent_Con','ASC')
+        // ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
+        // ->get();
+        // return $data;
+        $data = tbl_traceEmployee::whereNotNull('IdUserCk')->get();
         return $data;
 
     }
     public function headings() :array
     {
         $data = [
-            'เลขที่สัญญา','ประเภทสัญญา','วันที่โอนเงิน','ชื่อย่อ','สาขาที่ส่งจัด','ผู้ส่งจัด','ยอดจัด','ค่าดำเนินการ','ซื้อ/ไม่','ประกันPA','ดอกเบี้ยรวม','เปอร์เซ็นต์จัด','ผลตอบแทน','ลงพื้นที่',
-            'ค่าน้ำมัน',
+            "สาขา",
+            "เข้าเป้า",
             "Size",
             "totalBefor",
             "PassBefor",
+            "%",
             "totalNomal",
             "PassNomal",
+            "%",
             "totalPast1",
             "PassPast1",
             "%",
@@ -59,8 +67,11 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
             "คอม",
             "totalPast4",
             "PassPast4",
+            "%",
             "totalPast",
             "PassPast",
+            "total %",
+            "คอม"
         ];
         return $data;
 
@@ -70,48 +81,28 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
     {
         $data = tbl_contract::
         where('UserZone',20)
-        ->where('BranchSent_Con',$invoice->BranchSent_Con)
+        ->where('UserSent_Con',$invoice->IdUserCk)
         ->with(['ConToCal' => function($query) {
             $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
         }])
-        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ '2023-10-01','2023-10-31'])
+        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
         ->orderBy('UserSent_Con','ASC')
         ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
         ->get();
 
-        $emps = tbl_traceEmployee::where('IdCK',$invoice->BranchSent_Con)->first();
+        $emps = tbl_traceEmployee::where('IdUserCk',$invoice->IdUserCk)->first();
         $sum = 0;
             foreach($data as $con){
                 $sum += ( $con->ConToCal->Cash_Car + $con->ConToCal->Insurance_PA +$con->ConToCal->Process_Car );
             }
 
-        if($invoice->CodeLoan_Con == 04 || $invoice->CodeLoan_Con == 03){
-            $totalInt = 0;
-        }else{
-
-            $totalInt = @$invoice->ConToCal->Profit_Rate - @$invoice->ConToCal->Tax2_Rate;
-        }
-
-        if(@$invoice->ConToCal->Buy_PA =='Yes'){
-            $pa = 'YPA';
-            $cashPa = $invoice->ConToCal->Insurance_PA;
-        }else{
-            $pa = 'NPA';
-            $cashPa = 0;
-        }
         // dump(@$emps->EmptoTarget->Target);
         if(@$emps->EmptoTarget->Target > 0){
             $percent = number_format(( $sum / @$emps->EmptoTarget->Target ) * 100,0);
         }else {
             $percent = 0;
         }
-        $dataCom =  tbl_staticcommission::where('TypeLoans', @$invoice->CodeLoan_Con)
-        ->whereRaw('? between StotalInterest and TtotalInterest', $totalInt)
-        ->selectRaw('case when '.$percent.' < 80 then '.$pa.'70
-        when '.$percent.' < 100 then '.$pa.'80
-        when '.$percent.' < 120 then '.$pa.'100
-        else  '.$pa.'120 end as Commission, TypeLoans,Gas')
-         ->first();
+
 
         if(@$emps->employeeName != NULL){
             $dataPass = DB::select("
@@ -138,42 +129,47 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
               SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
               SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
    
-              FROM tbl_customers WHERE traceEmployee = '".@$emps->employeeName."'  ;
+              FROM tbl_customers WHERE typeLoan = '".$this->TypeLoan."' and  traceEmployee = '".@$emps->employeeName."' group by traceEmployee ;
           ");
 
-           
-          $dataDebt = tbl_customer::where('traceEmployee',@$emps->employeeName)->get();
-          $countEmp = $dataDebt->count();
-          $checkSize = staticSize::
-            where('SCount','<',$countEmp)
-          ->where('LCount','>',$countEmp)
-          ->first();
+           $Befor =     number_format(($dataPass[0]->PassBefor / ($dataPass[0]->totalBefor + 0.001)) * 100,2);
+           $Nomal =     number_format(($dataPass[0]->PassNomal / ($dataPass[0]->totalNomal + 0.001)) * 100,2);
+           $Past1 =     number_format(($dataPass[0]->PassPast1 / ($dataPass[0]->totalPast1 + 0.001)) * 100,2);
+           $Past2 =     number_format(($dataPass[0]->PassPast2 / ($dataPass[0]->totalPast2 + 0.001)) * 100,2);
+           $Past3 =     number_format(($dataPass[0]->PassPast3 / ($dataPass[0]->totalPast3 + 0.001)) * 100,2);
+           $Past4 =     number_format(($dataPass[0]->PassPast4 / ($dataPass[0]->totalPast4 + 0.001)) * 100,2);
+           $totalPass = number_format(($dataPass[0]->PassPast  / ($dataPass[0]->totalPast  + 0.001)) * 100,2);
+
+
+            $dataDebt = tbl_customer::where('traceEmployee',@$emps->employeeName)->get();
+            $countEmp = $dataDebt->count();
+            $checkSize = staticSize::
+                where('SCount','<',$countEmp)
+            ->where('LCount','>',$countEmp)
+            ->first();
     
         
           if($checkSize->Size == 'S'){
-            if(@$dataPass[0]->totalPast1 > 0){
-                $perT = (@$dataPass[0]->PassPast1 /  @$dataPass[0]->totalPast1) * 100;
-                  $dataComDebtPast1 = staticComDebt::where('Size', $checkSize->Size)
+                  $dataComDebtSTotal = staticComDebt::where('Size', $checkSize->Size)
                   ->whereRaw('? between SPERTarget and LPERTarget', $percent)
                   ->selectRaw('
                     case 
-                    when '.$perT.' >= 0 and '.$perT.' < 85 then 0
-                    when '.$perT.' >= 85 and '.$perT.' < 90 then T_85
-                    when '.$perT.' >= 90 and '.$perT.' < 95 then T_90
+                    when '.$totalPass.' >= 0 and '.$totalPass.' < 85 then 0
+                    when '.$totalPass.' >= 85 and '.$totalPass.' < 90 then T_85
+                    when '.$totalPass.' >= 90 and '.$totalPass.' < 95 then T_90
                     else  T_95 end as Commission'
                     )
                    ->first();    
-              }
+            
           } else {
               if(@$dataPass[0]->totalPast1 > 0){
-                $perPast1 = (@$dataPass[0]->PassPast1 /  @$dataPass[0]->totalPast1) * 100;
                   $dataComDebtPast1 = staticComDebt::where('Size', $checkSize->Size)
                   ->whereRaw('? between SPERTarget and LPERTarget', $percent)
                   ->selectRaw('
                         case 
-                        when '.$perPast1.' >= 0 and '.$perPast1.' < 85 then 0
-                        when '.$perPast1.' >= 85 and '.$perPast1.' < 90 then Past1_85
-                        when '.$perPast1.' >= 90 and '.$perPast1.' < 95 then Past1_90
+                        when '.$Past1.' >= 0 and '.$Past1.' < 85 then 0
+                        when '.$Past1.' >= 85 and '.$Past1.' < 90 then Past1_85
+                        when '.$Past1.' >= 90 and '.$Past1.' < 95 then Past1_90
                         else  Past1_95 end as Commission'
                     )
                    ->first();
@@ -181,14 +177,13 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
                    
               }
               if(@$dataPass[0]->totalPast2 > 0){
-                $perPast2 = (@$dataPass[0]->PassPast2 /  @$dataPass[0]->totalPast2) * 100;
                   $dataComDebtPast2 = staticComDebt::where('Size', $checkSize->Size)
                   ->whereRaw('? between SPERTarget and LPERTarget', $percent)
                   ->selectRaw('
                         case 
-                        when '.$perPast2.' >= 0 and '.$perPast2.' < 85 then 0
-                        when '.$perPast2.' >= 85 and '.$perPast2.' < 90 then Past2_85
-                        when '.$perPast2.' >= 90 and '.$perPast2.' < 95 then Past2_90
+                        when '.$Past2.' >= 0 and '.$Past2.' < 85 then 0
+                        when '.$Past2.' >= 85 and '.$Past2.' < 90 then Past2_85
+                        when '.$Past2.' >= 90 and '.$Past2.' < 95 then Past2_90
                         else  Past2_95 end as Commission'
                     )
                    ->first();
@@ -196,14 +191,13 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
                    
               }
               if(@$dataPass[0]->totalPast3 > 0){
-                $perPast3 = (@$dataPass[0]->PassPast3 /  @$dataPass[0]->totalPast3) * 100;
                   $dataComDebtPast3 = staticComDebt::where('Size', $checkSize->Size)
                   ->whereRaw('? between SPERTarget and LPERTarget', $percent)
                   ->selectRaw('
                   case 
-                  when '.$perPast3.' >= 0 and '.$perPast3.' < 85 then 0
-                  when '.$perPast1.' >= 85 and '.$perPast3.' < 90 then Past3_85
-                  when '.$perPast3.' >= 90 and '.$perPast3.' < 95 then Past3_90
+                  when '.$Past3.' >= 0 and '.$Past3.' < 85 then 0
+                  when '.$Past3.' >= 85 and '.$Past3.' < 90 then Past3_85
+                  when '.$Past3.' >= 90 and '.$Past3.' < 95 then Past3_90
                   else  Past3_95 end as Commission'
                     )
                    ->first();
@@ -213,42 +207,34 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
         }
 
         return[
-            @$invoice->Contract_Con,
-            @$invoice->CodeLoan_Con,
-            @$invoice->Date_monetary,
             @$emps->employeeName,
-            @$invoice->ContractToBranch->Name_Branch,
-            @$invoice->ContractToUserBranch->name,
-            @$invoice->ConToCal->Cash_Car,
-            @$invoice->ConToCal->Process_Car,
-            @$pa,
-            @$cashPa,
-            @$invoice->ConToCal->Profit_Rate - @$invoice->ConToCal->Tax2_Rate,
             @$percent ,
-            @$dataCom->Commission ,
-            @$invoice->Date_Checkers,
-            @$invoice->Date_Checkers != NULL ? $dataCom->Gas : 0,
             @$checkSize->Size,
             @$dataPass[0]->totalBefor,
             @$dataPass[0]->PassBefor,
+            @$Befor,
             @$dataPass[0]->totalNomal,
             @$dataPass[0]->PassNomal,
+            @$Nomal,
             @$dataPass[0]->totalPast1,
             @$dataPass[0]->PassPast1,
-            @$perPast1,
+            @$Past1,
             @$dataComDebtPast1->Commission,
             @$dataPass[0]->totalPast2,
             @$dataPass[0]->PassPast2,
-            @$perPast2,
+            @$Past2,
             @$dataComDebtPast2->Commission,
             @$dataPass[0]->totalPast3,
             @$dataPass[0]->PassPast3,
-            @$perPast3,
+            @$Past3,
             @$dataComDebtPast3->Commission,
             @$dataPass[0]->totalPast4,
             @$dataPass[0]->PassPast4,
+            @$Past4,
             @$dataPass[0]->totalPast,
             @$dataPass[0]->PassPast,
+            @$totalPass,
+            @$dataComDebtSTotal->Commission,
         ];
 
     }
