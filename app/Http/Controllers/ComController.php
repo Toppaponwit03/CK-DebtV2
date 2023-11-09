@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Exports\exportCom3050;
+use App\Exports\exportComFN;
+use App\Exports\exportComPLM;
 use App\Models\tbl_traceEmployee;
 use App\Models\tbl_target;
 use App\Models\tbl_staticcommission;
@@ -10,7 +14,6 @@ use App\Models\CK_Model\tbl_userck;
 use Illuminate\Http\Request;
 
 use App\Exports\exportCom;
-use App\Exports\exportCom2;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 use DB;
@@ -138,8 +141,11 @@ class ComController extends Controller
 
     public function export()
     {
-    //    return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่น.xlsx');
-        return Excel::download(new exportCom2, 'รายงานค่าคอมมิชชั่น2.xlsx');
+        return Excel::download(new exportComFN, 'รายงานค่าคอมมิชชั่นงานปล่อย.xlsx');
+        // return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่นงานปล่อย.xlsx');
+        //  return Excel::download(new exportComPLM, 'รายงานค่าคอมมิชชั่นPLM.xlsx');
+        // return Excel::download(new exportCom3050, 'รายงานค่าคอมมิชชั่น30-50.xlsx');
+
     }
 
 

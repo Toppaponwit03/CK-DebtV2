@@ -113,3 +113,9 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
 
     }
 }
+
+
+
+
+
+
