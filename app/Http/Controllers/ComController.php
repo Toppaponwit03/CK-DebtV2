@@ -139,7 +139,7 @@ class ComController extends Controller
     public function export()
     {
     //    return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่น.xlsx');
-    return Excel::download(new exportCom2, 'รายงานค่าคอมมิชชั่น2.xlsx');
+        return Excel::download(new exportCom2, 'รายงานค่าคอมมิชชั่น2.xlsx');
     }
 
 
