@@ -18,8 +18,10 @@ class exportComPLM implements FromCollection,WithHeadings,WithMapping
 
     public function __construct() // วันดีล
     {
-        $this->SDueDate = '2023-09-01';
-        $this->LDueDate = '2023-09-30';
+        $this->FdateCK = request('FdateCK');
+        $this->LdateCK = request('LdateCK');
+        $this->FdateDebt = request('FdateDebt');
+        $this->LdateDebt = request('LdateDebt');
         $this->TypeLoan = 1 ;
     }
     public function collection()
@@ -81,7 +83,7 @@ class exportComPLM implements FromCollection,WithHeadings,WithMapping
                 ->with(['ConToCal' => function($query) {
                     $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
                 }])
-                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
+                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->FdateCK,$this->LdateCK])
                 ->orderBy('UserSent_Con','ASC')
                 ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
                 ->get();
@@ -93,7 +95,7 @@ class exportComPLM implements FromCollection,WithHeadings,WithMapping
                 ->with(['ConToCal' => function($query) {
                     $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
                 }])
-                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
+                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->FdateCK,$this->LdateCK])
                 ->orderBy('UserSent_Con','ASC')
                 ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
                 ->get();
@@ -148,7 +150,7 @@ class exportComPLM implements FromCollection,WithHeadings,WithMapping
                   SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
                   SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-                  FROM tbl_customers WHERE typeLoan = '".$this->TypeLoan."' and  traceEmployee = '".@$emps->employeeName."' group by traceEmployee ;
+                  FROM tbl_customers WHERE typeLoan = '".$this->TypeLoan."' and  traceEmployee = '".@$emps->employeeName."' and dealDay between '".$this->FdateDebt."' and '".$this->LdateDebt."' group by traceEmployee ;
               ");
 
                  if($dataPass != NULL){
@@ -199,6 +201,7 @@ class exportComPLM implements FromCollection,WithHeadings,WithMapping
 
                     $dataDebt = tbl_customer::where('traceEmployee',@$emps->employeeName)
                     ->where('typeLoan',$this->TypeLoan)
+                    ->whereBetween('dealDay', [$this->FdateDebt,$this->LdateDebt])
                     ->get();
                     $countEmp = $dataDebt->count();
                     $checkSize = staticSize::

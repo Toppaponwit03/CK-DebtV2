@@ -19,8 +19,10 @@ class exportComFN implements FromCollection,WithHeadings,WithMapping
 
     public function __construct() // วันดีล
     {
-        $this->SDueDate = '2023-09-01';
-        $this->LDueDate = '2023-09-30';
+        $this->FdateCK = request('FdateCK');
+        $this->LdateCK = request('LdateCK');
+        $this->FdateDebt = request('FdateDebt');
+        $this->LdateDebt = request('LdateDebt');
     }
 
     public function headings() :array
@@ -33,6 +35,7 @@ class exportComFN implements FromCollection,WithHeadings,WithMapping
             'เคสรวม',
             'ค่าน้ำมัน',
             'ค่าการตลาด',
+            'คอม ฯ',
             'ผลตอบแทนไฟแนนซ์',
             'NON-STARTER ไฟแนนซ์',
             'รวมค่าคอมไฟแนนซ์',
@@ -68,7 +71,7 @@ class exportComFN implements FromCollection,WithHeadings,WithMapping
             $data = tbl_contract::
                 where('UserZone',20)
                 ->where('UserSent_Con',$invoice->IdUserCk)
-                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
+                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->FdateCK,$this->LdateCK])
                 ->orderBy('UserSent_Con','ASC')
                 ->get();
             $emps = tbl_traceEmployee::where('IdUserCk',$invoice->IdUserCk)->first();
@@ -76,7 +79,7 @@ class exportComFN implements FromCollection,WithHeadings,WithMapping
             $data = tbl_contract::
                 where('UserZone',20)
                 ->where('BranchSent_Con',$invoice->IdCK)
-                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->SDueDate,$this->LDueDate])
+                ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->FdateCK,$this->LdateCK])
                 ->orderBy('UserSent_Con','ASC')
                 ->get();
             $emps = tbl_traceEmployee::where('IdCK',$invoice->IdCK)->first();
@@ -141,14 +144,15 @@ class exportComFN implements FromCollection,WithHeadings,WithMapping
             @$totalCase, //เคสรวม
             @$GasCash, //ค่าน้ำมัน
             0, //การตลาด
+            @$SumdataCom,
             @$SumdataCom - (@$SumdataCom * 40) / 100 , // ผลตอบแทนไฟแนนซ์
             0, // non-starter
-            '=(F'.$this->row.'+G'.$this->row.'+H'.$this->row.')-I'.$this->row, // รวมค่าคอมไฟแนนซ์
-            '=J'.$this->row.'-((J'.$this->row.'*3)/100)', // ค่าคอมหลังหักภาษีไฟแนนซ์
+            '=(F'.$this->row.'+G'.$this->row.'+I'.$this->row.')-J'.$this->row, // รวมค่าคอมไฟแนนซ์
+            '=IF(K'.$this->row.' >= 1000 , K'.$this->row.'-((K'.$this->row.' * 3 ) / 100) , K'.$this->row.')', // ค่าคอมหลังหักภาษีไฟแนนซ์
             @$SumdataCom - (@$SumdataCom * 60) / 100 , // ผลตอบแทนแอดมิน
             0, // non-starter แอดมิน
-            '=L'.$this->row.'- M'.$this->row, // รวมค่าคอมแอดมิน
-            '=N'.$this->row.'-((N'.$this->row.'*3)/100)', // ค่าคอมหลังหักภาษีแอดมิน
+            '=M'.$this->row.'- N'.$this->row, // รวมค่าคอมแอดมิน
+            '=IF(O'.$this->row.' >= 1000 , O'.$this->row.'-((O'.$this->row.' * 3 ) / 100 ) , O'.$this->row.')', // ค่าคอมหลังหักภาษีแอดมิน
             @$Cash_Car,
             @$Process_Car,
             @$Insurance_PA,

@@ -15,20 +15,23 @@ use App\Models\tbl_traceEmployee;
 
 class exportCom implements FromCollection,WithHeadings,WithMapping
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
 
+    public function __construct() // วันดีล
+    {
+        $this->FdateCK = request('FdateCK');
+        $this->LdateCK = request('LdateCK');
+        $this->FdateDebt = request('FdateDebt');
+        $this->LdateDebt = request('LdateDebt');
+    }
     public function collection()
     {
-        $Fdate = request('Fdate');
-        $Tdate = request('Tdate');
+        // dd($this->FdateCK,$this->LdateCK );
         $data = tbl_contract::
         where('UserZone',20)
         ->with(['ConToCal' => function($query) {
             $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
         }])
-        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ '2023-09-01','2023-09-30'])
+        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->FdateCK,$this->LdateCK ])
         ->orderBy('UserSent_Con','ASC')
         ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
         ->get();
@@ -47,13 +50,14 @@ class exportCom implements FromCollection,WithHeadings,WithMapping
 
     public function map($invoice): array
     {
+        
         $data = tbl_contract::
         where('UserZone',20)
         ->where('BranchSent_Con',$invoice->BranchSent_Con)
         ->with(['ConToCal' => function($query) {
             $query->select('Profit_Rate','DataTag_id','Cash_Car','Process_Car','Buy_PA','Include_PA','Insurance_PA','Process_Car','Process_Car','Tax2_Rate');
         }])
-        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ '2023-09-01','2023-09-30'])
+        ->WhereBetween(DB::raw(" FORMAT (cast(Date_monetary as date), 'yyyy-MM-dd')"),[ $this->FdateCK,$this->LdateCK ])
         ->orderBy('UserSent_Con','ASC')
         ->select('Contract_Con','Date_monetary','BranchSent_Con','DataTag_id','CodeLoan_Con','UserSent_Con','Date_Checkers')
         ->get();

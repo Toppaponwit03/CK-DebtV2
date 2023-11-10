@@ -133,18 +133,38 @@ class ComController extends Controller
         //
     }
 
+    public function create(Request $request)
+    {
+        if($request->func == 'exportReportCom') {
+            $type = $request->type;
+            return view('data_Commission.section-modal.view-modalReport',compact('type'));
+        }
+
+    }
 
     public function update(Request $request, $id)
     {
         //
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new exportComFN, 'รายงานค่าคอมมิชชั่นงานปล่อย.xlsx');
-        // return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่นงานปล่อย.xlsx');
-        //  return Excel::download(new exportComPLM, 'รายงานค่าคอมมิชชั่นPLM.xlsx');
-        // return Excel::download(new exportCom3050, 'รายงานค่าคอมมิชชั่น30-50.xlsx');
+        $FdateCK = $request->FdateCK;
+        $LdateCK = $request->LdateCK;
+        $FdateDebt = $request->FdateDebt;
+        $LdateDebt = $request->LdateDebt;
+        if($request->type == 1){
+             return Excel::download(new exportCom, 'รายงานค่าคอมมิชชั่นงานปล่อยตามสาขา.xlsx');
+        }elseif ($request->type == 2){
+             return Excel::download(new exportComFN, 'รายงานสรุปค่าคอมมิชชั่นงานปล่อย.xlsx');
+        }elseif ($request->type == 3){
+             return Excel::download(new exportComPLM, 'รายงานสรุปค่าคอมมิชชั่นPLM.xlsx');
+        }elseif ($request->type == 4){
+             return Excel::download(new exportCom3050, 'รายงานสรุปค่าคอมมิชชั่น30-50.xlsx');
+            
+        }
+        
+        
 
     }
 

@@ -77,7 +77,23 @@
                         <i class="fas fa-search" aria-hidden="true"></i>
                     </button>
                     @if(@Auth::user()->UserToPrivilege->exportComm == 'yes')
-                        <a id="btnExportCom" type="button" class="btn btn-success btn-sm rounded-circle mx-1"><i class="fa-solid fa-download"></i></a>
+                        {{-- <a  type="button" class="btn btn-success btn-sm rounded-circle mx-1"><i class="fa-solid fa-download"></i></a> --}}
+                        <div class="dropdown">
+                            <button id="btnExportCom" class="btn btn-success btn-sm rounded-circle mx-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-download"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#" class="btnExportCom" data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('Com.create') }}?type={{1}}&func={{'exportReportCom'}}" >1.รายงานค่าคอมมิชชั่นงานปล่อยตามสาขา</a></li>
+                              <li><a class="dropdown-item" href="#" class="btnExportCom" data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('Com.create') }}?type={{2}}&func={{'exportReportCom'}}" >2.รายงานสรุปค่าคอมมิชชั่นงานปล่อย</a></li>
+                              <li><a class="dropdown-item" href="#" class="btnExportCom" data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('Com.create') }}?type={{3}}&func={{'exportReportCom'}}" >3.รายงานสรุปค่าคอมมิชชั่นPLM</a></li>
+                              <li><a class="dropdown-item" href="#" class="btnExportCom" data-bs-toggle="modal" data-bs-target="#modal-lg" data-link="{{ route('Com.create') }}?type={{4}}&func={{'exportReportCom'}}" >4.รายงานสรุปค่าคอมมิชชั่น30-50</a></li>
+
+                              {{-- <li><a class="dropdown-item" href="#" class="btnExportCom"data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}" onclick="ExportReport(1,'รายงานค่าคอมมิชชั่นงานปล่อยตามสาขา')">1.รายงานค่าคอมมิชชั่นงานปล่อยตามสาขา</a></li>
+                              <li><a class="dropdown-item" href="#" class="btnExportCom"data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}" onclick="ExportReport(2,'รายงานสรุปค่าคอมมิชชั่นงานปล่อย')">2.รายงานสรุปค่าคอมมิชชั่นงานปล่อย</a></li>
+                              <li><a class="dropdown-item" href="#" class="btnExportCom"data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}" onclick="ExportReport(3,'รายงานสรุปค่าคอมมิชชั่นPLM')">3.รายงานสรุปค่าคอมมิชชั่นPLM</a></li>
+                              <li><a class="dropdown-item" href="#" class="btnExportCom"data-bs-toggle="modal" data-bs-target="#modal-md" data-link="{{ route('Cus.create') }}?type={{1}}" onclick="ExportReport(4,'รายงานสรุปค่าคอมมิชชั่น30-50')">4.รายงานสรุปค่าคอมมิชชั่น30-50</a></li> --}}
+                            </ul>
+                          </div>
                     @endif
                 </div>
             </div>
@@ -110,48 +126,50 @@
 
 
 <script>
-    $("#btnExportCom").click(function(){
-        $("#btnExportCom").html(`
-        <div class="spinner-border spinner-border-sm" role="status">
-        </div>
-        `);
-        $.ajax({
-            url : "{{route('Com.export')}}",
-            type : "post",
-            data : {
-                _token : '{{ @csrf_token() }}',
-            },
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success : (response)=>{
-                var a = document.createElement('a');
-                var url = window.URL.createObjectURL(response);
-                a.href = url;
-                a.download = 'รายงานค่าคอมมิชชั่น.xlsx';
-                document.body.append(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-                $("#btnExportCom").html('<i class="fa-solid fa-download"></i>')
+    
+    // $(".btnExportCom").click(function(){
+    //     $("#btnExportCom").html(`
+    //     <div class="spinner-border spinner-border-sm" role="status">
+    //     </div>
+    //     `);
+    //     $.ajax({
+    //         url : "{{route('Com.export')}}",
+    //         type : "post",
+    //         data : {
+    //             type : type,
+    //             _token : '{{ @csrf_token() }}',
+    //         },
+    //         xhrFields: {
+    //             responseType: 'blob'
+    //         },
+    //         success : (response)=>{
+    //             var a = document.createElement('a');
+    //             var url = window.URL.createObjectURL(response);
+    //             a.href = url;
+    //             a.download = 'รายงานค่าคอมมิชชั่น.xlsx';
+    //             document.body.append(a);
+    //             a.click();
+    //             a.remove();
+    //             window.URL.revokeObjectURL(url);
+    //             $("#btnExportCom").html('<i class="fa-solid fa-download"></i>')
 
-                Swal.fire({
-                icon: 'success',
-                text: 'ดาวโหลดไฟล์เอกสารเรียบร้อย',
-                timer: 2000,    
-                })
-            },
-            error : (err) =>{
-                $("#btnExportCom").html('<i class="fa-solid fa-download"></i>')
-                Swal.fire({
-                icon: 'error',
-                text: 'ดาวโหลดไฟล์เอกสารไม่สำเร็จ',
-                timer: 2000,    
-                })
+    //             Swal.fire({
+    //             icon: 'success',
+    //             text: 'ดาวโหลดไฟล์เอกสารเรียบร้อย',
+    //             timer: 2000,    
+    //             })
+    //         },
+    //         error : (err) =>{
+    //             $("#btnExportCom").html('<i class="fa-solid fa-download"></i>')
+    //             Swal.fire({
+    //             icon: 'error',
+    //             text: 'ดาวโหลดไฟล์เอกสารไม่สำเร็จ',
+    //             timer: 2000,    
+    //             })
 
-            }
-        })
-    })
+    //         }
+    //     })
+    // })
 </script>
 
 <script>

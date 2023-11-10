@@ -18,10 +18,13 @@ class exportCom3050 implements FromCollection,WithHeadings,WithMapping
 
     public function __construct() // วันดีล
     {
-        $this->SDueDate = '2023-09-01';
-        $this->LDueDate = '2023-09-30';
+        $this->FdateCK = request('FdateCK');
+        $this->LdateCK = request('LdateCK');
+        $this->FdateDebt = request('FdateDebt');
+        $this->LdateDebt = request('LdateDebt');
         $this->TypeLoan = 2 ;
     }
+    
     public function collection()
     {
         $data = tbl_traceEmployee::whereNotNull('IdCK')->get();
@@ -93,7 +96,7 @@ class exportCom3050 implements FromCollection,WithHeadings,WithMapping
                SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
                SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-               FROM tbl_customers WHERE typeLoan = 1 and  traceEmployee = '".@$employeeName."' group by traceEmployee ;
+               FROM tbl_customers WHERE typeLoan = 1 and  traceEmployee = '".@$employeeName."' and dealDay between '".$this->FdateDebt."' and '".$this->LdateDebt."' group by traceEmployee ;
            ");
 
            if( $dataPLM != NULL){
@@ -135,7 +138,7 @@ class exportCom3050 implements FromCollection,WithHeadings,WithMapping
                   SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
                   SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-                  FROM tbl_customers WHERE typeLoan = '".$this->TypeLoan."' and  traceEmployee = '".@$emps->employeeName."' group by traceEmployee ;
+                  FROM tbl_customers WHERE typeLoan = '".$this->TypeLoan."' and  traceEmployee = '".@$emps->employeeName."' and dealDay between '".$this->FdateDebt."' and '".$this->LdateDebt."' group by traceEmployee ;
               ");
 
                if($dataPass != NULL && $dataPLM != NULL){
@@ -182,6 +185,7 @@ class exportCom3050 implements FromCollection,WithHeadings,WithMapping
 
                     $dataDebt = tbl_customer::where('traceEmployee',@$emps->employeeName)
                     ->where('typeLoan',$this->TypeLoan)
+                    ->whereBetween('dealDay', [$this->FdateDebt,$this->LdateDebt])
                     ->get();
 
                     $countEmp = $dataDebt->count();

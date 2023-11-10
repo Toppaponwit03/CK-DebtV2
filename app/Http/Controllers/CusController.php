@@ -106,6 +106,7 @@ class CusController extends Controller
 
     public function index(Request $request)
     {
+      $getdue = tbl_duedate::getDuedate();
       $positionUser = Auth::user()->position;
       $groupDebt = tbl_groupdebt::getGroupdebt();
       $statuslist = tbl_statustype::getstatus();
@@ -133,7 +134,7 @@ class CusController extends Controller
       sum(CASE WHEN`typeLoan` = '3' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassLoan,
       sum(CASE WHEN`typeLoan` = '4' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass12More,
       sum(CASE WHEN`typeLoan` = '5' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassMiss
-      FROM `tbl_customers` GROUP BY traceEmployee");
+      FROM `tbl_customers` where dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' GROUP BY traceEmployee");
 
 
       $getdue = tbl_duedate::getDuedate();
@@ -148,9 +149,10 @@ class CusController extends Controller
     }
     public function getData(Request $request){
       $BranchList = Auth::user()->UserToPrivilege->branch;
+      $getdue = tbl_duedate::getDuedate();
       if($request->type == 1){ // ดึงข้อมูล
-
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->orderBy('dealDay', 'ASC')->get();
 
 
@@ -158,12 +160,14 @@ class CusController extends Controller
       }
       elseif($request->type == 2){
         $customers = tbl_customer::where('traceEmployee',$request->branch)
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->orderBy('dealDay', 'ASC')->get();
 
         return static::getTB($customers);
       }
       elseif($request->type == 3){
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->when($request->input('traceEmployee'), function ($query, $traceEmployee) {
           return $query->whereIn('traceEmployee',$traceEmployee);
         })
@@ -187,6 +191,7 @@ class CusController extends Controller
       }
       elseif($request->type == 4){
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->whereIn('groupDebt',['4.Past 2','5.Past 3'])
         ->where('typeLoan',1)
         ->orderBy('dealDay', 'ASC')->get();
@@ -195,6 +200,7 @@ class CusController extends Controller
       }
       elseif($request->type == 5){ //ส่งหัวหน้า PLM
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->whereIn('status',['STS-009','STS-008'])
         ->where('typeLoan',1)
         ->orderBy('dealDay', 'ASC')->get();
@@ -203,6 +209,7 @@ class CusController extends Controller
       }
       elseif($request->type == 6){
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->whereIn('status',['STS-009','STS-008'])
         ->where('typeLoan',2)
         ->orderBy('dealDay', 'ASC')->get();
@@ -211,6 +218,7 @@ class CusController extends Controller
       }
       elseif($request->type == 7){ // วันชำระวันนี้
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->where('status','=','STS-001')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('paymentDate','=',Carbon::today()->format('Y-m-d'))
@@ -219,6 +227,7 @@ class CusController extends Controller
       }
       elseif($request->type == 8){ // ดีลวันนี้
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->where('status','!=','STS-005')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('dealDay','=',Carbon::today()->format('Y-m-d'))
@@ -227,6 +236,7 @@ class CusController extends Controller
       }
       elseif($request->type == 9){ // ดีลเมื่อวาน
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->where('status','!=','STS-005')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('dealDay','=',Carbon::yesterday()->format('Y-m-d'))
@@ -235,6 +245,7 @@ class CusController extends Controller
       }
       elseif($request->type == 10){ // ติดตามวันนี้
         $customers = tbl_customer::whereIn('traceEmployee',explode(",",$BranchList))
+        ->whereBetween('dealDay',[$getdue->datedueStart , $getdue->datedueEnd])
         ->where('status','!=','STS-005')
         ->whereIn('traceEmployee',explode(",",$BranchList))
         ->where('FollowingDate','=',Carbon::today()->format('Y-m-d'))
@@ -719,6 +730,8 @@ class CusController extends Controller
       $duedateStart =  $request->duedateStart;
       $duedateEnd =  $request->duedateEnd;
 
+      $getdue = tbl_duedate::getDuedate();
+
       $column = $request->get('typeloan');
 
       if($column == NULL){
@@ -772,7 +785,7 @@ class CusController extends Controller
             SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
             SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-            FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' group by traceEmployee  ;
+            FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' and dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' group by traceEmployee  ;
         ");
         }
         else {
@@ -800,7 +813,7 @@ class CusController extends Controller
               SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
               SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-              FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' group by traceEmployee  ;
+              FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' group by traceEmployee  ;
           ");
         }
       }
@@ -827,7 +840,7 @@ class CusController extends Controller
             SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
             SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-            FROM tbl_historydashboard WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and duedateStart >= '".$duedateStart."' and duedateEnd <= '".$duedateEnd."' group by traceEmployee  ;
+            FROM tbl_historydashboard WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' group by traceEmployee  ;
         ");
 
       }
