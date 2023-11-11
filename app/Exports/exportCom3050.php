@@ -100,8 +100,9 @@ class exportCom3050 implements FromCollection,WithHeadings,WithMapping
            ");
 
            if( $dataPLM != NULL){
-               $total = $dataPLM[0]->totalBefor  +$dataPLM[0]->totalNomal +$dataPLM[0]->totalPast1 +$dataPLM[0]->totalPast2 +$dataPLM[0]->totalPast3;
-               $totalPass = $dataPLM[0]->PassBefor  +$dataPLM[0]->PassNomal +$dataPLM[0]->PassPast1 +$dataPLM[0]->PassPast2 +$dataPLM[0]->PassPast3 ;
+               $total = $dataPLM[0]->totalBefor  +$dataPLM[0]->totalNomal +$dataPLM[0]->totalPast1 +$dataPLM[0]->totalPast2 +$dataPLM[0]->totalPast;
+               $totalPass = $dataPLM[0]->PassBefor  +$dataPLM[0]->PassNomal +$dataPLM[0]->PassPast1 +$dataPLM[0]->PassPast2 +$dataPLM[0]->PassPast;
+
                if($total > 0){
                 $percent = number_format(( ($totalPass ) / ($total) ) * 100 ,2 );
                } else {
@@ -179,8 +180,12 @@ class exportCom3050 implements FromCollection,WithHeadings,WithMapping
                     $Past4 = 0;
                 }
 
-                  $total = $dataPass[0]->totalBefor  +$dataPass[0]->totalNomal +$dataPass[0]->totalPast1 +$dataPass[0]->totalPast2 +$dataPass[0]->totalPast3;
-                  $totalPass = $dataPass[0]->PassBefor  +$dataPass[0]->PassNomal +$dataPass[0]->PassPast1 +$dataPass[0]->PassPast2 +$dataPass[0]->PassPast3 ;
+                //   $total = $dataPass[0]->totalBefor  +$dataPass[0]->totalNomal +$dataPass[0]->totalPast1 +$dataPass[0]->totalPast2 +$dataPass[0]->totalPast3;
+                //   $totalPass = $dataPass[0]->PassBefor  +$dataPass[0]->PassNomal +$dataPass[0]->PassPast1 +$dataPass[0]->PassPast2 +$dataPass[0]->PassPast3 ;
+                //   $perTotal = number_format(( ($totalPass + 0.00001) / ($total + 0.00001) ) * 100 ,2 );
+
+                  $total = $dataPass[0]->totalBefor  +$dataPass[0]->totalNomal +$dataPass[0]->totalPast1 +$dataPass[0]->totalPast2 +$dataPass[0]->totalPast3+$dataPass[0]->totalPast4;
+                  $totalPass = $dataPass[0]->PassBefor  +$dataPass[0]->PassNomal +$dataPass[0]->PassPast1 +$dataPass[0]->PassPast2 +$dataPass[0]->PassPast3+$dataPass[0]->PassPast4 ;
                   $perTotal = number_format(( ($totalPass + 0.00001) / ($total + 0.00001) ) * 100 ,2 );
 
                     $dataDebt = tbl_customer::where('traceEmployee',@$emps->employeeName)

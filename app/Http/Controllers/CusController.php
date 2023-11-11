@@ -431,8 +431,13 @@ class CusController extends Controller
 
     public function update(Request $request, $id)
     {
-      $dateStart = $request->datedueStart;
-      $dateEnd = $request->datedueEnd;
+      $getdue = tbl_duedate::getDuedate();
+      // $dateStart = $getdue->datedueStart;
+      // $dateEnd = $getdue->datedueEnd;
+
+      $dateStart = '2023-10-07';
+      $dateEnd = '2023-11-06';
+
 
       if($request->type == 1){ //อัพเดทสถานะ
 
@@ -473,11 +478,6 @@ class CusController extends Controller
       }
 
       elseif($request->type == 2){ // อัพเดทการจ่าย
-
-
-        // $dateStart = '2023-06-07';  วันดีลเริ่มต้น
-        // $dateEnd = '2023-07-06';  วันสิ้นสุด
-
 
         $dataPay = DB::connection('ibmi2')->select("SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
         (select DISTINCT PSFHP.ARMAST.CONTNO,
@@ -526,6 +526,7 @@ class CusController extends Controller
 
         foreach ($dataPay as $key => $value){
           tbl_customer::where('contractNumber',trim($value->CONTNO))
+          ->whereBetween('dealDay',[$dateStart , $dateEnd])
           ->update([
               'TotalPay' => $value->TOTALP,
               'balanceDebt' => $value->DEBT_BALANCE,
@@ -534,6 +535,7 @@ class CusController extends Controller
         }
 
         tbl_customer::whereRaw('TotalPay >= minimumPayout')
+        ->whereBetween('dealDay',[$dateStart , $dateEnd])
         ->orWhereRaw("CAST( replace(arrears,',','') as float) = 0")
         ->orWhereRaw("CAST( replace(arrears,',','') as float) < minimumPayout  and TotalPay >= CAST( replace(arrears,',','') as float)")
         ->where('status','!=','STS-005')
@@ -544,6 +546,7 @@ class CusController extends Controller
 
         // ชำระแล้วไม่พอ
         tbl_customer::whereRaw('TotalPay > 0 and TotalPay < minimumPayout')
+        ->whereBetween('dealDay',[$dateStart , $dateEnd])
         ->orWhereRaw("CAST( replace(arrears,',','') as float) < minimumPayout and TotalPay < CAST( replace(arrears,',','') as float) and TotalPay > 0")
         ->where('status','!=','STS-005')
         ->update([
@@ -727,17 +730,21 @@ class CusController extends Controller
 
     public function dashboard(Request $request)
     {
-      $duedateStart =  $request->duedateStart;
-      $duedateEnd =  $request->duedateEnd;
 
       $getdue = tbl_duedate::getDuedate();
-
+      if($request->duedateStart != NULL && $request->duedateEnd != NULL){
+        $duedateStart = $request->duedateStart; 
+        $duedateEnd =  $request->duedateEnd;
+      } else {
+        $duedateStart = $getdue->datedueStart;
+        $duedateEnd =  $getdue->datedueEnd;
+      }
       $column = $request->get('typeloan');
 
-      if($column == NULL){
+      if($column == NULL) {
         $column = 1;
       }
-      else{
+      else {
         $column = $request->get('typeloan');
       }
 
@@ -759,7 +766,6 @@ class CusController extends Controller
         $head = Auth::user()->Branch ;
       }
 
-      if($request->duedateStart == NULL || $request->duedateEnd == NULL){
         if(Auth::user()->position == 'user'){
           $data = DB::select("
           SELECT
@@ -785,7 +791,7 @@ class CusController extends Controller
             SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
             SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-            FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' and dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' group by traceEmployee  ;
+            FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
         ");
         }
         else {
@@ -813,40 +819,12 @@ class CusController extends Controller
               SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
               SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-              FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' group by traceEmployee  ;
+              FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
           ");
         }
-      }
-      else{
-
-        $data = DB::select("
-          SELECT
-            traceEmployee,typeLoan,
-            SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
-            SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
-
-            SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as 'totalNomal',
-            SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassNomal',
-
-            SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as 'totalPast1',
-            SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast1',
-
-            SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as 'totalPast2',
-            SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
-
-            SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
-            SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
-
-            SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
-            SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
-
-            FROM tbl_historydashboard WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' group by traceEmployee  ;
-        ");
-
-      }
-
-      $datadue = tbl_historydashboard::select('duedateStart','duedateEnd')->distinct()->get();
-      return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd','datadue'));
+       
+      // $datadue = tbl_historydashboard::select('duedateStart','duedateEnd')->distinct()->get();
+      return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd'));
     }
 
     public function export(Request $request)

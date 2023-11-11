@@ -51,11 +51,11 @@
     </div>
   </div>
 
-  <!-- <div class="row">
+  {{-- <div class="row">
     <div class="col">
         @include('data_Customer.section-dashboard.cardDuteDate')
     </div>
-  </div> -->
+  </div>  --}}
 
   @if(Auth::user()->position == 'admin')
   <div class="row">
