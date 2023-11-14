@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('tbl_targets', function (Blueprint $table) {
             $table->id();
             $table->string('EmpId',255)->nullable();
-            $table->string('EmpName',255)->nullable();
-            $table->string('Target',255)->nullable();
+            $table->string('EmpName',100)->nullable();
+            $table->double('Target',8,2)->nullable();
             $table->timestamps();
         });
     }

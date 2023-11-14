@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('tbl_nons', function (Blueprint $table) {
             $table->id();
-            $table->string('nameNon',255)->nullable();
+            $table->string('nameNon',50)->nullable();
             $table->string('Details',255)->nullable();
+            $table->string('status',50)->nullable();
             $table->timestamps();
         });
     }

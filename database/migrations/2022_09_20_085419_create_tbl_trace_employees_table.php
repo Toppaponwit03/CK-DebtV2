@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tbl_trace_employees', function (Blueprint $table) {
-            $table->id('id');
+            $table->id();
             $table->string('employeeName',255)->nullable();
+            $table->string('nameThai',255)->nullable();
             $table->string('Details',255)->nullable();
             $table->string('teamGroup',10)->nullable();
+            $table->integer('IdCK')->nullable();
+            $table->integer('IdUserCk')->nullable();
             $table->timestamps();
         });
     }

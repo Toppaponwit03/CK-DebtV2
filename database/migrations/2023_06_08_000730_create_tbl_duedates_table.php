@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_duedates', function (Blueprint $table) {
+        Schema::create('tbl_duedate', function (Blueprint $table) {
             $table->id();
+            $table->date('datedueStart')->nullable();
+            $table->date('datedueEnd')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_duedates');
+        Schema::dropIfExists('tbl_duedate');
     }
 };

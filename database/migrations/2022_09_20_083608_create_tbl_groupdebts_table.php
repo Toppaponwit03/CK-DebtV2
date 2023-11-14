@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tbl_groupdebts', function (Blueprint $table) {
-            $table->id('groupDebtID',10);
+            $table->id();
             $table->string('nameGroup',255)->nullable();
+            $table->string('Groupdebt_Code',255)->nullable();
             $table->string('detail',255)->nullable();
             $table->timestamps();
         });

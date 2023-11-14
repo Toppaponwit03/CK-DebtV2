@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('tbl_statustypes', function (Blueprint $table) {
             $table->id('id');
             $table->string('statusName',255)->nullable();
+            $table->string('Status_code',20)->nullable();
             $table->string('details',255)->nullable();
+            $table->string('status',100)->nullable();
             $table->timestamps();
         });
     }

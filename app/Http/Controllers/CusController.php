@@ -122,19 +122,19 @@ class CusController extends Controller
 
       $countPass = DB::select("SELECT
       traceEmployee,
-      sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '3'  THEN 1 ELSE 0  END ) as totalEmpLoan,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '4'  THEN 1 ELSE 0  END ) as totalEmp12More,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '5'  THEN 1 ELSE 0  END ) as totalEmpMiss,
-      sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
-      sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
-      sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM,
-      sum(CASE WHEN`typeLoan` = '3' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassLoan,
-      sum(CASE WHEN`typeLoan` = '4' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass12More,
-      sum(CASE WHEN`typeLoan` = '5' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassMiss
-      FROM `tbl_customers` where dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' GROUP BY traceEmployee");
+      sum(CASE WHEN traceEmployee != '' THEN 1 ELSE 0  END ) as totalEmp,
+      sum(CASE WHEN traceEmployee != '' and typeLoan = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
+      sum(CASE WHEN traceEmployee != '' and typeLoan = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+      sum(CASE WHEN traceEmployee != '' and typeLoan = '3'  THEN 1 ELSE 0  END ) as totalEmpLoan,
+      sum(CASE WHEN traceEmployee != '' and typeLoan = '4'  THEN 1 ELSE 0  END ) as totalEmp12More,
+      sum(CASE WHEN traceEmployee != '' and typeLoan = '5'  THEN 1 ELSE 0  END ) as totalEmpMiss,
+      sum(CASE WHEN status = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
+      sum(CASE WHEN typeLoan = '1' and status = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
+      sum(CASE WHEN typeLoan = '2' and status = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM,
+      sum(CASE WHEN typeLoan = '3' and status = 'STS-005' THEN 1 ELSE 0  END ) as totalPassLoan,
+      sum(CASE WHEN typeLoan = '4' and status = 'STS-005' THEN 1 ELSE 0  END ) as totalPass12More,
+      sum(CASE WHEN typeLoan = '5' and status = 'STS-005' THEN 1 ELSE 0  END ) as totalPassMiss
+      FROM tbl_customers where dealday between '".$getdue->datedueStart."' and '".$getdue->datedueEnd."' GROUP BY traceEmployee");
 
 
       $getdue = tbl_duedate::getDuedate();
@@ -316,23 +316,23 @@ class CusController extends Controller
         $traceEmployee = $request->traceEmployee;
         $countPass = DB::select("SELECT
         traceEmployee,
-        sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
-        sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
-        sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
-        sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
-        sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
-        sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
-        FROM `tbl_customers` where traceEmployee = '".$traceEmployee."' GROUP BY traceEmployee");
+        sum(CASE WHEN traceEmployee  != '' THEN 1 ELSE 0  END ) as totalEmp,
+        sum(CASE WHEN traceEmployee  != '' and  typeLoan  = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
+        sum(CASE WHEN traceEmployee  != '' and  typeLoan  = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+        sum(CASE WHEN status  = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
+        sum(CASE WHEN typeLoan  = '1' and  status  = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
+        sum(CASE WHEN typeLoan  = '2' and  status  = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
+        FROM  tbl_customers  where traceEmployee = '".$traceEmployee."' GROUP BY traceEmployee");
 
       $dataHistory = DB::select("SELECT
       traceEmployee,duedateEnd,
-      sum(CASE WHEN`traceEmployee` != '' THEN 1 ELSE 0  END ) as totalEmp,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
-      sum(CASE WHEN`traceEmployee` != '' and `typeLoan` = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
-      sum(CASE WHEN`status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
-      sum(CASE WHEN`typeLoan` = '1' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
-      sum(CASE WHEN`typeLoan` = '2' and `status` = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
-      FROM `tbl_historydashboard` where traceEmployee = '".$traceEmployee."' GROUP BY duedateEnd ORDER BY duedateEnd ASC");
+      sum(CASE WHEN traceEmployee  != '' THEN 1 ELSE 0  END ) as totalEmp,
+      sum(CASE WHEN traceEmployee  != '' and  typeLoan  = '1'  THEN 1 ELSE 0  END ) as totalEmpPLM,
+      sum(CASE WHEN traceEmployee  != '' and  typeLoan  = '2'  THEN 1 ELSE 0  END ) as totalEmpCKM,
+      sum(CASE WHEN status  = 'STS-005' THEN 1 ELSE 0  END ) as totalPass,
+      sum(CASE WHEN typeLoan  = '1' and  status  = 'STS-005' THEN 1 ELSE 0  END ) as totalPassPLM,
+      sum(CASE WHEN typeLoan  = '2' and  status  = 'STS-005' THEN 1 ELSE 0  END ) as totalPassCKM
+      FROM  tbl_historydashboard  where traceEmployee = '".$traceEmployee."' GROUP BY duedateEnd ORDER BY duedateEnd ASC");
 
       $arrChartsPLM = array();
       $arrChartsCKM = array();
@@ -491,7 +491,7 @@ class CusController extends Controller
         ORDER BY PSFHP.CHQTRAN.TMBILDT DESC ) OD
         INNER JOIN (select PSFHP.ARMAST.CONTNO,  SUM(PSFHP.CHQTRAN.PAYAMT) as TOTALP from PSFHP.ARMAST
         left join PSFHP.CHQTRAN on PSFHP.CHQTRAN.CONTNO = PSFHP.ARMAST.CONTNO
-        where PSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and PSFHP.CHQTRAN.FLAG <> 'C'
+        where PSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and PSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' and PSFHP.CHQTRAN.FLAG <> 'C'
         group BY PSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO
         UNION
         SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
@@ -506,7 +506,7 @@ class CusController extends Controller
         ORDER BY RSFHP.CHQTRAN.TMBILDT DESC ) OD
         INNER JOIN (select RSFHP.ARMAST.CONTNO,  SUM(RSFHP.CHQTRAN.PAYAMT) as TOTALP from RSFHP.ARMAST
         left join RSFHP.CHQTRAN on RSFHP.CHQTRAN.CONTNO = RSFHP.ARMAST.CONTNO
-        where RSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and RSFHP.CHQTRAN.FLAG <> 'C'
+        where RSFHP.CHQTRAN.TMBILDT >= '${dateStart}' and RSFHP.CHQTRAN.TMBILDT <= '${dateEnd}' and RSFHP.CHQTRAN.FLAG <> 'C'
         group BY RSFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO
         UNION
         SELECT OD.CONTNO,  CalQ.TOTALP, OD.TOTALC,OD.TMBILDT ,OD.PAYFOR ,OD.DEBT_BALANCE FROM
@@ -521,7 +521,7 @@ class CusController extends Controller
         ORDER BY SFHP.CHQTRAN.TMBILDT DESC ) OD
         INNER JOIN (select SFHP.ARMAST.CONTNO,  SUM(SFHP.CHQTRAN.PAYAMT) as TOTALP from SFHP.ARMAST
         left join SFHP.CHQTRAN on SFHP.CHQTRAN.CONTNO = SFHP.ARMAST.CONTNO
-        where SFHP.CHQTRAN.TMBILDT >= '${dateStart}' and SFHP.CHQTRAN.FLAG <> 'C'
+        where SFHP.CHQTRAN.TMBILDT >= '${dateStart}' and SFHP.CHQTRAN.TMBILDT <= '${dateEnd}' and SFHP.CHQTRAN.FLAG <> 'C'
         group BY SFHP.ARMAST.CONTNO ) CalQ  ON CalQ.CONTNO = OD.CONTNO");
 
         foreach ($dataPay as $key => $value){
@@ -791,35 +791,35 @@ class CusController extends Controller
             SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
             SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
 
-            FROM tbl_customers WHERE`typeLoan` = '".$column."' and traceEmployee = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
+            FROM tbl_customers WHERE typeLoan  = ".$column." and traceEmployee = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
         ");
         }
         else {
-          $data = DB::select("
-            SELECT
+
+          $data = DB::select("SELECT
               traceEmployee,typeLoan,
-              SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
-              SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
+              SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as totalBefor,
+              SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as PassBefor,
 
-              SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as 'totalNomal',
-              SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassNomal',
+              SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as totalNomal,
+              SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as PassNomal,
 
-              SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as 'totalPast1',
-              SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast1',
+              SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as totalPast1,
+              SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast1,
 
-              SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as 'totalPast2',
-              SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
+              SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as totalPast2,
+              SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast2,
 
-              SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast',
-              SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast',
+              SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as totalPast,
+              SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast,
 
-              SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
-              SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
+              SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as totalPast3,
+              SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast3,
 
-              SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
-              SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
+              SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as totalPast4,
+              SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast4
 
-              FROM tbl_customers WHERE`typeLoan` = '".$column."' and TeamGroup = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
+              FROM tbl_customers WHERE typeLoan  = '${column}' and TeamGroup = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
           ");
         }
        

@@ -13,9 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_users', function (Blueprint $table) {
+        Schema::create('tbl_actionplan', function (Blueprint $table) {
             $table->id();
+            $table->integer('tag_id')->nullable(); 
+            $table->date('date_plan')->nullable();  
+            $table->string('ContractID',100)->nullable(); 
+            $table->longText('detail')->nullable(); 
+            $table->integer('userInsert')->nullable(); 
+            $table->string('userInsertname',255)->nullable(); 
             $table->timestamps();
+
         });
     }
 
@@ -26,6 +33,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_users');
+        Schema::dropIfExists('tbl_actionplan');
+
     }
 };

@@ -13,9 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('static_com_debts', function (Blueprint $table) {
+        Schema::create('tbl_statdebt', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->integer('typeLoan')->nullable(); 
+            $table->integer('Past1_95')->nullable(); 
+            $table->integer('Past1_90')->nullable(); 
+            $table->integer('Past1_85')->nullable(); 
+            $table->integer('Past2_95')->nullable(); 
+            $table->integer('Past2_90')->nullable(); 
+            $table->integer('Past2_85')->nullable(); 
+            $table->integer('Past3_95')->nullable(); 
+            $table->integer('Past3_90')->nullable(); 
+            $table->integer('Past3_85')->nullable(); 
+            $table->integer('T_95')->nullable(); 
+            $table->integer('T_90')->nullable(); 
+            $table->integer('T_85')->nullable(); 
+            $table->integer('SPERTarget	')->nullable(); 
+            $table->integer('LPERTarget')->nullable(); 
+            $table->string('Size',50)->nullable();  
         });
     }
 
@@ -26,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('static_com_debts');
+        Schema::dropIfExists('tbl_statdebt');
     }
 };

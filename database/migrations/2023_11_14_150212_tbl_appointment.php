@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_calculates', function (Blueprint $table) {
+        Schema::create('tbl_appointment', function (Blueprint $table) {
             $table->id();
+            $table->string('typeLoan',100)->nullable(); 
+            $table->date('DateApp')->nullable();  
+            $table->date('date')->nullable();  
             $table->timestamps();
+
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_calculates');
+        Schema::dropIfExists('tbl_appointment');
     }
 };

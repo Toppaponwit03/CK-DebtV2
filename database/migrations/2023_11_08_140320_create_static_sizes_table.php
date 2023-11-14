@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('static_sizes', function (Blueprint $table) {
+        Schema::create('tbl_staticsize', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->integer('SCount');
+            $table->integer('LCount');
+            $table->string('Size',50)->nullable(); 
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('static_sizes');
+        Schema::dropIfExists('tbl_staticsize');
     }
 };
