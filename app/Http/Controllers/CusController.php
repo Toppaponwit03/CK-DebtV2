@@ -767,37 +767,36 @@ class CusController extends Controller
       }
 
         if(Auth::user()->position == 'user'){
-          $data = DB::select("
-          SELECT
-            traceEmployee,typeLoan,
-            SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as 'totalBefor',
-            SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassBefor',
+          $data = DB::select("SELECT
+          'traceEmployee' as traceEmployee,'typeLoan' as typeLoan,
+            SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as totalBefor,
+            SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as PassBefor,
 
-            SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as 'totalNomal',
-            SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassNomal',
+            SUM(CASE WHEN groupDebt = '2.Nomal'  THEN 1 ELSE 0 END) as totalNomal,
+            SUM(CASE WHEN groupDebt = '2.Nomal' and status = 'STS-005' THEN 1 ELSE 0 END) as PassNomal,
 
-            SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as 'totalPast1',
-            SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast1',
+            SUM(CASE WHEN groupDebt = '3.Past 1'  THEN 1 ELSE 0 END) as totalPast1,
+            SUM(CASE WHEN groupDebt = '3.Past 1' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast1,
 
-            SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as 'totalPast2',
-            SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast2',
+            SUM(CASE WHEN groupDebt = '4.Past 2'  THEN 1 ELSE 0 END) as totalPast2,
+            SUM(CASE WHEN groupDebt = '4.Past 2' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast2,
 
-            SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast',
-            SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast',
+            SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as totalPast,
+            SUM(CASE WHEN groupDebt = '5.Past 3' or groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast,
 
-            SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as 'totalPast3',
-            SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast3',
+            SUM(CASE WHEN groupDebt = '5.Past 3'  THEN 1 ELSE 0 END) as totalPast3,
+            SUM(CASE WHEN groupDebt = '5.Past 3' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast3,
 
-            SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as 'totalPast4',
-            SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as 'PassPast4'
+            SUM(CASE WHEN groupDebt = '6.Past 4'  THEN 1 ELSE 0 END) as totalPast4,
+            SUM(CASE WHEN groupDebt = '6.Past 4' and status = 'STS-005' THEN 1 ELSE 0 END) as PassPast4
 
-            FROM tbl_customers WHERE typeLoan  = ".$column." and traceEmployee = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
+            FROM tbl_customers WHERE typeLoan  = '${column}' and traceEmployee = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
         ");
         }
         else {
 
           $data = DB::select("SELECT
-              traceEmployee,typeLoan,
+              'traceEmployee' as traceEmployee,'typeLoan' as typeLoan,
               SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as totalBefor,
               SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as PassBefor,
 
