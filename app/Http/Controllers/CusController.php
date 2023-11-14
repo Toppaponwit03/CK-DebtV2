@@ -74,12 +74,12 @@ class CusController extends Controller
                           style="width:20px;height:20px">
                       </lord-icon>
                       </div> ' .$thaidate.'
-                      </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : '.@$data->CustoApp->count("ContractNumber").'</span>';
+                      </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด :</span>';
                     }else {
-                      $tagHtml = '<div> '.$thaidate.' </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : '.@$data->CustoApp->count("ContractNumber").'</span>' ;
+                      $tagHtml = '<div> '.$thaidate.' </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : </span>' ;
                     }
                   }else{
-                    $tagHtml = '<div> '.$thaidate.' </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : '.@$data->CustoApp->count("ContractNumber").'</span>' ;
+                    $tagHtml = '<div> '.$thaidate.' </div> <span class="badge rounded-pill text-bg-warning bg-opacity-50 text-dark">จำนวนผิดนัด : </span>' ;
                   }
 
                   return $tagHtml;
@@ -733,7 +733,7 @@ class CusController extends Controller
 
       $getdue = tbl_duedate::getDuedate();
       if($request->duedateStart != NULL && $request->duedateEnd != NULL){
-        $duedateStart = $request->duedateStart; 
+        $duedateStart = $request->duedateStart;
         $duedateEnd =  $request->duedateEnd;
       } else {
         $duedateStart = $getdue->datedueStart;
@@ -821,7 +821,7 @@ class CusController extends Controller
               FROM tbl_customers WHERE typeLoan  = '${column}' and TeamGroup = '".$head."' and dealday between '".$duedateStart."' and '".$duedateEnd."' group by traceEmployee  ;
           ");
         }
-       
+
       // $datadue = tbl_historydashboard::select('duedateStart','duedateEnd')->distinct()->get();
       return view('data_Customer.section-dashboard.view',compact('data','head','column','duedateStart','duedateEnd'));
     }
