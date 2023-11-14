@@ -796,7 +796,7 @@ class CusController extends Controller
         else {
 
           $data = DB::select("SELECT
-              'traceEmployee' as traceEmployee,'typeLoan' as typeLoan,
+              traceEmployee,
               SUM(CASE WHEN groupDebt = '1.Befor'  THEN 1 ELSE 0 END) as totalBefor,
               SUM(CASE WHEN groupDebt = '1.Befor' and status = 'STS-005' THEN 1 ELSE 0 END) as PassBefor,
 
