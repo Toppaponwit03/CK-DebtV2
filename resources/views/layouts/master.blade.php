@@ -42,6 +42,10 @@
     {{-- sweetalert2 --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- pusher --}}
+    <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
+
+
     </head>
 
     <style>
@@ -217,12 +221,10 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modal-fullscreen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content">
-        <div class="modal-body">
-        </div>
-      </div>
+  <div class="modal fade" id="modal-fullscreen">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered" >
+      <div class="modal-content" style="max-height : 95%;">
+
     </div>
   </div>
 

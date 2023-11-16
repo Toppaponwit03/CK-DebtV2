@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Events\MessageChat;
 use App\Models\tbl_appointment;
 use Auth;
 use App\datethai\thaidate;
@@ -38,7 +39,7 @@ class CusController extends Controller
 
                   if (Auth::user()->UserToPrivilege->EditDataDebt == 'yes'){
                     $btnStat = '
-                    <button type="button" id="SearchBtn" class="btn btn-warning rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>
+                    <button type="button" id="SearchBtn" class="btn btn-warning rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-fullscreen" data-link="'. route("Cus.edit",$data->id) .'?type=1 "><i class="fa-regular fa-pen-to-square"></i> </button>
                     <button type="button" id="SearchBtn" class="btn btn-secondary rounded-circle btn-sm" data-bs-toggle="modal" data-bs-target="#modal-xl" data-link="'. route("Cus.edit",$data->id) .'?type=2 "><i class="fa-solid fa-user-pen"></i> </button>
                     ';
                   } else{
@@ -270,20 +271,13 @@ class CusController extends Controller
         $data_Tag = new tbl_custag;
         $data_Tag->ContractID = $request->contractNumber;
         $data_Tag->date_Tag = date('Y-m-d');
-        $data_Tag->detail = $request->note;
-        $data_Tag->payment_date = $request->payment_date;
-        $data_Tag->visitArea_date = $request->visitArea_date;
-        $data_Tag->PowerApp_date = $request->PowerApp_date;
-        $data_Tag->Following_Date = $request->Following_date;
+        $data_Tag->Status = 'STS-010';
         $data_Tag->userInsert = Auth::user()->id;
         $data_Tag->save();
 
 
         $data_cus = tbl_customer::where('contractNumber',$request->contractNumber)->first();
-        $data_cus->paymentDate = $request->payment_date;
-        $data_cus->fieldDay = $request->visitArea_date;
-        $data_cus->powerApp = $request->PowerApp_date;
-        $data_cus->FollowingDate = $request->Following_date;
+        $data_cus->status = 'STS-010';
         $data_cus->update();
 
 
@@ -302,8 +296,19 @@ class CusController extends Controller
         $data_plan->save();
 
         $data = tbl_actionplan::where('tag_id', $request->tag_id)->orderBy('created_At', 'desc')->first();
+        broadcast(new MessageChat( $request->addaction,Auth::user()->name, @$data->tag_id, @$data->updated_at) )->toOthers();
         return response()->json($data);
       }
+
+    }
+
+    public function receive(Request $request){
+        return response()->json([
+            'message' => $request->message ,
+            'UserInsert' => $request->UserInsert,
+            'tag_id' => $request->tag_id,
+            'updated_at' => $request->updated_at
+            ]);
 
     }
 
@@ -367,7 +372,6 @@ class CusController extends Controller
         $statuslist = tbl_statustype::getstatus();
         $data = tbl_customer::find($id);
         $contract = $data->contractNumber;
-        dump($data->teamGroup);
         if($data->teamGroup == 4){
           $datapay = DB::connection('ibmi2')->select("
           SELECT

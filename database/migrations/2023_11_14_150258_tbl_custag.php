@@ -15,15 +15,12 @@ return new class extends Migration
     {
         Schema::create('tbl_custag', function (Blueprint $table) {
             $table->id();
-            $table->date('date_Tag'); 
-            $table->string('ContractID',100)->nullable(); 
-            $table->longText('detail')->nullable(); 
-            $table->longText('actionPlan')->nullable(); 
-            $table->integer('userInsert')->nullable(); 
-            $table->date('payment_date')->nullable(); 
-            $table->date('visitArea_date')->nullable(); 
-            $table->date('PowerApp_date')->nullable(); 
-            $table->date('Following_Date')->nullable(); 
+            $table->date('date_Tag');
+            $table->string('ContractID',100)->nullable();
+            $table->longText('detail')->nullable();
+            $table->longText('actionPlan')->nullable();
+            $table->integer('userInsert')->nullable();
+            $table->string('Status',100)->nullable();
             $table->timestamps();
 
         });

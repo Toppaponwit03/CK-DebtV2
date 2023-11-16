@@ -18,6 +18,7 @@
         "nesbot/carbon": "^2.62",
         "phattarachai/thaidate": "^12.1",
         "psr/simple-cache": "1.0",
+        "pusher/pusher-php-server": "^7.2",
         "yajra/laravel-datatables": "9.0"
     },
     "require-dev": {

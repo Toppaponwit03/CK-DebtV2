@@ -28,7 +28,7 @@ let text = data;
   $('.teamAll').click(function(){
      if ($(".teamAll").is(":checked")) {
       $('.team').prop('checked', true);
-     } 
+     }
      else{
       $('.team').prop('checked', false);
      }
@@ -40,7 +40,7 @@ let text = data;
   $('.teamA').click(function(){
      if ($(".teamA").is(":checked")) {
       $('.checkteamA').prop('checked', true);
-     } 
+     }
      else{
       $('.checkteamA').prop('checked', false);
      }
@@ -48,7 +48,7 @@ let text = data;
   $('.teamB').click(function(){
      if ($(".teamB").is(":checked")) {
       $('.checkteamB').prop('checked', true);
-     } 
+     }
      else{
       $('.checkteamB').prop('checked', false);
      }
@@ -56,7 +56,7 @@ let text = data;
   $('.teamD').click(function(){
      if ($(".teamD").is(":checked")) {
       $('.checkteamD').prop('checked', true);
-     } 
+     }
      else{
       $('.checkteamD').prop('checked', false);
      }
@@ -76,9 +76,9 @@ $(function() {
     }
     else
     {
-    $('.allteam').addClass('mm-active').siblings();      
+    $('.allteam').addClass('mm-active').siblings();
     }
- 
+
 });
 </script>
 
@@ -102,21 +102,21 @@ $('#btn-clear').on('click',function(){
         $('#btnExcel').click(function(){
       $("#pass").val("");
     })
-    $("#btnsub").click(function(){       
+    $("#btnsub").click(function(){
        let pass = 'Ckl1082*';
        let input = $("#pass").val();
        if(input == pass){
          location.replace("{{route('export.excel')}}");
-       } 
+       }
        else if(input == ''){
          Swal.fire({
          icon: 'warning',
          title: 'กรุณากรอกรหัสผ่าน',
          showConfirmButton: false,
          showCancelButton: false,
-         timer: 1500    
+         timer: 1500
          })
-       } 
+       }
        else {
          Swal.fire({
          icon: 'error',
@@ -125,7 +125,7 @@ $('#btn-clear').on('click',function(){
          showCancelButton: false,
          timer: 1500
          })
-       } 
+       }
     });
 </script>
 
@@ -136,7 +136,7 @@ $('#btn-clear').on('click',function(){
  clearsearchstatus = () => { $('input[name="searchstatus[]"]').prop('checked', false);}
  cleargroupDebt = () => { $('input[name="groupDebt[]"]').prop('checked', false);}
  cleartraceEmployeeB = () => { $('input[id="traceEmployeeB"]').prop('checked', false);}
- cleartraceEmployee = () => { 
+ cleartraceEmployee = () => {
   $('input[name="traceEmployee[]"]').prop('checked', false);
   $('.teamA').prop('checked', false);
   $('.teamB').prop('checked', false);
@@ -150,7 +150,7 @@ $('#btn-clear').on('click',function(){
 $(function () {
         $("#modal-fullscreen").on("show.bs.modal", function (e) {
             var link = $(e.relatedTarget).data("link");
-                $("#modal-fullscreen .modal-body").load(link, function(){
+                $("#modal-fullscreen .modal-content").load(link, function(){
             });
         });
         $("#modal-xl").on("show.bs.modal", function (e) {

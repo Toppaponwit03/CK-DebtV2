@@ -50,7 +50,7 @@
                 <label class="col-form-label">กลุ่มค้างงวด :</label>
                 <input type="text" class="form-control" value="{{@$data->groupDebt}}" placeholder="" name="groupDebts" id="groupDebts" />
             </div>
-    
+
             </div>
 
             <div class="row">
@@ -66,7 +66,7 @@
                 <label class="col-form-label">ยอดชำระล่าสุด :</label>
                 <input type="text" class="form-control" value="{{@$data->lastPayment}}" placeholder="" name="lastPayment" id="lastPayment" value=""/>
             </div>
-    
+
             </div>
              <!--
             <br>

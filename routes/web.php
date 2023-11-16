@@ -39,6 +39,7 @@ Route::get('Cus/dashboard/data', [CusController::class, 'dashboard'])->name('Cus
 Route::post('Cus/search/getData', [CusController::class, 'getData'])->name('Cus.getData');
 Route::post('Cus/export/',[CusController::class, 'export'])->name('export.excel');
 Route::post('Cus/import/',[CusController::class, 'import'])->name('import.excel');
+Route::post('/receive',[CusController::class,'receive'])->name('receive');
 
 Route::resource('static',StaticController::class);
 
