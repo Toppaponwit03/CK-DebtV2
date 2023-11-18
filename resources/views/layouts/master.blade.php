@@ -45,6 +45,9 @@
     {{-- pusher --}}
     <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 
+    {{-- lord icon --}}
+    <script src="https://cdn.lordicon.com/lordicon-1.2.0.js"></script>
+
 
     </head>
 

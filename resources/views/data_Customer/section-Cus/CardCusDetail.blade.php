@@ -20,7 +20,7 @@
                     }
 
                   @endphp
-                <img class="w-50 bg-light p-1 rounded-circle border border-3 {{$border}}" src="{{ asset('dist/img/man.png') }}" alt="">
+                <img class="w-25 bg-light p-1 rounded-circle border border-3 {{$border}}" src="{{ asset('dist/img/man.png') }}" alt="">
                 <br>
             </div>
             <span class="badge {{$color}} px-4 ">{{@$data->CustoStatus->details}}</span>

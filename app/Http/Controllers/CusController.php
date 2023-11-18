@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Events\DataLogStatus;
 use App\Events\MessageChat;
 use App\Models\tbl_appointment;
+use App\Models\tbl_DataLogStatus;
 use Auth;
 use App\datethai\thaidate;
 use Illuminate\Http\Request;
@@ -280,9 +282,9 @@ class CusController extends Controller
         $data_cus->status = 'STS-010';
         $data_cus->update();
 
-
+        $statuslist = tbl_statustype::getstatus();
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
-        return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data'));
+        return response()->view('data_Customer.section-Cus.ShowCusDetails',compact('data','statuslist'));
       }
       elseif($request->type == 2){  //เพิ่ม action plan
         $data_plan = new tbl_actionplan;
@@ -302,7 +304,7 @@ class CusController extends Controller
 
     }
 
-    public function receive(Request $request){
+    public function receive(Request $request){ // chat
         return response()->json([
             'message' => $request->message ,
             'UserInsert' => $request->UserInsert,
@@ -355,10 +357,12 @@ class CusController extends Controller
         return view('data_Customer.section-dashboard.dashboardBranch',compact('countPass','traceEmployee','arrChartsPLM','arrChartsCKM','datecharts'));
       }
       elseif($request->type == 3){
-        $data = tbl_custag::where('id',$request->id)->first();
+        $data_Tag = tbl_custag::where('id',$request->id)->first();
         $getdue = tbl_duedate::getDuedate();
+        $statuslist = tbl_statustype::getstatus();
 
-        $html = view('data_Customer.section-Cus.MesDetails',compact('data','getdue'))->render();
+        $dataHis = tbl_DataLogStatus::where('TagID',$request->id)->get();
+        $html = view('data_Customer.section-Cus.MesDetails',compact('data_Tag','getdue','statuslist','dataHis'))->render();
         return response()->json(['html'=>$html]);
       }
     }
@@ -436,21 +440,20 @@ class CusController extends Controller
     public function update(Request $request, $id)
     {
       $getdue = tbl_duedate::getDuedate();
-      // $dateStart = $getdue->datedueStart;
-      // $dateEnd = $getdue->datedueEnd;
+      $dateStart = $getdue->datedueStart;
+      $dateEnd = $getdue->datedueEnd;
 
-      $dateStart = '2023-10-07';
-      $dateEnd = '2023-11-06';
+    //   $dateStart = '2023-10-07';
+    //   $dateEnd = '2023-11-06';
 
 
       if($request->type == 1){ //อัพเดทสถานะ
 
         $data_Tag = tbl_custag::where('ContractID',$request->contractNumber)->orderBy('id','desc')->first();
-        $data_Tag->payment_date = $request->payment_date;
+        $data_Tag->Status = $request->statuschecks;
         $data_Tag->update();
 
         $data_status = tbl_customer::where('contractNumber',$request->contractNumber)->first();
-        $data_status->paymentDate = $request->payment_date;
         $data_status->status = $request->statuschecks;
         $data_status->update();
 
@@ -458,17 +461,19 @@ class CusController extends Controller
         $data_plan->tag_id = $data_Tag->id;
         $data_plan->date_plan = date('Y-m-d');
         $data_plan->ContractID = $request->contractNumber;
-        $data_plan->detail = 'ได้อัพเดทสถานะเป็น '.$data_status->CustoStatus->details;
+        $data_plan->detail = 'ได้อัพเดทสถานะเป็น '.@$data_status->CustoStatus->details;
         $data_plan->userInsert = Auth::user()->id;
         $data_plan->userInsertname = Auth::user()->name;
         $data_plan->save();
+
+        event(new DataLogStatus($data_Tag->id,Auth::user()->id,Auth::user()->name,$data_plan->detail,'',$request->statuschecks));
 
 
 
           $searchApp = tbl_appointment::where('ContractNumber',$request->contractNumber)->where('DateApp',$request->payment_date)->first();
           if(@$searchApp == NULL){
             $appointment = new tbl_appointment;
-            $appointment->ContractNumber	= $request->contractNumber;
+            $appointment->ContractNumber= $request->contractNumber;
             $appointment->Status	= @$request->statuschecks;
             $appointment->DateApp	= $request->payment_date; // วันนีดชำระ
             $appointment->date	= date('Y-m-d');
@@ -478,7 +483,8 @@ class CusController extends Controller
 
         $data = tbl_customer::where('contractNumber',$request->contractNumber)->first();
         $statuslist = tbl_statustype::getstatus();
-        return response()->view('data_Customer.section-Cus.CardCusDetail',compact('data','statuslist'));
+        $chatBox = view('data_Customer.section-Cus.ChatDetails',compact('data_Tag','statuslist'))->render();
+        return response()->json(['chatBox' => $chatBox]);
       }
 
       elseif($request->type == 2){ // อัพเดทการจ่าย

@@ -14,13 +14,14 @@
     }
 
     .scroller-chat {
-        max-height: 300px;
+        max-height: 270px;
+        min-height: 270px;
         overflow-y: scroll;
         overflow-x: hidden;
     }
 </style>
     <div class="tr">
-        <div id="scrollBottom" class="scroller px-2" style="min-height : 300px;">
+        <div id="" class="px-2">
             <div id="content-tag">
                 <div class="row px-2">
                     <div class="col">
@@ -34,11 +35,25 @@
                 <div id="CusTagDetails">
                     <div class="row g-1">
                         @foreach (@$data->CustoCustag as $key => $value)
-                            <div class="col-3">
-                                <div class="card">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
+                                <div class="card border border-2 border-warning">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-9 m-auto">
+                                                <h6 class="card-title fw-bolder">เดือน {{ App\datethai\thaidate::simpleDateFormatfullmonth($value->date_Tag) }}</h6>
+                                                <span class="badge rounded-pill text-bg-warning">92.00 %</span>
+                                            </div>
+                                            <div class="col-3 text-center">
+                                                <lord-icon
+                                                src="https://cdn.lordicon.com/xjronrda.json"
+                                                trigger="loop"
+                                                delay="2000"
+                                                style="width:25;height:25">
+                                            </lord-icon>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="card-body">
-                                    <h6 class="card-title fw-bolder">เดือน {{ App\datethai\thaidate::simpleDateFormatfullmonth($value->date_Tag) }}</h6>
-                                    <hr>
                                     <p class="card-text">สถานะ : <span class="badge rounded-pill bg-success bg-opacity-25 text-success">{{ $value->status }}</span></p>
                                     <p class="card-text">ผู้ติดตาม : <span class="badge rounded-pill bg-success bg-opacity-25 text-success">{{ $value->userInsert }}</span></p>
                                     <p class="card-text">วันที่สร้าง : <span class="badge rounded-pill bg-success bg-opacity-25 text-success">{{ $value->date_Tag }}</span></p>
@@ -58,12 +73,7 @@
     </div>
 
 
-    <script>
-        function scrollWin() {
-        var element = document.querySelector('#scrollBottom');
-        element.scrollTop = element.scrollHeight;
-        }
-    </script>
+
 
     <script>
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}',{cluster : 'ap1'})

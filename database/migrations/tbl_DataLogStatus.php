@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_appointment', function (Blueprint $table) {
+        Schema::create('tbl_DataLogStatus', function (Blueprint $table) {
             $table->id();
-            $table->string('ContractNumber',100)->nullable(); 
-            $table->date('DateApp')->nullable();  
-            $table->date('date')->nullable();  
-            $table->string('Status',50)->nullable();  
+            $table->integer('TagID');
+            $table->integer('UserInsert');
+            $table->string('UserInsertTxt',255)->nullable();
+            $table->text('Details')->nullable();
+            $table->date('StatusDate')->nullable();
+            $table->string('StatusCode',50)->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_appointment');
+        Schema::dropIfExists('tbl_DataLogStatus');
     }
 };
